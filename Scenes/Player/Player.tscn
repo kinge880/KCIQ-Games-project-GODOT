@@ -1,0 +1,46 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scripts/Player/PlayerKinematic.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Player/walk/Layer-1.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/walk/Layer-2.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/walk/Layer-3.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Player/walk/Layer-4.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Player/walk/Layer-5.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Player/walk/Layer-6.png" type="Texture" id=7]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 4.51336
+height = 16.2648
+
+[node name="PlayerKinematic" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprites" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "walk"
+
+[node name="Body" type="CollisionShape2D" parent="."]
+position = Vector2( -0.879559, 3.59325 )
+shape = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[node name="ColissionWall" type="RayCast2D" parent="."]
+rotation = 4.71239
+enabled = true
+cast_to = Vector2( 0, 6 )
