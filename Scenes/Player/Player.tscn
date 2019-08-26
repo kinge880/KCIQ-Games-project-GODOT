@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/Player/PlayerKinematic.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/walk/Layer-1.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Player/walk/Layer-4.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Player/walk/Layer-5.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Player/walk/Layer-6.png" type="Texture" id=7]
+[ext_resource path="res://Assets/particles texture/Fogo_propuncao.png" type="Texture" id=8]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -20,13 +21,31 @@ animations = [ {
 radius = 4.51336
 height = 16.2648
 
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.222222, 0.933333, 1 )
+colors = PoolColorArray( 1, 0.839216, 0.105882, 1, 0.952941, 0.537255, 0.0941176, 1, 1, 0.230017, 0.0313725, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+spread = 25.0
+gravity = Vector3( 0, -120, 0 )
+initial_velocity = 50.0
+angular_velocity = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 1.5
+scale_random = 1.0
+color_ramp = SubResource( 4 )
+
 [node name="PlayerKinematic" type="KinematicBody2D"]
 collision_layer = 2
 collision_mask = 4
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprites" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
@@ -44,3 +63,28 @@ zoom = Vector2( 0.5, 0.5 )
 rotation = 4.71239
 enabled = true
 cast_to = Vector2( 0, 6 )
+
+[node name="DoubleJumpBote" type="Particles2D" parent="."]
+position = Vector2( 4.42004, 17.3101 )
+rotation = 1.5708
+emitting = false
+amount = 200
+lifetime = 0.4
+one_shot = true
+speed_scale = 1.5
+randomness = 1.0
+local_coords = false
+process_material = SubResource( 5 )
+
+[node name="DoubleJumpBote2" type="Particles2D" parent="."]
+position = Vector2( -4.85854, 17.188 )
+rotation = 1.5708
+emitting = false
+amount = 200
+lifetime = 0.4
+one_shot = true
+speed_scale = 1.5
+randomness = 1.0
+local_coords = false
+process_material = SubResource( 5 )
+texture = ExtResource( 8 )

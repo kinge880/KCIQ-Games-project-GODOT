@@ -15,6 +15,7 @@ var jump_wall = false
 export var gravity = 500
 var velocity = Vector2()
 onready var anim = $Sprites
+
 func _physics_process(delta):
 	var on_wall = $ColissionWall.is_colliding()
 	
@@ -69,6 +70,8 @@ func _physics_process(delta):
 	
 	#pulo
 	if is_on_floor():
+		$DoubleJumpBote.emitting = false
+		$DoubleJumpBote2.emitting = false
 		jump_wall = false
 		double_jump = true
 		if jump:
@@ -80,5 +83,7 @@ func _physics_process(delta):
 	if double_jump and jump and double_jump_obted and not is_on_floor():
 		velocity.y = -jump_force
 		double_jump = false
+		$DoubleJumpBote.emitting = true
+		$DoubleJumpBote2.emitting = true
 	
-	move_and_slide(velocity, Vector2(0,-1))
+	velocity = move_and_slide(velocity, Vector2(0,-1))
