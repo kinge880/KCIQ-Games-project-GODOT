@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Fogo_propuncao.png-dca03bef665772c87159ab567bc912a3.stex"
+path="res://.import/Fogo_propuncao.png-ccc58478a7211fe80a6f0ad9a50e413e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/particles_texture/Fogo_propuncao.png"
-dest_files=[ "res://.import/Fogo_propuncao.png-dca03bef665772c87159ab567bc912a3.stex" ]
+source_file="res://assets/particles_texture/Fogo_propuncao.png"
+dest_files=[ "res://.import/Fogo_propuncao.png-ccc58478a7211fe80a6f0ad9a50e413e.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Layer-1.png-3ba29285a7a83899e80b8c292d660ea9.stex"
+path="res://.import/Layer-1.png-2471b51d2b07f57451f236cda0290a0a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/gun-walk/Layer-1.png"
-dest_files=[ "res://.import/Layer-1.png-3ba29285a7a83899e80b8c292d660ea9.stex" ]
+source_file="res://assets/player/gun-walk/Layer-1.png"
+dest_files=[ "res://.import/Layer-1.png-2471b51d2b07f57451f236cda0290a0a.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Layer-1.png-65b5cad34db135980c00e1351f887d0e.stex"
+path="res://.import/Layer-1.png-2f122f8cde3a6d8d17e706a23ecbd8f6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/draw gun/Layer-1.png"
-dest_files=[ "res://.import/Layer-1.png-65b5cad34db135980c00e1351f887d0e.stex" ]
+source_file="res://assets/player/draw gun/Layer-1.png"
+dest_files=[ "res://.import/Layer-1.png-2f122f8cde3a6d8d17e706a23ecbd8f6.stex" ]
 
 [params]
 

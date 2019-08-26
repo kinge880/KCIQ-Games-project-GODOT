@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Layer-2.png-1cb6cbdbe97ec1dedbf7d8646a96e905.stex"
+path="res://.import/Layer-2.png-5c48703b856ebce831a623928d24356b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/punch/Layer-2.png"
-dest_files=[ "res://.import/Layer-2.png-1cb6cbdbe97ec1dedbf7d8646a96e905.stex" ]
+source_file="res://assets/player/punch/Layer-2.png"
+dest_files=[ "res://.import/Layer-2.png-5c48703b856ebce831a623928d24356b.stex" ]
 
 [params]
 

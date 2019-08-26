@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Novo Projeto de Jogo"
-run/main_scene="res://Scenes/Laboratory/Laboratory.tscn"
+run/main_scene="res://scenes/laboratory/Laboratory.tscn"
 config/icon="res://icon.png"
 
 [rendering]

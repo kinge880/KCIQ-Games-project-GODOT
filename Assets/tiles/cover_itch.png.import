@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cover_itch.png-cad983a18b9932bbbb8754b9bb4cbc08.stex"
+path="res://.import/cover_itch.png-dd465ecc198a627052efd757807aedc1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/tiles/cover_itch.png"
-dest_files=[ "res://.import/cover_itch.png-cad983a18b9932bbbb8754b9bb4cbc08.stex" ]
+source_file="res://assets/tiles/cover_itch.png"
+dest_files=[ "res://.import/cover_itch.png-dd465ecc198a627052efd757807aedc1.stex" ]
 
 [params]
 

@@ -80,7 +80,7 @@ func _physics_process(delta):
 		velocity.y *= 0.5
 	
 	#pulo duplo
-	if double_jump and jump and double_jump_obted and not is_on_floor():
+	if not on_wall and double_jump and jump and double_jump_obted and not is_on_floor():
 		velocity.y = -jump_force
 		double_jump = false
 		$DoubleJumpParticle.emitting = true
