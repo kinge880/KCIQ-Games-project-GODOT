@@ -7,7 +7,7 @@
 [ext_resource path="res://Assets/Player/walk/Layer-4.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Player/walk/Layer-5.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Player/walk/Layer-6.png" type="Texture" id=7]
-[ext_resource path="res://Assets/particles texture/Fogo_propuncao.png" type="Texture" id=8]
+[ext_resource path="res://Assets/particles_texture/Fogo_propuncao.png" type="Texture" id=8]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -55,7 +55,7 @@ animation = "walk"
 position = Vector2( -0.879559, 3.59325 )
 shape = SubResource( 2 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="PlayerCamera" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
@@ -64,7 +64,7 @@ rotation = 4.71239
 enabled = true
 cast_to = Vector2( 0, 6 )
 
-[node name="DoubleJumpBote" type="Particles2D" parent="."]
+[node name="DoubleJumpParticle" type="Particles2D" parent="."]
 position = Vector2( 4.42004, 17.3101 )
 rotation = 1.5708
 emitting = false
@@ -76,7 +76,7 @@ randomness = 1.0
 local_coords = false
 process_material = SubResource( 5 )
 
-[node name="DoubleJumpBote2" type="Particles2D" parent="."]
+[node name="DoubleJumpParticle2" type="Particles2D" parent="."]
 position = Vector2( -4.85854, 17.188 )
 rotation = 1.5708
 emitting = false
