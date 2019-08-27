@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/Player/PlayerKinematic.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/walk/Layer-1.png" type="Texture" id=2]
@@ -41,6 +41,22 @@ orbit_velocity_random = 0.0
 scale = 1.5
 scale_random = 1.0
 color_ramp = SubResource( 4 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "take_damage"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="PlayerKinematic" type="KinematicBody2D"]
 collision_layer = 2
@@ -88,3 +104,15 @@ randomness = 1.0
 local_coords = false
 process_material = SubResource( 5 )
 texture = ExtResource( 8 )
+
+[node name="DelayAfterDamageTime" type="Timer" parent="."]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/take_damage = SubResource( 6 )
+
+[node name="DashTime" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+[connection signal="timeout" from="DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
+[connection signal="timeout" from="DashTime" to="." method="_on_DashTime_timeout"]
