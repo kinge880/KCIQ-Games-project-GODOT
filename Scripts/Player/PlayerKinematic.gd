@@ -1,8 +1,7 @@
 extends KinematicBody2D
 
 export var speed = 200
-export var dash_speed = 600
-var dash_aux
+export var dash_multiplier = 3
 export var jump_force = 250
 export var lower_force = 250
 export var max_life = 100
@@ -44,9 +43,11 @@ func _physics_process(delta):
 	if on_wall and jump_wall_obted and lower_move:
 		#jump_wall = false
 		velocity.y += gravity * delta
+		anim.play("fall")
 	elif on_wall and jump_wall_obted:
 		#jump_wall = false
 		velocity.y = gravity * delta
+		anim.play("wall")
 	else:
 		#velocidade normal de queda, gravidade
 		velocity.y += gravity * delta
@@ -55,29 +56,34 @@ func _physics_process(delta):
 		#salto na parede para a esquerda
 		if on_wall and anim.flip_h and not is_on_floor() and jump_wall_obted:
 			#jump_wall = true
+			anim.play("jump")
 			velocity.x = speed * 1.5
 			velocity.y = -jump_force
 		#movimento basico direita
 		velocity.x = speed
 		anim.flip_h = false
-		anim.play("walk")
+		if is_on_floor() and not dash_delay:
+			anim.play("walk")
 		$ColissionWall.rotation_degrees = 270
 
 	elif walk_left:
 		#salto na parede para a direita
 		if on_wall and not anim.flip_h and not is_on_floor() and jump_wall_obted:
 			#jump_wall = true
+			anim.play("jump")
 			velocity.x = -speed * 1.5
 			velocity.y = -jump_force
 		#movimento basico esquerda
 		velocity.x = -speed
 		anim.flip_h = true
-		anim.play("walk")
+		if is_on_floor() and not dash_delay:
+			anim.play("walk")
 		$ColissionWall.rotation_degrees = 90
 		
 	else:
 		velocity.x = 0
-		anim.stop()
+		if is_on_floor() and not dash_delay:
+			anim.play("idle_no_weapon")
 		
 	#pulo
 	if is_on_floor():
@@ -87,31 +93,29 @@ func _physics_process(delta):
 		air_dash = true
 		double_jump = true
 		if jump:
+			anim.play("jump")
 			velocity.y = -jump_force
 	elif jump_stop and velocity.y < 0:
+		anim.play("fall")
 		velocity.y *= 0.5
 	
 	#pulo duplo
 	if not on_wall and double_jump and jump and double_jump_obted and not is_on_floor():
 		velocity.y = -jump_force
 		double_jump = false
+		anim.play("jump_roll")
 		$DoubleJumpParticle.emitting = true
 		$DoubleJumpParticle2.emitting = true
 
 	#dash
 	if dash and air_dash and not dash_delay and dash_obted:
 		air_dash = false
+		anim.play("dash")
 		dash_delay = true
-		dash()
+		speed *= dash_multiplier
+		$DashTime.start()
 	
 	velocity = move_and_slide(velocity, Vector2(0,-1))
-	
-#funcao do dash
-func dash():
-	$DashTime.start()
-	dash_aux = dash_speed
-	dash_speed = speed
-	speed = dash_aux
 
 #emite o sinal que altera o valor da vida no HUD
 func life_changed():
@@ -143,6 +147,4 @@ func _on_DelayAfterDamageTime_timeout():
 
 func _on_DashTime_timeout():
 	dash_delay = false
-	dash_aux = dash_speed
-	dash_speed = speed
-	speed = dash_aux
+	speed /= dash_multiplier
