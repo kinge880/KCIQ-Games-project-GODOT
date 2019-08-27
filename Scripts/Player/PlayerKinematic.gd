@@ -9,6 +9,7 @@ export var max_life = 100
 export var current_life = 100
 export var double_jump_obted = true
 export var jump_wall_obted = true
+export var dash_obted = true
 signal life_changed
 var delay_after_damage = false
 var walk_right
@@ -98,13 +99,13 @@ func _physics_process(delta):
 		$DoubleJumpParticle2.emitting = true
 
 	#dash
-	if dash and air_dash and not dash_delay:
+	if dash and air_dash and not dash_delay and dash_obted:
 		air_dash = false
 		dash_delay = true
 		dash()
 	
 	velocity = move_and_slide(velocity, Vector2(0,-1))
-	print($DashTime.time_left)
+	
 #funcao do dash
 func dash():
 	$DashTime.start()
