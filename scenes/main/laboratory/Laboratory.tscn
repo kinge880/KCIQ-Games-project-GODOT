@@ -247,7 +247,7 @@ shape = SubResource( 18 )
 [node name="HUD" parent="." instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 847.21, 519.928 )
+position = Vector2( 847.21, 542.089 )
 [connection signal="body_entered" from="LaboratoryTile/ladderArea" to="Player" method="_on_ladderArea_body_entered"]
 [connection signal="body_exited" from="LaboratoryTile/ladderArea" to="Player" method="_on_ladderArea_body_exited"]
 [connection signal="body_entered" from="LaboratoryTile/ladderArea2" to="Player" method="_on_ladderArea_body_entered"]
