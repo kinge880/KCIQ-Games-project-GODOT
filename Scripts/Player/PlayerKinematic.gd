@@ -24,6 +24,7 @@ var air_dash = false
 var atk_count = 0
 var double_jump = false
 var jump_wall = false
+var in_ladder = false
 export var gravity = 500
 var velocity = Vector2()
 onready var anim = $Sprites
@@ -37,15 +38,15 @@ func _physics_process(delta):
 		walk_left = Input.is_action_pressed("ui_left") 
 	jump = Input.is_action_just_pressed("ui_up")
 	jump_stop = Input.is_action_just_released("ui_up")
-	lower_move = Input.is_action_pressed("ui_down") 
+	lower_move = Input.is_action_just_pressed("ui_down") 
 	dash = Input.is_action_just_pressed("ui_select")
-	atk = Input.is_action_pressed("ui_weak_attack")
+	atk = Input.is_action_just_pressed("ui_weak_attack")
 	
 	#agarra na parede, desliza e se solta
-	if on_wall and jump_wall_obted and lower_move:
+	if on_wall and jump_wall_obted and lower_move and not is_on_floor():
 		velocity.y += gravity * delta
 		anim.play("fall")
-	elif on_wall and jump_wall_obted:
+	elif on_wall and jump_wall_obted and not is_on_floor():
 		velocity.y = gravity * delta
 		anim.play("wall")
 	else:
@@ -95,8 +96,6 @@ func _physics_process(delta):
 	elif jump_stop:
 		if velocity.y < 0:
 			velocity.y *= 0.5
-		elif anim.get_animation() != "jump_roll":
-			anim.play("fall")
 	
 	#pulo duplo
 	if not on_wall and double_jump and jump and double_jump_obted and not is_on_floor():
@@ -116,18 +115,22 @@ func _physics_process(delta):
 	
 	velocity = move_and_slide(velocity, Vector2(0,-1))
 	
+	#animação de queda
+	if velocity.y > 0 and not is_on_floor() and anim.get_animation() != "wall" and not dash_delay and not atk_delay:
+		anim.play("fall")
+		
 	#ataque
-	if atk:
-		atk_count += 1
+	if atk and not is_on_floor():
 		$AtkTime.start()
 		atk_delay = true
-		if atk_count > 1:
-			anim.play("atack1")
-		elif atk_count > 2:
-			anim.play("atack2")
-		elif atk_count > 3:
-			anim.play("atack3")
-		print(atk_count)
+		anim.play("air_atack2")
+	elif atk and not atk_delay:
+		$AtkTime.start()
+		atk_delay = true
+		anim.play("atack1")
+		
+	if in_ladder:
+		anim.play("ladder")
 		
 #emite o sinal que altera o valor da vida no HUD
 func life_changed():
@@ -164,3 +167,14 @@ func _on_DashTime_timeout():
 func _on_AtkTime_timeout():
 	atk_count = 0
 	atk_delay = false
+
+func _on_ladderArea_body_entered(body):
+	velocity.x = 0
+	velocity.y = 0
+	in_ladder = true
+	gravity = 0
+
+
+func _on_ladderArea_body_exited(body):
+	in_ladder = false
+	gravity = 500
