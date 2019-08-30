@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 export var speed = 200
 export var dash_multiplier = 3
-export var jump_force = 250
+export var jump_force = -250
 export var lower_force = 250
 export var max_life = 100
 export var current_life = 100
@@ -11,42 +11,49 @@ export var jump_wall_obted = true
 export var dash_obted = true
 signal life_changed
 var delay_after_damage = false
-var walk_right
-var walk_left
-var walk_up
-var walk_down
-var jump
-var jump_stop
-var lower_move
-var atk
+#var walk_right
+#var walk_left
+#var walk_up
+#var walk_down
+#var jump
+#var jump_stop
+#var lower_move
+#var atk
 var atk_delay = false
-var dash
+#var dash
 var dash_delay = false
 var air_dash = false
 var atk_count = 0
 var double_jump = false
 var jump_wall = false
 var in_ladder = false
-export var gravity = 500
+export var gravity = 400
 var gravity_aux = 0
 var velocity = Vector2()
 onready var sprite = $Sprite
 onready var anim = $AnimationPlayer
 
+var jumping = false
+
+func get_input():
+	pass
+
 func _physics_process(delta):
-	var on_wall = $ColissionWall.is_colliding()
+	velocity.x = 0
+	var on_wall = is_on_wall()
+	#var on_wall = $ColissionWall.is_colliding()
 	
 	#Inputs
-	if not jump_wall and not dash_delay: 
-		walk_right = Input.is_action_pressed("ui_right")
-		walk_left = Input.is_action_pressed("ui_left") 
-	walk_up = Input.is_action_pressed("ui_up")
-	walk_down = Input.is_action_pressed("ui_down") 
-	jump = Input.is_action_just_pressed("ui_up")
-	jump_stop = Input.is_action_just_released("ui_up")
-	lower_move = Input.is_action_pressed("ui_down") 
-	dash = Input.is_action_just_pressed("ui_select")
-	atk = Input.is_action_just_pressed("ui_weak_attack")
+	#if not jump_wall and not dash_delay: 
+	var walk_right = Input.is_action_pressed("ui_right")
+	var walk_left = Input.is_action_pressed("ui_left") 
+	var walk_up = Input.is_action_pressed("ui_up")
+	var walk_down = Input.is_action_pressed("ui_down") 
+	var jump = Input.is_action_just_pressed("ui_up")
+	var jump_stop = Input.is_action_just_released("ui_up")
+	var lower_move = Input.is_action_pressed("ui_down") 
+	var dash = Input.is_action_just_pressed("ui_select")
+	var atk = Input.is_action_just_pressed("ui_weak_attack")
 	
 	#quando tocar em uma escada
 	if in_ladder:
@@ -99,29 +106,29 @@ func _physics_process(delta):
 			if on_wall and sprite.flip_h and not is_on_floor() and jump_wall_obted:
 				anim.play("jump")
 				velocity.x = speed * 1.5
-				velocity.y = -jump_force
+				velocity.y = jump_force
 			#movimento basico direita
-			velocity.x = speed
+			velocity.x += speed
 			sprite.flip_h = false
 			if is_on_floor() and not dash_delay and not atk_delay:
 				anim.play("walk")
 			$ColissionWall.rotation_degrees = 270
 	
-		elif walk_left:
+		if walk_left:
 			#salto na parede para a direita
 			if on_wall and not sprite.flip_h and not is_on_floor() and jump_wall_obted:
 				anim.play("jump")
 				velocity.x = -speed * 1.5
-				velocity.y = -jump_force
+				velocity.y = jump_force
 			#movimento basico esquerda
-			velocity.x = -speed
+			velocity.x -= speed
 			sprite.flip_h = true
 			if is_on_floor() and not dash_delay and not atk_delay:
 				anim.play("walk")
 			$ColissionWall.rotation_degrees = 90
 			
-		else:
-			velocity.x = 0
+		if velocity.x == 0:
+			#velocity.x = 0
 			if is_on_floor() and not dash_delay and not atk_delay:
 				anim.play("idle")
 			
@@ -132,15 +139,16 @@ func _physics_process(delta):
 			air_dash = true
 			double_jump = true
 			if jump:
+				jumping = true
 				anim.play("jump")
-				velocity.y = -jump_force
+				velocity.y = jump_force
 		elif jump_stop:
 			if velocity.y < 0:
 				velocity.y *= 0.5
 		
 		#pulo duplo
 		if not on_wall and double_jump and jump and double_jump_obted and not is_on_floor():
-			velocity.y = -jump_force
+			velocity.y = jump_force
 			double_jump = false
 			anim.play("double_jump")
 			$DoubleJumpParticle.emitting = true
@@ -168,7 +176,17 @@ func _physics_process(delta):
 			atk_delay = true
 			anim.play("atk1")
 	
-	velocity = move_and_slide(velocity, Vector2(0,-1))
+	if jumping and velocity.y > 0:
+		jumping = false
+	
+	var snap = Vector2(0, 8)
+	
+	if jumping:
+		snap = Vector2()
+	
+	velocity.y += gravity * delta
+	
+	velocity = move_and_slide_with_snap(velocity, snap, Vector2(0,-1), true, 4, deg2rad(46), true)
 	
 #emite o sinal que altera o valor da vida no HUD
 func life_changed():

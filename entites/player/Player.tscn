@@ -5,13 +5,12 @@
 [ext_resource path="res://assets/graphic/sprites/particles/Fogo_propuncao.png" type="Texture" id=3]
 
 [sub_resource type="AtlasTexture" id=1]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( -0.131714, -1.1324, 350.803, 595.849 )
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 4.51336
-height = 16.2648
+height = 20.8813
 
 [sub_resource type="Gradient" id=3]
 offsets = PoolRealArray( 0, 0.222222, 0.933333, 1 )
@@ -345,15 +344,15 @@ states/fall/position = Vector2( 306.479, 423.051 )
 states/idle/node = SubResource( 22 )
 states/idle/position = Vector2( 202, 60 )
 states/jump/node = SubResource( 23 )
-states/jump/position = Vector2( 75, 308 )
+states/jump/position = Vector2( 222, 326 )
 states/jump_wall/node = SubResource( 24 )
-states/jump_wall/position = Vector2( 870.479, 212.051 )
+states/jump_wall/position = Vector2( 814.479, 158.051 )
 states/ladder/node = SubResource( 25 )
 states/ladder/position = Vector2( 618.479, -74.949 )
 states/walk/node = SubResource( 26 )
-states/walk/position = Vector2( -25, 60 )
+states/walk/position = Vector2( -75, 10 )
 transitions = [ "walk", "jump", SubResource( 27 ), "jump", "walk", SubResource( 28 ), "jump", "double_jump", SubResource( 29 ), "double_jump", "fall", SubResource( 30 ), "fall", "walk", SubResource( 31 ), "fall", "double_jump", SubResource( 32 ), "jump", "jump_wall", SubResource( 33 ), "double_jump", "jump_wall", SubResource( 34 ), "fall", "jump_wall", SubResource( 35 ), "jump_wall", "jump", SubResource( 36 ), "jump_wall", "fall", SubResource( 37 ), "walk", "ladder", SubResource( 38 ), "jump", "ladder", SubResource( 39 ), "double_jump", "ladder", SubResource( 40 ), "fall", "ladder", SubResource( 41 ), "ladder", "walk", SubResource( 42 ), "ladder", "fall", SubResource( 43 ), "fall", "dash", SubResource( 44 ), "double_jump", "dash", SubResource( 45 ), "jump", "dash", SubResource( 46 ), "walk", "dash", SubResource( 47 ), "dash", "fall", SubResource( 48 ), "dash", "walk", SubResource( 49 ), "walk", "atk1", SubResource( 50 ), "dash", "atk1", SubResource( 51 ), "atk1", "walk", SubResource( 52 ), "fall", "air_atk", SubResource( 53 ), "jump", "air_atk", SubResource( 54 ), "double_jump", "air_atk", SubResource( 55 ), "air_atk", "jump", SubResource( 56 ), "air_atk", "double_jump", SubResource( 57 ), "air_atk", "fall", SubResource( 58 ), "idle", "walk", SubResource( 59 ), "walk", "idle", SubResource( 60 ), "idle", "jump", SubResource( 61 ), "jump", "idle", SubResource( 62 ), "fall", "idle", SubResource( 63 ), "idle", "dash", SubResource( 64 ), "dash", "idle", SubResource( 65 ), "idle", "atk1", SubResource( 66 ), "atk1", "idle", SubResource( 67 ) ]
-graph_offset = Vector2( -70.8648, -153.533 )
+graph_offset = Vector2( -759.284, -186.406 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=69]
 
@@ -361,9 +360,6 @@ graph_offset = Vector2( -70.8648, -153.533 )
 collision_layer = 2
 collision_mask = 4
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = SubResource( 1 )
@@ -372,12 +368,13 @@ hframes = 7
 frame = 1
 
 [node name="Body" type="CollisionShape2D" parent="."]
-position = Vector2( -0.879559, 3.59325 )
+position = Vector2( 0.120441, 3.59325 )
 shape = SubResource( 2 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
+offset = Vector2( 0, -40 )
 current = true
-zoom = Vector2( 0.5, 0.5 )
+process_mode = 0
 
 [node name="ColissionWall" type="RayCast2D" parent="."]
 rotation = 4.71239
