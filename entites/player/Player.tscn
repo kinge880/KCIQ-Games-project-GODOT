@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=2]
+[gd_scene load_steps=69 format=2]
 
 [ext_resource path="res://entites/player/PlayerKinematic.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -9,9 +9,8 @@ flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( -0.131714, -1.1324, 350.803, 595.849 )
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 4.51336
-height = 16.2648
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 5.57235, 13.3677 )
 
 [sub_resource type="Gradient" id=3]
 offsets = PoolRealArray( 0, 0.222222, 0.933333, 1 )
@@ -36,7 +35,7 @@ color_ramp = SubResource( 4 )
 
 [sub_resource type="Animation" id=6]
 resource_name = "air_atk"
-length = 0.3
+length = 0.45
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -44,7 +43,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
+"times": PoolRealArray( 0, 0.15, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 96, 97, 98 ]
@@ -69,6 +68,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=8]
 resource_name = "dash"
+length = 0.55
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -77,7 +77,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 24, 25, 26, 27, 28 ]
@@ -137,6 +137,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=12]
 length = 0.8
+loop = true
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -217,87 +218,35 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=17]
+[sub_resource type="AnimationNodeAnimation" id=43]
 animation = "air_atk"
 
-[sub_resource type="AnimationNodeAnimation" id=18]
+[sub_resource type="AnimationNodeAnimation" id=44]
 animation = "atk1"
 
-[sub_resource type="AnimationNodeAnimation" id=19]
+[sub_resource type="AnimationNodeAnimation" id=47]
 animation = "dash"
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=48]
 animation = "double_jump"
 
-[sub_resource type="AnimationNodeAnimation" id=21]
+[sub_resource type="AnimationNodeAnimation" id=17]
 animation = "fall"
 
-[sub_resource type="AnimationNodeAnimation" id=22]
+[sub_resource type="AnimationNodeAnimation" id=49]
 animation = "idle"
 
-[sub_resource type="AnimationNodeAnimation" id=23]
+[sub_resource type="AnimationNodeAnimation" id=50]
 animation = "jump"
 
-[sub_resource type="AnimationNodeAnimation" id=24]
+[sub_resource type="AnimationNodeAnimation" id=89]
 animation = "jump_wall"
 
-[sub_resource type="AnimationNodeAnimation" id=25]
+[sub_resource type="AnimationNodeAnimation" id=90]
 animation = "ladder"
 
-[sub_resource type="AnimationNodeAnimation" id=26]
+[sub_resource type="AnimationNodeAnimation" id=51]
 animation = "walk"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=27]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=28]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=29]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=30]
-switch_mode = 2
-auto_advance = true
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=31]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=32]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=33]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=34]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=35]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=36]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=37]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=38]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=39]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=40]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=41]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=42]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=43]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=44]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=45]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=46]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=47]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=48]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=49]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=50]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=51]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=52]
 
@@ -316,6 +265,8 @@ auto_advance = true
 [sub_resource type="AnimationNodeStateMachineTransition" id=59]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=60]
+switch_mode = 2
+auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=61]
 
@@ -331,48 +282,88 @@ auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=67]
 
-[sub_resource type="AnimationNodeStateMachine" id=68]
-states/air_atk/node = SubResource( 17 )
-states/air_atk/position = Vector2( 870.479, 429.051 )
-states/atk1/node = SubResource( 18 )
-states/atk1/position = Vector2( 710.479, 622 )
-states/dash/node = SubResource( 19 )
-states/dash/position = Vector2( -364.521, 265.051 )
-states/double_jump/node = SubResource( 20 )
-states/double_jump/position = Vector2( 98, 627 )
-states/fall/node = SubResource( 21 )
-states/fall/position = Vector2( 306.479, 423.051 )
-states/idle/node = SubResource( 22 )
-states/idle/position = Vector2( 202, 60 )
-states/jump/node = SubResource( 23 )
-states/jump/position = Vector2( 75, 308 )
-states/jump_wall/node = SubResource( 24 )
-states/jump_wall/position = Vector2( 870.479, 212.051 )
-states/ladder/node = SubResource( 25 )
-states/ladder/position = Vector2( 618.479, -74.949 )
-states/walk/node = SubResource( 26 )
-states/walk/position = Vector2( -25, 60 )
-transitions = [ "walk", "jump", SubResource( 27 ), "jump", "walk", SubResource( 28 ), "jump", "double_jump", SubResource( 29 ), "double_jump", "fall", SubResource( 30 ), "fall", "walk", SubResource( 31 ), "fall", "double_jump", SubResource( 32 ), "jump", "jump_wall", SubResource( 33 ), "double_jump", "jump_wall", SubResource( 34 ), "fall", "jump_wall", SubResource( 35 ), "jump_wall", "jump", SubResource( 36 ), "jump_wall", "fall", SubResource( 37 ), "walk", "ladder", SubResource( 38 ), "jump", "ladder", SubResource( 39 ), "double_jump", "ladder", SubResource( 40 ), "fall", "ladder", SubResource( 41 ), "ladder", "walk", SubResource( 42 ), "ladder", "fall", SubResource( 43 ), "fall", "dash", SubResource( 44 ), "double_jump", "dash", SubResource( 45 ), "jump", "dash", SubResource( 46 ), "walk", "dash", SubResource( 47 ), "dash", "fall", SubResource( 48 ), "dash", "walk", SubResource( 49 ), "walk", "atk1", SubResource( 50 ), "dash", "atk1", SubResource( 51 ), "atk1", "walk", SubResource( 52 ), "fall", "air_atk", SubResource( 53 ), "jump", "air_atk", SubResource( 54 ), "double_jump", "air_atk", SubResource( 55 ), "air_atk", "jump", SubResource( 56 ), "air_atk", "double_jump", SubResource( 57 ), "air_atk", "fall", SubResource( 58 ), "idle", "walk", SubResource( 59 ), "walk", "idle", SubResource( 60 ), "idle", "jump", SubResource( 61 ), "jump", "idle", SubResource( 62 ), "fall", "idle", SubResource( 63 ), "idle", "dash", SubResource( 64 ), "dash", "idle", SubResource( 65 ), "idle", "atk1", SubResource( 66 ), "atk1", "idle", SubResource( 67 ) ]
-graph_offset = Vector2( -70.8648, -153.533 )
+[sub_resource type="AnimationNodeStateMachineTransition" id=68]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=69]
+[sub_resource type="AnimationNodeStateMachineTransition" id=69]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=70]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=71]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=72]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=73]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=74]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=81]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=82]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=83]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=84]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=85]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=86]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=87]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=88]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=91]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=92]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=93]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=94]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=95]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=96]
+
+[sub_resource type="AnimationNodeStateMachine" id=28]
+states/air_atk/node = SubResource( 43 )
+states/air_atk/position = Vector2( 792.804, 125.492 )
+states/atk1/node = SubResource( 44 )
+states/atk1/position = Vector2( 586.804, 125.492 )
+states/dash/node = SubResource( 47 )
+states/dash/position = Vector2( 379.804, -37.5084 )
+states/double_jump/node = SubResource( 48 )
+states/double_jump/position = Vector2( 133.804, 293.492 )
+states/fall/node = SubResource( 17 )
+states/fall/position = Vector2( 113.804, -210.508 )
+states/idle/node = SubResource( 49 )
+states/idle/position = Vector2( 12.8039, 54.4916 )
+states/jump/node = SubResource( 50 )
+states/jump/position = Vector2( -273.196, 293.492 )
+states/jump_wall/node = SubResource( 89 )
+states/jump_wall/position = Vector2( 609.52, -42.0923 )
+states/ladder/node = SubResource( 90 )
+states/ladder/position = Vector2( 609.52, 312.39 )
+states/walk/node = SubResource( 51 )
+states/walk/position = Vector2( -288.196, -107.508 )
+transitions = [ "idle", "walk", SubResource( 52 ), "walk", "idle", SubResource( 53 ), "walk", "jump", SubResource( 54 ), "idle", "jump", SubResource( 55 ), "jump", "double_jump", SubResource( 56 ), "double_jump", "idle", SubResource( 57 ), "double_jump", "walk", SubResource( 58 ), "jump", "fall", SubResource( 59 ), "double_jump", "fall", SubResource( 60 ), "fall", "double_jump", SubResource( 61 ), "fall", "idle", SubResource( 62 ), "fall", "walk", SubResource( 63 ), "walk", "fall", SubResource( 64 ), "idle", "fall", SubResource( 65 ), "idle", "dash", SubResource( 66 ), "fall", "dash", SubResource( 67 ), "walk", "dash", SubResource( 68 ), "jump", "dash", SubResource( 69 ), "double_jump", "dash", SubResource( 70 ), "dash", "fall", SubResource( 71 ), "dash", "idle", SubResource( 72 ), "dash", "walk", SubResource( 73 ), "dash", "double_jump", SubResource( 74 ), "idle", "atk1", SubResource( 81 ), "walk", "atk1", SubResource( 82 ), "atk1", "idle", SubResource( 83 ), "atk1", "walk", SubResource( 84 ), "jump", "air_atk", SubResource( 85 ), "double_jump", "air_atk", SubResource( 86 ), "fall", "air_atk", SubResource( 87 ), "air_atk", "fall", SubResource( 88 ), "double_jump", "jump_wall", SubResource( 91 ), "jump", "jump_wall", SubResource( 92 ), "fall", "jump_wall", SubResource( 93 ), "dash", "jump_wall", SubResource( 94 ), "jump_wall", "jump", SubResource( 95 ), "jump_wall", "fall", SubResource( 96 ) ]
+graph_offset = Vector2( -365.48, -134.578 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=29]
+resource_local_to_scene = false
 
 [node name="PlayerKinematic" type="KinematicBody2D"]
+position = Vector2( 0.094471, 0 )
 collision_layer = 2
 collision_mask = 4
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 1
 
 [node name="Body" type="CollisionShape2D" parent="."]
-position = Vector2( -0.879559, 3.59325 )
+position = Vector2( -0.0293469, 5.01027 )
 shape = SubResource( 2 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
@@ -382,7 +373,7 @@ zoom = Vector2( 0.5, 0.5 )
 [node name="ColissionWall" type="RayCast2D" parent="."]
 rotation = 4.71239
 enabled = true
-cast_to = Vector2( 0, 6 )
+cast_to = Vector2( 0, 7 )
 
 [node name="DoubleJumpParticle" type="Particles2D" parent="."]
 position = Vector2( 4.42004, 17.3101 )
@@ -409,9 +400,6 @@ local_coords = false
 process_material = SubResource( 5 )
 texture = ExtResource( 3 )
 
-[node name="DelayAfterDamageTime" type="Timer" parent="."]
-one_shot = true
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/air_atk = SubResource( 6 )
 anims/atk1 = SubResource( 7 )
@@ -426,17 +414,34 @@ anims/take_damage = SubResource( 15 )
 anims/walk = SubResource( 16 )
 
 [node name="AnimationTree" type="AnimationTree" parent="AnimationPlayer"]
-tree_root = SubResource( 68 )
+tree_root = SubResource( 28 )
 anim_player = NodePath("..")
-parameters/playback = SubResource( 69 )
+active = true
+process_mode = 0
+parameters/playback = SubResource( 29 )
 
-[node name="DashTime" type="Timer" parent="."]
-wait_time = 0.2
+[node name="Times" type="Node" parent="."]
+
+[node name="DashDelay" type="Timer" parent="Times"]
+wait_time = 0.8
 one_shot = true
 
-[node name="AtkTime" type="Timer" parent="."]
-wait_time = 0.3
+[node name="AtkTime" type="Timer" parent="Times"]
+wait_time = 0.6
 one_shot = true
-[connection signal="timeout" from="DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
-[connection signal="timeout" from="DashTime" to="." method="_on_DashTime_timeout"]
-[connection signal="timeout" from="AtkTime" to="." method="_on_AtkTime_timeout"]
+
+[node name="DashTime" type="Timer" parent="Times"]
+wait_time = 0.4
+one_shot = true
+
+[node name="DelayAfterDamageTime" type="Timer" parent="Times"]
+one_shot = true
+
+[node name="AirAtkTime" type="Timer" parent="Times"]
+wait_time = 0.4
+one_shot = true
+[connection signal="timeout" from="Times/DashDelay" to="." method="_on_DashDelay_timeout"]
+[connection signal="timeout" from="Times/AtkTime" to="." method="_on_AtkTime_timeout"]
+[connection signal="timeout" from="Times/DashTime" to="." method="_on_DashTime_timeout"]
+[connection signal="timeout" from="Times/DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
+[connection signal="timeout" from="Times/AirAtkTime" to="." method="_on_AirAtkTime_timeout"]
