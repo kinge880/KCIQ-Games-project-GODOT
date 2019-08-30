@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://entites/player/PlayerKinematic.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -218,139 +218,6 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=17]
-animation = "air_atk"
-
-[sub_resource type="AnimationNodeAnimation" id=18]
-animation = "atk1"
-
-[sub_resource type="AnimationNodeAnimation" id=19]
-animation = "dash"
-
-[sub_resource type="AnimationNodeAnimation" id=20]
-animation = "double_jump"
-
-[sub_resource type="AnimationNodeAnimation" id=21]
-animation = "fall"
-
-[sub_resource type="AnimationNodeAnimation" id=22]
-animation = "idle"
-
-[sub_resource type="AnimationNodeAnimation" id=23]
-animation = "jump"
-
-[sub_resource type="AnimationNodeAnimation" id=24]
-animation = "jump_wall"
-
-[sub_resource type="AnimationNodeAnimation" id=25]
-animation = "ladder"
-
-[sub_resource type="AnimationNodeAnimation" id=26]
-animation = "walk"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=27]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=28]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=29]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=30]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=31]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=32]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=33]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=34]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=35]
-switch_mode = 2
-auto_advance = true
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=36]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=37]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=38]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=39]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=40]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=41]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=42]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=43]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=44]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=45]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=46]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=47]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=48]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=49]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=50]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=51]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=52]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=53]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=54]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=55]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=56]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=57]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=58]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=59]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=60]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=61]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=62]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=63]
-
-[sub_resource type="AnimationNodeStateMachine" id=64]
-states/air_atk/node = SubResource( 17 )
-states/air_atk/position = Vector2( 792.804, 125.492 )
-states/atk1/node = SubResource( 18 )
-states/atk1/position = Vector2( 586.804, 125.492 )
-states/dash/node = SubResource( 19 )
-states/dash/position = Vector2( 379.804, -37.5084 )
-states/double_jump/node = SubResource( 20 )
-states/double_jump/position = Vector2( 133.804, 293.492 )
-states/fall/node = SubResource( 21 )
-states/fall/position = Vector2( 113.804, -210.508 )
-states/idle/node = SubResource( 22 )
-states/idle/position = Vector2( 12.8039, 54.4916 )
-states/jump/node = SubResource( 23 )
-states/jump/position = Vector2( 222, 326 )
-states/jump_wall/node = SubResource( 24 )
-states/jump_wall/position = Vector2( 814.479, 158.051 )
-states/ladder/node = SubResource( 25 )
-states/ladder/position = Vector2( 609.52, 312.39 )
-states/walk/node = SubResource( 26 )
-states/walk/position = Vector2( -288.196, -107.508 )
-transitions = [ "idle", "walk", SubResource( 27 ), "walk", "idle", SubResource( 28 ), "walk", "jump", SubResource( 29 ), "idle", "jump", SubResource( 30 ), "jump", "double_jump", SubResource( 31 ), "double_jump", "idle", SubResource( 32 ), "double_jump", "walk", SubResource( 33 ), "jump", "fall", SubResource( 34 ), "double_jump", "fall", SubResource( 35 ), "fall", "double_jump", SubResource( 36 ), "fall", "idle", SubResource( 37 ), "fall", "walk", SubResource( 38 ), "walk", "fall", SubResource( 39 ), "idle", "fall", SubResource( 40 ), "idle", "dash", SubResource( 41 ), "fall", "dash", SubResource( 42 ), "walk", "dash", SubResource( 43 ), "jump", "dash", SubResource( 44 ), "double_jump", "dash", SubResource( 45 ), "dash", "fall", SubResource( 46 ), "dash", "idle", SubResource( 47 ), "dash", "walk", SubResource( 48 ), "dash", "double_jump", SubResource( 49 ), "idle", "atk1", SubResource( 50 ), "walk", "atk1", SubResource( 51 ), "atk1", "idle", SubResource( 52 ), "atk1", "walk", SubResource( 53 ), "jump", "air_atk", SubResource( 54 ), "double_jump", "air_atk", SubResource( 55 ), "fall", "air_atk", SubResource( 56 ), "air_atk", "fall", SubResource( 57 ), "double_jump", "jump_wall", SubResource( 58 ), "jump", "jump_wall", SubResource( 59 ), "fall", "jump_wall", SubResource( 60 ), "dash", "jump_wall", SubResource( 61 ), "jump_wall", "jump", SubResource( 62 ), "jump_wall", "fall", SubResource( 63 ) ]
-graph_offset = Vector2( -365.48, -134.578 )
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=65]
-resource_local_to_scene = false
-
 [node name="PlayerKinematic" type="KinematicBody2D"]
 position = Vector2( 0.094471, 0 )
 collision_layer = 2
@@ -413,13 +280,6 @@ anims/jump_wall = SubResource( 13 )
 anims/ladder = SubResource( 14 )
 anims/take_damage = SubResource( 15 )
 anims/walk = SubResource( 16 )
-
-[node name="AnimationTree" type="AnimationTree" parent="AnimationPlayer"]
-tree_root = SubResource( 64 )
-anim_player = NodePath("..")
-active = true
-process_mode = 0
-parameters/playback = SubResource( 65 )
 
 [node name="Times" type="Node" parent="."]
 

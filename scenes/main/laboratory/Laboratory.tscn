@@ -230,6 +230,9 @@ position = Vector2( -1.88031, -52.286 )
 shape = SubResource( 16 )
 
 [node name="HUD" parent="." instance=ExtResource( 3 )]
+offset = Vector2( -10, -15 )
+scale = Vector2( 0.5, 0.5 )
+transform = Transform2D( 0.5, 0, 0, 0.5, -10, -15 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 847.21, 542.089 )

@@ -11,16 +11,7 @@ export var jump_wall_obted = true
 export var dash_obted = true
 signal life_changed
 var delay_after_damage = false
-#var walk_right
-#var walk_left
-#var walk_up
-#var walk_down
-#var jump
-#var jump_stop
-#var lower_move
-#var atk
 var atk_delay = false
-#var dash
 var dash_delay = false
 var dash_time_delay = false
 var air_dash = false
@@ -33,7 +24,8 @@ var gravity_aux = 0
 var velocity = Vector2()
 onready var sprite = $Sprite
 onready var anim = $AnimationPlayer
-var anim_state
+var walk_right
+var walk_left
 
 var jumping = false
 
@@ -42,9 +34,6 @@ func get_input():
 
 func _ready(): 
 	emit_signal('life_changed', current_life * (100/max_life))
-	anim_state = $AnimationPlayer/AnimationTree.get("parameters/playback")
-	#anim_state.start("idle")
-	
 	
 func _physics_process(delta):
 	velocity.x = 0
@@ -52,9 +41,9 @@ func _physics_process(delta):
 	#var on_wall = $ColissionWall.is_colliding()
 	
 	#Inputs
-	#if not jump_wall and not dash_delay: 
-	var walk_right = Input.is_action_pressed("ui_right")
-	var walk_left = Input.is_action_pressed("ui_left") 
+	if not jump_wall and not dash_time_delay: 
+		walk_right = Input.is_action_pressed("ui_right")
+		walk_left = Input.is_action_pressed("ui_left") 
 	var walk_up = Input.is_action_pressed("ui_up")
 	var walk_down = Input.is_action_pressed("ui_down") 
 	var jump = Input.is_action_just_pressed("ui_up")
@@ -92,10 +81,7 @@ func _physics_process(delta):
 	#quando sair da escada
 	else:
 		#agarra na parede, desliza e se solta
-		if jump_wall_obted and on_wall and lower_move and not is_on_floor():
-			velocity.y += gravity * delta
-			anim.play("fall")
-		elif jump_wall_obted and on_wall and not is_on_floor():
+		if jump_wall_obted and on_wall and not is_on_floor():
 			velocity.y = gravity * delta
 			anim.play("jump_wall")
 		else:
@@ -169,7 +155,7 @@ func _physics_process(delta):
 			$Times/DashDelay.start()
 		
 		#animação de queda
-		if velocity.y > 0 and not is_on_floor() and anim.current_animation != "jump_wall" and not dash_time_delay and not atk_delay:
+		if velocity.y > 0 and not is_on_floor() and not on_wall and not dash_time_delay and not atk_delay:
 			anim.play("fall")
 			
 		#ataque
