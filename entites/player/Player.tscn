@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=2]
+[gd_scene load_steps=69 format=2]
 
 [ext_resource path="res://entites/player/PlayerKinematic.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -35,7 +35,7 @@ color_ramp = SubResource( 4 )
 
 [sub_resource type="Animation" id=6]
 resource_name = "air_atk"
-length = 0.3
+length = 0.45
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -43,7 +43,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
+"times": PoolRealArray( 0, 0.15, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 96, 97, 98 ]
@@ -68,6 +68,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=8]
 resource_name = "dash"
+length = 0.55
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -76,7 +77,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 24, 25, 26, 27, 28 ]
@@ -136,6 +137,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=12]
 length = 0.8
+loop = true
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -253,8 +255,6 @@ animation = "walk"
 [sub_resource type="AnimationNodeStateMachineTransition" id=29]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=30]
-switch_mode = 2
-auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=31]
 
@@ -265,6 +265,8 @@ auto_advance = true
 [sub_resource type="AnimationNodeStateMachineTransition" id=34]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=35]
+switch_mode = 2
+auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=36]
 
@@ -322,41 +324,35 @@ auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=63]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=64]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=65]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=66]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=67]
-
-[sub_resource type="AnimationNodeStateMachine" id=68]
+[sub_resource type="AnimationNodeStateMachine" id=64]
 states/air_atk/node = SubResource( 17 )
-states/air_atk/position = Vector2( 870.479, 429.051 )
+states/air_atk/position = Vector2( 792.804, 125.492 )
 states/atk1/node = SubResource( 18 )
-states/atk1/position = Vector2( 710.479, 622 )
+states/atk1/position = Vector2( 586.804, 125.492 )
 states/dash/node = SubResource( 19 )
-states/dash/position = Vector2( -364.521, 265.051 )
+states/dash/position = Vector2( 379.804, -37.5084 )
 states/double_jump/node = SubResource( 20 )
-states/double_jump/position = Vector2( 98, 627 )
+states/double_jump/position = Vector2( 133.804, 293.492 )
 states/fall/node = SubResource( 21 )
-states/fall/position = Vector2( 306.479, 423.051 )
+states/fall/position = Vector2( 113.804, -210.508 )
 states/idle/node = SubResource( 22 )
-states/idle/position = Vector2( 202, 60 )
+states/idle/position = Vector2( 12.8039, 54.4916 )
 states/jump/node = SubResource( 23 )
 states/jump/position = Vector2( 222, 326 )
 states/jump_wall/node = SubResource( 24 )
 states/jump_wall/position = Vector2( 814.479, 158.051 )
 states/ladder/node = SubResource( 25 )
-states/ladder/position = Vector2( 618.479, -74.949 )
+states/ladder/position = Vector2( 609.52, 312.39 )
 states/walk/node = SubResource( 26 )
-states/walk/position = Vector2( -75, 10 )
-transitions = [ "walk", "jump", SubResource( 27 ), "jump", "walk", SubResource( 28 ), "jump", "double_jump", SubResource( 29 ), "double_jump", "fall", SubResource( 30 ), "fall", "walk", SubResource( 31 ), "fall", "double_jump", SubResource( 32 ), "jump", "jump_wall", SubResource( 33 ), "double_jump", "jump_wall", SubResource( 34 ), "fall", "jump_wall", SubResource( 35 ), "jump_wall", "jump", SubResource( 36 ), "jump_wall", "fall", SubResource( 37 ), "walk", "ladder", SubResource( 38 ), "jump", "ladder", SubResource( 39 ), "double_jump", "ladder", SubResource( 40 ), "fall", "ladder", SubResource( 41 ), "ladder", "walk", SubResource( 42 ), "ladder", "fall", SubResource( 43 ), "fall", "dash", SubResource( 44 ), "double_jump", "dash", SubResource( 45 ), "jump", "dash", SubResource( 46 ), "walk", "dash", SubResource( 47 ), "dash", "fall", SubResource( 48 ), "dash", "walk", SubResource( 49 ), "walk", "atk1", SubResource( 50 ), "dash", "atk1", SubResource( 51 ), "atk1", "walk", SubResource( 52 ), "fall", "air_atk", SubResource( 53 ), "jump", "air_atk", SubResource( 54 ), "double_jump", "air_atk", SubResource( 55 ), "air_atk", "jump", SubResource( 56 ), "air_atk", "double_jump", SubResource( 57 ), "air_atk", "fall", SubResource( 58 ), "idle", "walk", SubResource( 59 ), "walk", "idle", SubResource( 60 ), "idle", "jump", SubResource( 61 ), "jump", "idle", SubResource( 62 ), "fall", "idle", SubResource( 63 ), "idle", "dash", SubResource( 64 ), "dash", "idle", SubResource( 65 ), "idle", "atk1", SubResource( 66 ), "atk1", "idle", SubResource( 67 ) ]
-graph_offset = Vector2( -759.284, -186.406 )
+states/walk/position = Vector2( -288.196, -107.508 )
+transitions = [ "idle", "walk", SubResource( 27 ), "walk", "idle", SubResource( 28 ), "walk", "jump", SubResource( 29 ), "idle", "jump", SubResource( 30 ), "jump", "double_jump", SubResource( 31 ), "double_jump", "idle", SubResource( 32 ), "double_jump", "walk", SubResource( 33 ), "jump", "fall", SubResource( 34 ), "double_jump", "fall", SubResource( 35 ), "fall", "double_jump", SubResource( 36 ), "fall", "idle", SubResource( 37 ), "fall", "walk", SubResource( 38 ), "walk", "fall", SubResource( 39 ), "idle", "fall", SubResource( 40 ), "idle", "dash", SubResource( 41 ), "fall", "dash", SubResource( 42 ), "walk", "dash", SubResource( 43 ), "jump", "dash", SubResource( 44 ), "double_jump", "dash", SubResource( 45 ), "dash", "fall", SubResource( 46 ), "dash", "idle", SubResource( 47 ), "dash", "walk", SubResource( 48 ), "dash", "double_jump", SubResource( 49 ), "idle", "atk1", SubResource( 50 ), "walk", "atk1", SubResource( 51 ), "atk1", "idle", SubResource( 52 ), "atk1", "walk", SubResource( 53 ), "jump", "air_atk", SubResource( 54 ), "double_jump", "air_atk", SubResource( 55 ), "fall", "air_atk", SubResource( 56 ), "air_atk", "fall", SubResource( 57 ), "double_jump", "jump_wall", SubResource( 58 ), "jump", "jump_wall", SubResource( 59 ), "fall", "jump_wall", SubResource( 60 ), "dash", "jump_wall", SubResource( 61 ), "jump_wall", "jump", SubResource( 62 ), "jump_wall", "fall", SubResource( 63 ) ]
+graph_offset = Vector2( -365.48, -134.578 )
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=69]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=65]
+resource_local_to_scene = false
 
 [node name="PlayerKinematic" type="KinematicBody2D"]
+position = Vector2( 0.094471, 0 )
 collision_layer = 2
 collision_mask = 4
 script = ExtResource( 1 )
@@ -365,7 +361,6 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 1
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -379,7 +374,7 @@ process_mode = 0
 [node name="ColissionWall" type="RayCast2D" parent="."]
 rotation = 4.71239
 enabled = true
-cast_to = Vector2( 0, 6 )
+cast_to = Vector2( 0, 7 )
 
 [node name="DoubleJumpParticle" type="Particles2D" parent="."]
 position = Vector2( 4.42004, 17.3101 )
@@ -406,9 +401,6 @@ local_coords = false
 process_material = SubResource( 5 )
 texture = ExtResource( 3 )
 
-[node name="DelayAfterDamageTime" type="Timer" parent="."]
-one_shot = true
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/air_atk = SubResource( 6 )
 anims/atk1 = SubResource( 7 )
@@ -423,17 +415,34 @@ anims/take_damage = SubResource( 15 )
 anims/walk = SubResource( 16 )
 
 [node name="AnimationTree" type="AnimationTree" parent="AnimationPlayer"]
-tree_root = SubResource( 68 )
+tree_root = SubResource( 64 )
 anim_player = NodePath("..")
-parameters/playback = SubResource( 69 )
+active = true
+process_mode = 0
+parameters/playback = SubResource( 65 )
 
-[node name="DashTime" type="Timer" parent="."]
-wait_time = 0.2
+[node name="Times" type="Node" parent="."]
+
+[node name="DashDelay" type="Timer" parent="Times"]
+wait_time = 0.8
 one_shot = true
 
-[node name="AtkTime" type="Timer" parent="."]
-wait_time = 0.3
+[node name="AtkTime" type="Timer" parent="Times"]
+wait_time = 0.6
 one_shot = true
-[connection signal="timeout" from="DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
-[connection signal="timeout" from="DashTime" to="." method="_on_DashTime_timeout"]
-[connection signal="timeout" from="AtkTime" to="." method="_on_AtkTime_timeout"]
+
+[node name="DashTime" type="Timer" parent="Times"]
+wait_time = 0.4
+one_shot = true
+
+[node name="DelayAfterDamageTime" type="Timer" parent="Times"]
+one_shot = true
+
+[node name="AirAtkTime" type="Timer" parent="Times"]
+wait_time = 0.4
+one_shot = true
+[connection signal="timeout" from="Times/DashDelay" to="." method="_on_DashDelay_timeout"]
+[connection signal="timeout" from="Times/AtkTime" to="." method="_on_AtkTime_timeout"]
+[connection signal="timeout" from="Times/DashTime" to="." method="_on_DashTime_timeout"]
+[connection signal="timeout" from="Times/DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
+[connection signal="timeout" from="Times/AirAtkTime" to="." method="_on_AirAtkTime_timeout"]

@@ -22,6 +22,7 @@ var delay_after_damage = false
 var atk_delay = false
 #var dash
 var dash_delay = false
+var dash_time_delay = false
 var air_dash = false
 var atk_count = 0
 var double_jump = false
@@ -32,12 +33,19 @@ var gravity_aux = 0
 var velocity = Vector2()
 onready var sprite = $Sprite
 onready var anim = $AnimationPlayer
+var anim_state
 
 var jumping = false
 
 func get_input():
 	pass
 
+func _ready(): 
+	emit_signal('life_changed', current_life * (100/max_life))
+	anim_state = $AnimationPlayer/AnimationTree.get("parameters/playback")
+	#anim_state.start("idle")
+	
+	
 func _physics_process(delta):
 	velocity.x = 0
 	var on_wall = is_on_wall()
@@ -57,49 +65,45 @@ func _physics_process(delta):
 	
 	#quando tocar em uma escada
 	if in_ladder:
-		
 		if walk_right:
 			#movimento basico direita
 			velocity.x = speed / 2
 			sprite.flip_h = false
 			anim.play("ladder")
 			$ColissionWall.rotation_degrees = 270
-
 		elif walk_left:
 			#movimento basico esquerda
 			velocity.x = -speed / 2
 			sprite.flip_h = true
 			anim.play("ladder")
 			$ColissionWall.rotation_degrees = 90
-		
 		elif walk_up:
 			#movimento basico esquerda
 			velocity.y = -speed / 3
 			anim.play("ladder")
-			$ColissionWall.rotation_degrees = 90
-		
 		elif walk_down:
 			#movimento basico esquerda
 			velocity.y = speed / 3
 			anim.play("ladder")
-			$ColissionWall.rotation_degrees = 90
-			
 		else:
 			velocity.x = 0
 			velocity.y = 0
-			anim.stop()
+			anim.play("ladder")
 	#quando sair da escada
 	else:
 		#agarra na parede, desliza e se solta
-		if on_wall and jump_wall_obted and lower_move and not is_on_floor():
+		if jump_wall_obted and on_wall and lower_move and not is_on_floor():
 			velocity.y += gravity * delta
 			anim.play("fall")
-		elif on_wall and jump_wall_obted and not is_on_floor():
+		elif jump_wall_obted and on_wall and not is_on_floor():
 			velocity.y = gravity * delta
 			anim.play("jump_wall")
 		else:
 			#velocidade normal de queda, gravidade
 			velocity.y += gravity * delta
+			#ativar uma animação de queda especial para simbolizar que caimos de um lugar muito alto
+			if velocity.y > 500 and is_on_floor():
+				pass
 		
 		if walk_right:
 			#salto na parede para a esquerda
@@ -110,7 +114,7 @@ func _physics_process(delta):
 			#movimento basico direita
 			velocity.x += speed
 			sprite.flip_h = false
-			if is_on_floor() and not dash_delay and not atk_delay:
+			if is_on_floor() and not dash_time_delay and not atk_delay:
 				anim.play("walk")
 			$ColissionWall.rotation_degrees = 270
 	
@@ -123,13 +127,13 @@ func _physics_process(delta):
 			#movimento basico esquerda
 			velocity.x -= speed
 			sprite.flip_h = true
-			if is_on_floor() and not dash_delay and not atk_delay:
+			if is_on_floor() and not dash_time_delay and not atk_delay:
 				anim.play("walk")
 			$ColissionWall.rotation_degrees = 90
 			
 		if velocity.x == 0:
 			#velocity.x = 0
-			if is_on_floor() and not dash_delay and not atk_delay:
+			if is_on_floor() and not dash_time_delay and not atk_delay:
 				anim.play("idle")
 			
 		#pulo
@@ -159,20 +163,22 @@ func _physics_process(delta):
 			air_dash = false
 			anim.play("dash")
 			dash_delay = true
+			dash_time_delay = true
 			speed *= dash_multiplier
-			$DashTime.start()
+			$Times/DashTime.start()
+			$Times/DashDelay.start()
 		
 		#animação de queda
-		if velocity.y > 0 and not is_on_floor() and anim.current_animation != "jump_wall" and not dash_delay and not atk_delay:
+		if velocity.y > 0 and not is_on_floor() and anim.current_animation != "jump_wall" and not dash_time_delay and not atk_delay:
 			anim.play("fall")
 			
 		#ataque
-		if atk and not is_on_floor():
-			$AtkTime.start()
+		if atk and not is_on_floor() and not atk_delay:
+			$Times/AirAtkTime.start()
 			atk_delay = true
 			anim.play("air_atk")
 		elif atk and not atk_delay:
-			$AtkTime.start()
+			$Times/AtkTime.start()
 			atk_delay = true
 			anim.play("atk1")
 	
@@ -190,7 +196,7 @@ func _physics_process(delta):
 	
 #emite o sinal que altera o valor da vida no HUD
 func life_changed():
-	emit_signal('life_changed', current_life)
+	emit_signal('life_changed', current_life * (100/max_life))
 
 #função que recebe o dano e reduz a vida do player
 func take_damage(damage):
@@ -198,8 +204,8 @@ func take_damage(damage):
 		current_life -= damage
 		life_changed()
 		delay_after_damage = true
-		$DelayAfterDamageTime.start()
-		$AnimationPlayer.play("take_damage")
+		$Times/DelayAfterDamageTime.start()
+		anim.play("take_damage")
 	if current_life <=0:
 		#fazer funções de morte depois
 		#playback.travel("death")
@@ -212,16 +218,15 @@ func take_damage(damage):
 #função que ativa a condição de morte, fazer depois
 func death():
 	queue_free()
-
+	
 func _on_DelayAfterDamageTime_timeout():
 	delay_after_damage = false
 
 func _on_DashTime_timeout():
-	dash_delay = false
+	dash_time_delay = false
 	speed /= dash_multiplier
 
 func _on_AtkTime_timeout():
-	atk_count = 0
 	atk_delay = false
 
 func _on_ladderArea_body_entered(body):
@@ -235,3 +240,9 @@ func _on_ladderArea_body_exited(body):
 	in_ladder = false
 	gravity = gravity_aux
 	gravity_aux = 0
+
+func _on_DashDelay_timeout():
+	dash_delay = false
+
+func _on_AirAtkTime_timeout():
+	atk_delay = false
