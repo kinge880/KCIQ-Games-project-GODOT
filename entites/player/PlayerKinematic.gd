@@ -19,7 +19,7 @@ var atk_count = 0
 var double_jump = false
 var jump_wall = false
 var in_ladder = false
-export var gravity = 400
+export var gravity = 800
 var gravity_aux = 0
 var velocity = Vector2()
 onready var sprite = $Sprite
@@ -86,7 +86,7 @@ func _physics_process(delta):
 			anim.play("jump_wall")
 		else:
 			#velocidade normal de queda, gravidade
-			velocity.y += gravity * delta
+			velocity.y += gravity * delta 
 			#ativar uma animação de queda especial para simbolizar que caimos de um lugar muito alto
 			if velocity.y > 500 and is_on_floor():
 				pass
@@ -146,11 +146,19 @@ func _physics_process(delta):
 	
 		#dash
 		if dash and air_dash and not dash_delay and dash_obted:
-			air_dash = false
 			anim.play("dash")
+			air_dash = false
 			dash_delay = true
 			dash_time_delay = true
+			if $Sprite.flip_h:
+				walk_left = true
+			else:
+				walk_right = true
 			speed *= dash_multiplier
+			#permite que o dash no ar faça o player cair apenas no final (muito usado em metroidvanias pelo que eu vi)
+			gravity_aux = gravity
+			gravity = 0
+			velocity.y = 0
 			$Times/DashTime.start()
 			$Times/DashDelay.start()
 		
@@ -175,8 +183,6 @@ func _physics_process(delta):
 	
 	if jumping:
 		snap = Vector2()
-	
-	velocity.y += gravity * delta
 	
 	velocity = move_and_slide_with_snap(velocity, snap, Vector2(0,-1), true, 4, deg2rad(46), true)
 	
@@ -210,6 +216,8 @@ func _on_DelayAfterDamageTime_timeout():
 
 func _on_DashTime_timeout():
 	dash_time_delay = false
+	gravity = gravity_aux
+	gravity_aux = 0
 	speed /= dash_multiplier
 
 func _on_AtkTime_timeout():
