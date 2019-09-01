@@ -86,6 +86,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=9]
 length = 0.8
+loop = true
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -98,6 +99,30 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 18, 19, 20, 21 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("DoubleJumpParticle:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("DoubleJumpParticle2:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -116,6 +141,24 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 22, 23 ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "grab_wall"
+length = 0.4
+loop = true
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 79, 80 ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -151,23 +194,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 14, 15, 16, 17 ]
-}
-
-[sub_resource type="Animation" id=13]
-length = 0.4
-loop = true
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 79, 80 ]
 }
 
 [sub_resource type="Animation" id=14]
@@ -229,6 +255,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
+frame = 18
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -275,9 +302,9 @@ anims/atk1 = SubResource( 7 )
 anims/dash = SubResource( 8 )
 anims/double_jump = SubResource( 9 )
 anims/fall = SubResource( 10 )
+anims/grab_wall = SubResource( 13 )
 anims/idle = SubResource( 11 )
 anims/jump = SubResource( 12 )
-anims/jump_wall = SubResource( 13 )
 anims/ladder = SubResource( 14 )
 anims/take_damage = SubResource( 15 )
 anims/walk = SubResource( 16 )
@@ -306,8 +333,5 @@ one_shot = true
 
 [node name="PlayerStateMachine" type="Node" parent="."]
 script = ExtResource( 4 )
-[connection signal="timeout" from="Times/DashDelay" to="." method="_on_DashDelay_timeout"]
-[connection signal="timeout" from="Times/AtkTime" to="." method="_on_AtkTime_timeout"]
-[connection signal="timeout" from="Times/DashTime" to="." method="_on_DashTime_timeout"]
-[connection signal="timeout" from="Times/DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
-[connection signal="timeout" from="Times/AirAtkTime" to="." method="_on_AirAtkTime_timeout"]
+[connection signal="timeout" from="Times/DashDelay" to="PlayerStateMachine" method="_on_DashDelay_timeout"]
+[connection signal="timeout" from="Times/DashTime" to="PlayerStateMachine" method="_on_DashTime_timeout"]
