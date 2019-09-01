@@ -10,11 +10,13 @@ func _ready():
 	add_state("dash")
 	add_state("jump_wall")
 	add_state("grab_wall")
+	add_state("atk")
+	add_state("air_atk")
 	call_deferred("set_state", states.idle)
 
 #recebe os inputs baseado no estado atual, permitindo definir qual input deve ser possivel em cada estado
 func _physics_process(delta):
-	if [states.idle, states.walk, states.fall, states.double_jump].has(state):
+	if [states.idle, states.walk, states.fall, states.double_jump, states.atk].has(state):
 		parent.walk_right = Input.is_action_pressed("ui_right")
 		parent.walk_left = Input.is_action_pressed("ui_left")
 		parent.jump = Input.is_action_just_pressed("ui_up")
@@ -23,13 +25,13 @@ func _physics_process(delta):
 		#parent.walk_up = Input.is_action_pressed("ui_up")
 		#parent.walk_down = Input.is_action_pressed("ui_down") 
 		#parent.lower_move = Input.is_action_pressed("ui_down") 
-	elif state == states.jump:
+	elif [states.jump, states.air_atk].has(state):
 		parent.walk_right = Input.is_action_pressed("ui_right")
 		parent.walk_left = Input.is_action_pressed("ui_left")
 		parent.jump = Input.is_action_just_pressed("ui_up")
+		parent.jump_stop = Input.is_action_just_released("ui_up")
 		parent.dash = Input.is_action_just_pressed("ui_select")
 		parent.atk = Input.is_action_just_pressed("ui_weak_attack")
-		parent.jump_stop = Input.is_action_just_released("ui_up")
 	elif state == states.grab_wall:
 		parent.walk_right = Input.is_action_pressed("ui_right")
 		parent.walk_left = Input.is_action_pressed("ui_left")
@@ -51,6 +53,8 @@ func get_transitions(delta):
 				return states.walk
 			elif parent.dash and not parent.dash_delay:
 				return states.dash
+			elif parent.atk and not parent.atk_delay:
+				return states.atk
 		
 		states.walk:
 			if parent.is_on_floor():
@@ -64,6 +68,8 @@ func get_transitions(delta):
 				return states.dash
 			elif parent.is_on_wall() and not parent.is_on_floor():
 				return states.grab_wall
+			elif parent.atk and not parent.atk_delay:
+				return states.atk
 		
 		states.jump:
 			if parent.is_on_floor():
@@ -76,6 +82,8 @@ func get_transitions(delta):
 				return states.dash
 			elif parent.is_on_wall() and not parent.is_on_floor():
 				return states.grab_wall
+			elif parent.atk and not parent.atk_delay:
+				return states.air_atk
 		
 		states.fall:
 			if parent.is_on_floor():
@@ -86,7 +94,9 @@ func get_transitions(delta):
 				return states.dash
 			elif parent.is_on_wall() and not parent.is_on_floor():
 				return states.grab_wall
-		
+			elif parent.atk and not parent.atk_delay:
+				return states.air_atk
+			
 		states.double_jump:
 			if parent.is_on_floor():
 				return states.idle
@@ -96,7 +106,7 @@ func get_transitions(delta):
 				return states.dash
 			elif parent.is_on_wall() and not parent.is_on_floor():
 				return states.grab_wall
-		
+			
 		states.dash:
 			if not parent.dash_time_delay:
 				if parent.is_on_floor():
@@ -126,6 +136,19 @@ func get_transitions(delta):
 					return states.jump
 				elif parent.velocity.y > 0:
 					return states.fall
+		
+		states.atk:
+			if parent.is_on_floor() and not parent.atk_delay:
+				return states.idle
+		
+		states.air_atk:
+			if parent.is_on_floor() and not parent.atk_delay:
+				return states.idle
+			elif not parent.is_on_floor() and not parent.atk_delay:
+				if parent.velocity.y < 0:
+					return states.jump
+				elif parent.velocity.y > 0:
+					return states.fall
 				
 	return null
 				
@@ -137,7 +160,8 @@ func state_logic(delta):
 	elif not parent.dash_time_delay:
 		parent.apply_gravity(delta)
 	parent.apply_movement()
-
+	parent.apply_jump()
+	
 #função que ativa um novo estado, é aqui que todas as mudanças entre os estados são realizadas, como mudar uma animação, ou alternar o valor de uma variavel
 func enter_state(new_state, old_state):
 	match new_state:
@@ -156,7 +180,6 @@ func enter_state(new_state, old_state):
 			parent.anim.play("walk")
 		
 		states.jump:
-			parent.apply_jump()
 			parent.anim.play("jump")
 		
 		states.fall:
@@ -181,6 +204,14 @@ func enter_state(new_state, old_state):
 		states.jump_wall:
 			parent.apply_jump_wall()
 			parent.anim.play("jump")
+		
+		states.atk:
+			parent.apply_atk()
+			parent.anim.play("atk1")
+		
+		states.air_atk:
+			parent.apply_air_atk()
+			parent.anim.play("air_atk")
 
 #função utilizada quando precisamos sair de um estado baseado em algum tipo de condição, pode ser util no futuro
 func exit_state(old_state, new_state):
@@ -194,3 +225,9 @@ func _on_DashTime_timeout():
 #timer de delay entre os dashs
 func _on_DashDelay_timeout():
 	parent.dash_delay = false
+
+func _on_AtkTime_timeout():
+	parent.atk_delay = false
+
+func _on_AirAtkTime_timeout():
+	parent.atk_delay = false

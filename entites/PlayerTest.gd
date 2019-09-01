@@ -87,10 +87,12 @@ func apply_movement():
 
 #pulo
 func apply_jump():
-	if jump:
-		jumping = true
-		velocity.y = jump_force
+	if is_on_floor():
+		if jump:
+			jumping = true
+			velocity.y = jump_force
 	elif jump_stop:
+		print("eita teste")
 		if velocity.y < 0:
 			velocity.y *= 0.5
 
@@ -118,6 +120,14 @@ func apply_dash():
 	$Times/DashTime.start()
 	$Times/DashDelay.start()
 
+func apply_atk():
+	$Times/AtkTime.start()
+	atk_delay = true
+			
+func apply_air_atk():
+	$Times/AirAtkTime.start()
+	atk_delay = true
+	
 #emite o sinal que altera o valor da vida no HUD
 func life_changed():
 	emit_signal('life_changed', current_life * (100/max_life))
