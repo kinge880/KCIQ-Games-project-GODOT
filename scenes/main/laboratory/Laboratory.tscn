@@ -1,9 +1,10 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/graphic/tiles/tileset.png" type="Texture" id=1]
 [ext_resource path="res://assets/graphic/tiles/Castle Platformer Tileset [16x16][FREE] - RottingPixels/castle-tileset.png" type="Texture" id=2]
 [ext_resource path="res://ui/hud/Hud.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entites/player/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://entites/PlayerTeste.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -234,10 +235,6 @@ offset = Vector2( -10, -15 )
 scale = Vector2( 0.5, 0.5 )
 transform = Transform2D( 0.5, 0, 0, 0.5, -10, -15 )
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 847.21, 542.089 )
-collision_layer = 3
-
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
@@ -248,8 +245,9 @@ shape = SubResource( 17 )
 position = Vector2( 590.578, 599.755 )
 rotation = 0.698132
 shape = SubResource( 17 )
-[connection signal="body_entered" from="LaboratoryTile/ladderArea" to="Player" method="_on_ladderArea_body_entered"]
-[connection signal="body_exited" from="LaboratoryTile/ladderArea" to="Player" method="_on_ladderArea_body_exited"]
-[connection signal="body_entered" from="LaboratoryTile/ladderArea2" to="Player" method="_on_ladderArea_body_entered"]
-[connection signal="body_exited" from="LaboratoryTile/ladderArea2" to="Player" method="_on_ladderArea_body_exited"]
-[connection signal="life_changed" from="Player" to="HUD" method="_on_Player_life_changed"]
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 325.358, 555.79 )
+
+[node name="PlayerTest" parent="." instance=ExtResource( 5 )]
+position = Vector2( 306.41, 556.842 )

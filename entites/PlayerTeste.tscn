@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://entites/player/Player.gd" type="Script" id=1]
+[ext_resource path="res://entites/PlayerTest.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/sprites/particles/Fogo_propuncao.png" type="Texture" id=3]
+[ext_resource path="res://entites/PlayerStateMachine.gd" type="Script" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -218,7 +219,7 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
 
-[node name="Player" type="KinematicBody2D"]
+[node name="PlayerTest" type="KinematicBody2D"]
 position = Vector2( 0.094471, 0 )
 collision_layer = 2
 collision_mask = 4
@@ -282,6 +283,7 @@ anims/take_damage = SubResource( 15 )
 anims/walk = SubResource( 16 )
 
 [node name="Times" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Times"]
 wait_time = 0.8
@@ -301,6 +303,9 @@ one_shot = true
 [node name="AirAtkTime" type="Timer" parent="Times"]
 wait_time = 0.4
 one_shot = true
+
+[node name="PlayerStateMachine" type="Node" parent="."]
+script = ExtResource( 4 )
 [connection signal="timeout" from="Times/DashDelay" to="." method="_on_DashDelay_timeout"]
 [connection signal="timeout" from="Times/AtkTime" to="." method="_on_AtkTime_timeout"]
 [connection signal="timeout" from="Times/DashTime" to="." method="_on_DashTime_timeout"]
