@@ -40,14 +40,14 @@ func _physics_process(delta):
 		parent.jump = Input.is_action_just_pressed("ui_up")
 		#parent.lower_move = Input.is_action_pressed("ui_down") 
 
-#função que realiza a transição entre os estados as condições de transição devem ser colocadas aqui
+#função que realiza a transição entre os estados, as condições de transição devem ser colocadas aqui
 func get_transitions(delta):
 	match state:
 		states.idle:
 			if parent.is_on_floor():
 				if parent.jump:
 					return states.jump
-				elif parent.velocity.y > 0:
+			elif parent.velocity.y > 0:
 					return states.fall
 			if parent.walk_right or parent.walk_left:
 				return states.walk
@@ -60,8 +60,8 @@ func get_transitions(delta):
 			if parent.is_on_floor():
 				if parent.jump:
 					return states.jump
-				elif parent.velocity.y > 0:
-					return states.fall
+			elif parent.velocity.y > 0:
+				return states.fall
 			if not parent.walk_right and not parent.walk_left:
 				return states.idle
 			elif parent.dash and not parent.dash_delay:
@@ -113,8 +113,8 @@ func get_transitions(delta):
 					return states.idle
 				elif parent.velocity.y > 0:
 					return states.fall
-			elif parent.is_on_wall() and not parent.is_on_floor():
-				return states.grab_wall
+				elif parent.is_on_wall() and not parent.is_on_floor():
+					return states.grab_wall
 		
 		states.grab_wall:
 			if parent.is_on_floor():
@@ -125,7 +125,7 @@ func get_transitions(delta):
 			if not parent.sprite.flip_h:
 				if parent.walk_left:
 					return states.jump_wall
-			elif parent.released_right or parent.released_left:
+			if parent.released_right or parent.released_left:
 				return states.fall
 				
 		states.jump_wall:
@@ -138,7 +138,9 @@ func get_transitions(delta):
 					return states.fall
 		
 		states.atk:
-			if parent.is_on_floor() and not parent.atk_delay:
+			if parent.is_on_floor() and not parent.atk_delay and parent.velocity.x !=0:
+				return states.walk
+			elif parent.is_on_floor() and not parent.atk_delay:
 				return states.idle
 		
 		states.air_atk:
@@ -213,7 +215,7 @@ func enter_state(new_state, old_state):
 			parent.apply_air_atk()
 			parent.anim.play("air_atk")
 
-#função utilizada quando precisamos sair de um estado baseado em algum tipo de condição, pode ser util no futuro
+#função utilizada quando precisamos sair de um estado baseado em algum tipo de condição. Pode ser útil no futuro
 func exit_state(old_state, new_state):
 	pass
 
