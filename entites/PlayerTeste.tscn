@@ -1,11 +1,12 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://entites/PlayerTest.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/sprites/particles/Fogo_propuncao.png" type="Texture" id=3]
 [ext_resource path="res://entites/PlayerStateMachine.gd" type="Script" id=4]
-[ext_resource path="res://assets/audio/Sword1.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/audio/sword1.wav" type="AudioStream" id=5]
 [ext_resource path="res://assets/audio/double_jump1.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/player_walk_concrete.wav" type="AudioStream" id=7]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -304,7 +305,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 18
+frame = 10
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -386,9 +387,16 @@ script = ExtResource( 4 )
 
 [node name="Sword1" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 5 )
+volume_db = -15.0
+pitch_scale = 0.9
 
 [node name="DoubleJump1" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 6 )
+volume_db = -15.0
+
+[node name="PlayerWalkConcrete" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 7 )
+volume_db = -10.0
 [connection signal="timeout" from="Times/DashDelay" to="PlayerStateMachine" method="_on_DashDelay_timeout"]
 [connection signal="timeout" from="Times/AtkTime" to="PlayerStateMachine" method="_on_AtkTime_timeout"]
 [connection signal="timeout" from="Times/DashTime" to="PlayerStateMachine" method="_on_DashTime_timeout"]

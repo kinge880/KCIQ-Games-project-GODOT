@@ -21,6 +21,7 @@ export var gravity = 800
 var velocity = Vector2()
 onready var sprite = $Sprite
 onready var anim = $AnimationPlayer
+onready var walk_concrete = $Sounds/PlayerWalkConcrete
 var walk_right
 var walk_left
 var walk_up 

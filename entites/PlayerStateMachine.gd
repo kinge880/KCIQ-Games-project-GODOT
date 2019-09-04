@@ -177,15 +177,19 @@ func enter_state(new_state, old_state):
 			parent.double_jump = false
 			parent.air_dash = false
 			parent.anim.play("idle")
+			parent.walk_concrete.playing = false
 		
 		states.walk:
+			parent.walk_concrete.playing = true
 			parent.anim.play("walk")
 		
 		states.jump:
 			parent.anim.play("jump")
+			parent.walk_concrete.playing = false
 		
 		states.fall:
 			parent.anim.play("fall")
+			parent.walk_concrete.playing = false
 		
 		states.double_jump:
 			parent.apply_double_jump()
@@ -199,9 +203,11 @@ func enter_state(new_state, old_state):
 				parent.dash_delay = true
 				parent.dash_time_delay = true
 			parent.air_dash = true
+			parent.walk_concrete.playing = false
 		
 		states.grab_wall:
 			parent.anim.play("grab_wall")
+			parent.walk_concrete.playing = false
 			
 		states.jump_wall:
 			parent.apply_jump_wall()
