@@ -33,6 +33,10 @@ window/size/test_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "mixing-desk" )
+
 [importer_defaults]
 
 texture={
