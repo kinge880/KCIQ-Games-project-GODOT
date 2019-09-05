@@ -103,7 +103,7 @@ func _physics_process(delta):
 			if is_on_floor() and not dash_time_delay and not atk_delay:
 				anim.play("walk")
 			$ColissionWall.rotation_degrees = 270
-	
+		
 		if walk_left:
 			#salto na parede para a direita
 			if on_wall and not sprite.flip_h and not is_on_floor() and jump_wall_obted:

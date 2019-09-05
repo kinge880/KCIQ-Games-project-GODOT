@@ -1,6 +1,6 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://entites/player/Player.gd" type="Script" id=1]
+[ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/sprites/particles/Fogo_propuncao.png" type="Texture" id=3]
 
@@ -67,7 +67,22 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-resource_name = "dash"
+resource_name = "crouch"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 66, 67, 68 ]
+}
+
+[sub_resource type="Animation" id=9]
 length = 0.55
 step = 0.2
 tracks/0/type = "value"
@@ -83,7 +98,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27, 28 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=10]
 length = 0.8
 step = 0.2
 tracks/0/type = "value"
@@ -99,8 +114,7 @@ tracks/0/keys = {
 "values": [ 18, 19, 20, 21 ]
 }
 
-[sub_resource type="Animation" id=10]
-resource_name = "fall"
+[sub_resource type="Animation" id=11]
 length = 0.4
 loop = true
 step = 0.2
@@ -117,8 +131,7 @@ tracks/0/keys = {
 "values": [ 22, 23 ]
 }
 
-[sub_resource type="Animation" id=11]
-resource_name = "idle"
+[sub_resource type="Animation" id=12]
 length = 0.8
 loop = true
 step = 0.2
@@ -135,7 +148,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 0.8
 loop = true
 step = 0.2
@@ -152,7 +165,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=14]
 length = 0.4
 loop = true
 step = 0.2
@@ -169,7 +182,7 @@ tracks/0/keys = {
 "values": [ 79, 80 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=15]
 length = 0.8
 loop = true
 step = 0.2
@@ -186,7 +199,7 @@ tracks/0/keys = {
 "values": [ 81, 82, 83, 84 ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=16]
 length = 0.9
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
@@ -201,7 +214,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=17]
 length = 1.2
 loop = true
 step = 0.2
@@ -228,7 +241,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 98
+frame = 68
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -272,38 +285,39 @@ texture = ExtResource( 3 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/air_atk = SubResource( 6 )
 anims/atk1 = SubResource( 7 )
-anims/dash = SubResource( 8 )
-anims/double_jump = SubResource( 9 )
-anims/fall = SubResource( 10 )
-anims/idle = SubResource( 11 )
-anims/jump = SubResource( 12 )
-anims/jump_wall = SubResource( 13 )
-anims/ladder = SubResource( 14 )
-anims/take_damage = SubResource( 15 )
-anims/walk = SubResource( 16 )
+anims/crouch = SubResource( 8 )
+anims/dash = SubResource( 9 )
+anims/double_jump = SubResource( 10 )
+anims/fall = SubResource( 11 )
+anims/idle = SubResource( 12 )
+anims/jump = SubResource( 13 )
+anims/jump_wall = SubResource( 14 )
+anims/ladder = SubResource( 15 )
+anims/take_damage = SubResource( 16 )
+anims/walk = SubResource( 17 )
 
-[node name="Times" type="Node" parent="."]
+[node name="Timers" type="Node" parent="."]
 
-[node name="DashDelay" type="Timer" parent="Times"]
-wait_time = 0.8
+[node name="DashDelay" type="Timer" parent="Timers"]
+wait_time = 0.3
 one_shot = true
 
-[node name="AtkTime" type="Timer" parent="Times"]
+[node name="DashTimer" type="Timer" parent="Timers"]
+wait_time = 0.3
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="Timers"]
 wait_time = 0.6
 one_shot = true
 
-[node name="DashTime" type="Timer" parent="Times"]
-wait_time = 0.4
+[node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
 one_shot = true
 
-[node name="DelayAfterDamageTime" type="Timer" parent="Times"]
-one_shot = true
-
-[node name="AirAtkTime" type="Timer" parent="Times"]
+[node name="AerialAttackTimer" type="Timer" parent="Timers"]
 wait_time = 0.4
 one_shot = true
-[connection signal="timeout" from="Times/DashDelay" to="." method="_on_DashDelay_timeout"]
-[connection signal="timeout" from="Times/AtkTime" to="." method="_on_AtkTime_timeout"]
-[connection signal="timeout" from="Times/DashTime" to="." method="_on_DashTime_timeout"]
-[connection signal="timeout" from="Times/DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
-[connection signal="timeout" from="Times/AirAtkTime" to="." method="_on_AirAtkTime_timeout"]
+[connection signal="timeout" from="Timers/DashDelay" to="." method="_on_DashDelay_timeout"]
+[connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
+[connection signal="timeout" from="Timers/AttackTimer" to="." method="_on_AtkTime_timeout"]
+[connection signal="timeout" from="Timers/DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
+[connection signal="timeout" from="Timers/AerialAttackTimer" to="." method="_on_AirAtkTime_timeout"]
