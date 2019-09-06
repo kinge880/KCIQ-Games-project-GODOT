@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -228,6 +228,67 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
 
+[sub_resource type="Animation" id=22]
+resource_name = "camera_zoom_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerCamera:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 2.8, 2.8 ), Vector2( 2.6, 2.6 ), Vector2( 2.4, 2.4 ), Vector2( 2.2, 2.2 ), Vector2( 2, 2 ), Vector2( 1.8, 1.8 ), Vector2( 1.6, 1.6 ), Vector2( 1.4, 1.4 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=33]
+resource_name = "camera_zoom_in_test"
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerCamera:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=23]
+resource_name = "camera_zoom_out"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerCamera:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.401, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1.1, 1.1 ), Vector2( 1.2, 1.2 ), Vector2( 1.3, 1.3 ), Vector2( 1.4, 1.4 ), Vector2( 1.5, 1.5 ), Vector2( 1.5, 1.5 ), Vector2( 1.6, 1.6 ), Vector2( 1.7, 1.7 ), Vector2( 1.8, 1.8 ), Vector2( 1.9, 1.9 ), Vector2( 2, 2 ), Vector2( 2.1, 2.1 ), Vector2( 2.2, 2.2 ), Vector2( 2.3, 2.3 ), Vector2( 2.4, 2.4 ), Vector2( 2.5, 2.5 ), Vector2( 2.6, 2.6 ), Vector2( 2.7, 2.7 ), Vector2( 2.8, 2.8 ), Vector2( 2.9, 2.9 ), Vector2( 3, 3 ) ]
+}
+
+[sub_resource type="Animation" id=32]
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 0.094471, 0 )
 collision_layer = 2
@@ -238,7 +299,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 8
+frame = 66
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -260,7 +321,6 @@ rotation = 1.5708
 emitting = false
 amount = 200
 lifetime = 0.4
-one_shot = true
 speed_scale = 1.5
 randomness = 1.0
 local_coords = false
@@ -272,7 +332,6 @@ rotation = 1.5708
 emitting = false
 amount = 200
 lifetime = 0.4
-one_shot = true
 speed_scale = 1.5
 randomness = 1.0
 local_coords = false
@@ -292,6 +351,12 @@ anims/jump_wall = SubResource( 14 )
 anims/ladder = SubResource( 15 )
 anims/take_damage = SubResource( 16 )
 anims/walk = SubResource( 17 )
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+anims/camera_zoom_in = SubResource( 22 )
+anims/camera_zoom_in_test = SubResource( 33 )
+anims/camera_zoom_out = SubResource( 23 )
+anims/take_damage = SubResource( 32 )
 
 [node name="Timers" type="Node" parent="."]
 
@@ -320,5 +385,12 @@ one_shot = true
 
 [node name="GlidingEnergyConsumed" type="Timer" parent="Timers"]
 wait_time = 0.1
+one_shot = true
+
+[node name="BigJumpDelay" type="Timer" parent="Timers"]
+wait_time = 3.0
+one_shot = true
+
+[node name="EnergyReloadDelay" type="Timer" parent="Timers"]
 one_shot = true
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
