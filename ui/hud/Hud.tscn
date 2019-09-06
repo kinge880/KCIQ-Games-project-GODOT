@@ -1,14 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://ui/hud/Hud.gd" type="Script" id=1]
-[ext_resource path="res://assets/graphic/hud/greenbar.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphic/hud/red_button07.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphic/hud/green_button12.png" type="Texture" id=3]
+[ext_resource path="res://assets/fonts/iomanoid back.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=2]
+size = 60
+font_data = ExtResource( 4 )
 
 [sub_resource type="Animation" id=1]
 resource_name = "lifeBar_flash"
 length = 0.25
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Margin/Recipe/LifeBar:tint_progress")
+tracks/0/path = NodePath("Margin/HBoxContainer/Recipe/LifeBar:tint_progress")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -31,15 +37,19 @@ custom_constants/margin_top = 20
 custom_constants/margin_left = 20
 custom_constants/margin_bottom = 20
 
-[node name="Recipe" type="HBoxContainer" parent="Margin"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin"]
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 300.0
-margin_bottom = 165.0
+margin_bottom = 160.0
 
-[node name="LifeBar" type="TextureProgress" parent="Margin/Recipe"]
-margin_right = 145.0
-margin_bottom = 145.0
+[node name="Recipe" type="VBoxContainer" parent="Margin/HBoxContainer"]
+margin_right = 49.0
+margin_bottom = 140.0
+
+[node name="LifeBar" type="TextureProgress" parent="Margin/HBoxContainer/Recipe"]
+margin_right = 49.0
+margin_bottom = 45.0
 value = 100.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 2 )
@@ -47,17 +57,23 @@ tint_under = Color( 0, 0, 0, 1 )
 tint_over = Color( 0, 0, 0, 1 )
 tint_progress = Color( 0.992157, 0, 0.976471, 1 )
 
-[node name="StaminaBar" type="TextureProgress" parent="Margin/Recipe"]
-visible = false
-margin_left = 149.0
-margin_right = 294.0
-margin_bottom = 560.0
-max_value = 4.0
-value = 2.0
-texture_under = ExtResource( 2 )
-texture_progress = ExtResource( 2 )
+[node name="StaminaBar" type="TextureProgress" parent="Margin/HBoxContainer/Recipe"]
+margin_top = 49.0
+margin_right = 49.0
+margin_bottom = 94.0
+value = 100.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 3 )
 tint_under = Color( 0.0117647, 0, 0, 1 )
 tint_progress = Color( 0, 1, 0.0390625, 1 )
+
+[node name="EnergyFragments" type="Label" parent="Margin/HBoxContainer"]
+margin_left = 53.0
+margin_top = 34.0
+margin_right = 112.0
+margin_bottom = 106.0
+custom_fonts/font = SubResource( 2 )
+text = "20"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/lifeBar_flash = SubResource( 1 )

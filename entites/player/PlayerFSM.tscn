@@ -34,7 +34,6 @@ scale_random = 1.0
 color_ramp = SubResource( 4 )
 
 [sub_resource type="Animation" id=6]
-resource_name = "air_atk"
 length = 0.45
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -50,7 +49,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-resource_name = "atk1"
 length = 0.66
 step = 0.05
 tracks/0/type = "value"
@@ -67,7 +65,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-resource_name = "crouch"
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -234,14 +231,14 @@ tracks/0/keys = {
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 0.094471, 0 )
 collision_layer = 2
-collision_mask = 4
+collision_mask = 5
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 68
+frame = 8
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -299,7 +296,7 @@ anims/walk = SubResource( 17 )
 [node name="Timers" type="Node" parent="."]
 
 [node name="DashDelay" type="Timer" parent="Timers"]
-wait_time = 0.3
+wait_time = 0.6
 one_shot = true
 
 [node name="DashTimer" type="Timer" parent="Timers"]
@@ -316,8 +313,12 @@ one_shot = true
 [node name="AerialAttackTimer" type="Timer" parent="Timers"]
 wait_time = 0.4
 one_shot = true
-[connection signal="timeout" from="Timers/DashDelay" to="." method="_on_DashDelay_timeout"]
+
+[node name="EnergyReload" type="Timer" parent="Timers"]
+wait_time = 0.05
+one_shot = true
+
+[node name="GlidingEnergyConsumed" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
-[connection signal="timeout" from="Timers/AttackTimer" to="." method="_on_AtkTime_timeout"]
-[connection signal="timeout" from="Timers/DelayAfterDamageTime" to="." method="_on_DelayAfterDamageTime_timeout"]
-[connection signal="timeout" from="Timers/AerialAttackTimer" to="." method="_on_AirAtkTime_timeout"]

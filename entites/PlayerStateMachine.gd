@@ -113,20 +113,20 @@ func get_transitions(delta):
 					return states.idle
 				elif parent.velocity.y > 0:
 					return states.fall
-				elif parent.is_on_wall() and not parent.is_on_floor():
+			elif parent.is_on_wall() and not parent.is_on_floor():
 					return states.grab_wall
 		
 		states.grab_wall:
 			if parent.is_on_floor():
 				return states.idle
-			if parent.sprite.flip_h:
-				if parent.walk_right:
-					return states.jump_wall
-			if not parent.sprite.flip_h:
-				if parent.walk_left:
-					return states.jump_wall
 			if parent.released_right or parent.released_left:
 				return states.fall
+			elif parent.sprite.flip_h:
+				if parent.walk_right:
+					return states.jump_wall
+			elif not parent.sprite.flip_h:
+				if parent.walk_left:
+					return states.jump_wall
 				
 		states.jump_wall:
 			if parent.is_on_floor():
@@ -177,7 +177,6 @@ func enter_state(new_state, old_state):
 			parent.double_jump = false
 			parent.air_dash = false
 			parent.anim.play("idle")
-			parent.walk_concrete.playing = false
 		
 		states.walk:
 			parent.walk_concrete.playing = true
@@ -185,11 +184,9 @@ func enter_state(new_state, old_state):
 		
 		states.jump:
 			parent.anim.play("jump")
-			parent.walk_concrete.playing = false
 		
 		states.fall:
 			parent.anim.play("fall")
-			parent.walk_concrete.playing = false
 		
 		states.double_jump:
 			parent.apply_double_jump()
@@ -203,11 +200,9 @@ func enter_state(new_state, old_state):
 				parent.dash_delay = true
 				parent.dash_time_delay = true
 			parent.air_dash = true
-			parent.walk_concrete.playing = false
 		
 		states.grab_wall:
 			parent.anim.play("grab_wall")
-			parent.walk_concrete.playing = false
 			
 		states.jump_wall:
 			parent.apply_jump_wall()
@@ -223,11 +218,16 @@ func enter_state(new_state, old_state):
 
 #função utilizada quando precisamos sair de um estado baseado em algum tipo de condição. Pode ser útil no futuro
 func exit_state(old_state, new_state):
-	pass
+	match old_state:
+		
+		states.walk:
+			parent.walk_concrete.playing = false
+		
+		states.dash:
+			parent.speed /= parent.dash_multiplier
 
 #timer de duração do dash
 func _on_DashTime_timeout():
-	parent.speed /= parent.dash_multiplier
 	parent.dash_time_delay = false
 
 #timer de delay entre os dashs
