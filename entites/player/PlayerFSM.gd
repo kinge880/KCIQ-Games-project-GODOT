@@ -7,6 +7,9 @@ onready var energy_reload_timer = $Timers/EnergyReload
 onready var energy_reload_timer_delay = $Timers/EnergyReloadDelay
 onready var gliding_cost_timer = $Timers/GlidingEnergyConsumed
 onready var big_jump_delay = $Timers/BigJumpDelay
+onready var attack_delay = $Timers/AttackTimer
+onready var air_attack_delay = $Timers/AerialAttackTimer
+onready var delay_after_damage_time = $Timers/DelayAfterDamageTime
 onready var sprite = $Sprite
 
 #coloquei variaveis de todo tipo de custo/energia e pá, como exportadas, para facilitar os testes, já que basta alterar no inspetor
@@ -25,6 +28,7 @@ export var gliding_cost = 1
 export var gel_gun_cost = 5
 export var reload_power_cristal_cost = 1
 export var reload_energy_restored = 1
+export var sword_damage = 5
 
 signal gel_shoot
 signal life_changed
@@ -39,14 +43,16 @@ enum State {
 	GLIDING,
 	RELOAD,
 	BIG_JUMP,
-	DOUBLE_JUMP
+	DOUBLE_JUMP,
+	ATTACK,
+	AIR_ATTACK
 }
 
 const WALK_SPEED = 200
 const JUMP_SPEED = -250
 const GRAVITY = 800
 const SNAP = Vector2(0, 8)
-const GEL_BULLET = preload("res://assets/bullets/GelBullet.tscn")
+const GEL_BULLET = preload("res://assets/package/bullets/GelBullet.tscn")
 
 var velocity = Vector2.ZERO
 var state = State.STANDING
@@ -55,8 +61,8 @@ var power_crystal = 100
 var camera_zoom = false
 
 func _ready(): 
-	emit_signal('life_changed', current_life * (100/max_life))
-	emit_signal('power_crystal_changed', power_crystal)
+	life_changed()
+	power_crystal_changed()
 	
 # função para capturar a direção do Player
 func update_velocity():
@@ -88,14 +94,17 @@ func standing():
 	dash_transition()
 	gel_shoot()
 	
+	if is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
+		state = State.ATTACK
 	if camera_zoom:
 		camera_zoom = false
-		$AnimationPlayer2.play("camera_zoom_in")
-	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
-	
-	if Input.is_action_pressed("reload") and current_energy < max_energy and power_crystal > 0:
+		$AnimationPlayer2.play_backwards("camera_zoom_super_jump")
+	if Input.is_action_pressed("reload_energy") and current_energy < max_energy and power_crystal > 0:
 		energy_reload_timer_delay.start()
 		state = State.RELOAD
+	
+	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
+
 
 # estado pulando
 func jumping(delta):
@@ -117,13 +126,15 @@ func jumping(delta):
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
 	dash_transition()
-	gliding_transition()
+	if current_energy > gliding_cost:
+		gliding_transition()
 	
 	#ativa o estado de pulo duplo
 	if Input.is_action_just_pressed("ui_up") and double_jump_obted:
 		velocity.y = JUMP_SPEED
 		state = State.DOUBLE_JUMP
-	
+	if not is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
+		state = State.AIR_ATTACK
 	if is_on_floor():
 		state = State.STANDING
 
@@ -153,7 +164,8 @@ func double_jump(delta):
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
 	dash_transition()
-	gliding_transition()
+	if current_energy > gliding_cost:
+		gliding_transition()
 	
 	if is_on_floor():
 		state = State.STANDING
@@ -221,9 +233,9 @@ func crouching():
 	if big_jump_delay.time_left == 0 and current_energy > big_jump_cost:
 		if Input.is_action_pressed("ui_up"):
 			camera_zoom = true
-			$AnimationPlayer2.play("camera_zoom_out")
+			$AnimationPlayer2.play("camera_zoom_super_jump")
 		big_jump_transition()
-		emit_signal('energy_changed', current_energy * (100/max_energy))
+		energy_changed()
 		$DoubleJumpParticle.emitting = true
 		$DoubleJumpParticle2.emitting = true
 	else:
@@ -246,7 +258,7 @@ func crouching_transition():
 func gel_shoot():
 	
 	if current_energy >= gel_gun_cost:
-		if Input.is_action_just_released("ui_weak_attack"):
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			#pega posição atual do mouse e emite o sinal de tiro para o mapa
 			var mspos = get_global_mouse_position()
 			emit_signal('gel_shoot', GEL_BULLET, global_position, mspos - global_position)
@@ -261,7 +273,7 @@ func gel_shoot():
 func reload():
 	animation.play("crouch")
 	
-	if Input.is_action_just_released("reload") or current_energy == max_energy or power_crystal <= 0:
+	if Input.is_action_just_released("reload_energy") or current_energy == max_energy or power_crystal <= 0:
 		state = State.STANDING
 	elif energy_reload_timer_delay.time_left == 0:
 		if energy_reload_timer.time_left == 0:
@@ -270,6 +282,34 @@ func reload():
 			energy_changed()
 			power_crystal_changed()
 			energy_reload_timer.start()
+
+
+#ativa o estado de ataque no chão
+func attack():
+	
+	update_velocity()
+	jump_transition()
+	dash_transition()
+	
+	if Input.is_action_pressed("ataque_arma_primaria") and attack_delay.time_left == 0:
+		animation.play("atk1")
+		attack_delay.start()
+
+	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
+
+
+#executa um ataque com a espada
+func air_attack(delta):
+	
+	update_velocity()
+	dash_transition()
+	
+	if Input.is_action_pressed("ataque_arma_primaria") and air_attack_delay.time_left == 0:
+		animation.play("air_atk")
+		air_attack_delay.start()
+	
+	velocity.y += GRAVITY * delta
+	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 
 
 #estado do super pulo
@@ -298,41 +338,41 @@ func big_jump_transition():
 	if Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
 		if gliding_cost_timer.time_left == 0:
 			current_energy -= big_jump_cost
-			emit_signal('energy_changed', current_energy * (100/max_energy))
+			energy_changed()
 		velocity.y = JUMP_SPEED
 		state = State.BIG_JUMP
 	elif Input.is_action_just_released("ui_up"):
 		$DoubleJumpParticle.emitting = false
 		$DoubleJumpParticle2.emitting = false
 		state = State.JUMPING
-		
-		
+
+
 #emite o sinal que altera o numero de cristais de energia HUD
 func power_crystal_changed():
 	
 	emit_signal('power_crystal_changed', power_crystal)
-	
-	
+
+
 #emite o sinal que altera o valor da energia no HUD
 func energy_changed():
 	
 	emit_signal('energy_changed', current_energy * (100/max_energy))
-	
-	
+
+
 #emite o sinal que altera o valor da vida no HUD
 func life_changed():
 	
 	emit_signal('life_changed', current_life * (100/max_life))
 
+
 #função que recebe o dano e reduz a vida do player
 func take_damage(damage):
 	
-	if not delay_after_damage:
+	if delay_after_damage_time.time_left == 0:
 		current_life -= damage
 		life_changed()
-		delay_after_damage = true
-		$Timers/DelayAfterDamageTime.start()
-		animation.play("take_damage")
+		delay_after_damage_time.start()
+		$AnimationPlayer2.play("take_damage")
 	if current_life <=0:
 		#fazer funções de morte depois
 		death()
@@ -340,10 +380,15 @@ func take_damage(damage):
 
 #função que ativa a condição de morte, fazer depois
 func death():
-	
 	queue_free()
-	
-	
+
+
+#função que coleta os cristais, nossa moeda e nossa fonte de energia
+func collect_power_crystal(crystal_value):
+	power_crystal += crystal_value
+	power_crystal_changed()
+
+
 func _physics_process(delta):
 	
 	match state:
@@ -363,6 +408,10 @@ func _physics_process(delta):
 			big_jump(delta)
 		State.DOUBLE_JUMP:
 			double_jump(delta)
+		State.ATTACK:
+			attack()
+		State.AIR_ATTACK:
+			air_attack(delta)
 
 
 # finaliza o dash
@@ -377,3 +426,15 @@ func _on_DashTimer_timeout():
 		state = State.JUMPING
 	else:
 		state = State.STANDING
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "atk1" or anim_name == "air_atk":
+		state = State.STANDING
+
+
+func _on_SwordSlice_body_entered(body):
+	print(body.name)
+	if body.name == "Enemy":
+		if body.has_method('take_damage'):
+			body.take_damage(sword_damage)

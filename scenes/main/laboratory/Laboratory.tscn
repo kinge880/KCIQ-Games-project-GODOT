@@ -1,10 +1,11 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scenes/main/laboratory/Laboratory.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/tiles/tileset.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/tiles/Castle Platformer Tileset [16x16][FREE] - RottingPixels/castle-tileset.png" type="Texture" id=3]
 [ext_resource path="res://ui/hud/Hud.tscn" type="PackedScene" id=4]
 [ext_resource path="res://entites/player/PlayerFSM.tscn" type="PackedScene" id=5]
+[ext_resource path="res://entites/enemys/Enemy1.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -249,8 +250,12 @@ rotation = 0.698132
 shape = SubResource( 17 )
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
-position = Vector2( 215.177, -20.6793 )
+position = Vector2( 24.595, 425.859 )
+
+[node name="Enemy" parent="." instance=ExtResource( 6 )]
+position = Vector2( 875.816, 366.157 )
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="gel_shoot" from="Player" to="." method="_on_Player_gel_shoot"]
 [connection signal="life_changed" from="Player" to="HUD" method="_on_Player_life_changed"]
 [connection signal="power_crystal_changed" from="Player" to="HUD" method="_on_Player_power_crystal_changed"]
+[connection signal="power_crystal_drop" from="Enemy" to="." method="_on_EnemySlime_power_crystal_drop"]

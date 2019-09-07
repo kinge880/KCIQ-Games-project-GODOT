@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -62,6 +62,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SwordSlice/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 
 [sub_resource type="Animation" id=8]
@@ -228,8 +240,8 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=22]
-resource_name = "camera_zoom_in"
+[sub_resource type="Animation" id=18]
+resource_name = "camera_zoom_super_jump"
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerCamera:zoom")
 tracks/0/interp = 1
@@ -237,44 +249,13 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 2.8, 2.8 ), Vector2( 2.6, 2.6 ), Vector2( 2.4, 2.4 ), Vector2( 2.2, 2.2 ), Vector2( 2, 2 ), Vector2( 1.8, 1.8 ), Vector2( 1.6, 1.6 ), Vector2( 1.4, 1.4 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
+"values": [ Vector2( 1, 1 ), Vector2( 2, 2 ) ]
 }
 
-[sub_resource type="Animation" id=33]
-resource_name = "camera_zoom_in_test"
-tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerCamera:zoom")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ) ]
-}
-
-[sub_resource type="Animation" id=23]
-resource_name = "camera_zoom_out"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerCamera:zoom")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.401, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1.1, 1.1 ), Vector2( 1.2, 1.2 ), Vector2( 1.3, 1.3 ), Vector2( 1.4, 1.4 ), Vector2( 1.5, 1.5 ), Vector2( 1.5, 1.5 ), Vector2( 1.6, 1.6 ), Vector2( 1.7, 1.7 ), Vector2( 1.8, 1.8 ), Vector2( 1.9, 1.9 ), Vector2( 2, 2 ), Vector2( 2.1, 2.1 ), Vector2( 2.2, 2.2 ), Vector2( 2.3, 2.3 ), Vector2( 2.4, 2.4 ), Vector2( 2.5, 2.5 ), Vector2( 2.6, 2.6 ), Vector2( 2.7, 2.7 ), Vector2( 2.8, 2.8 ), Vector2( 2.9, 2.9 ), Vector2( 3, 3 ) ]
-}
-
-[sub_resource type="Animation" id=32]
+[sub_resource type="Animation" id=19]
 length = 0.9
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
@@ -289,17 +270,21 @@ tracks/0/keys = {
 "values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="CapsuleShape2D" id=20]
+radius = 11.9704
+height = 8.767
+
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 0.094471, 0 )
+position = Vector2( -5.47917, -0.566811 )
 collision_layer = 2
-collision_mask = 5
+collision_mask = 28
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 66
+frame = 52
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -353,12 +338,11 @@ anims/take_damage = SubResource( 16 )
 anims/walk = SubResource( 17 )
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-anims/camera_zoom_in = SubResource( 22 )
-anims/camera_zoom_in_test = SubResource( 33 )
-anims/camera_zoom_out = SubResource( 23 )
-anims/take_damage = SubResource( 32 )
+anims/camera_zoom_super_jump = SubResource( 18 )
+anims/take_damage = SubResource( 19 )
 
 [node name="Timers" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 0.6
@@ -369,7 +353,7 @@ wait_time = 0.3
 one_shot = true
 
 [node name="AttackTimer" type="Timer" parent="Timers"]
-wait_time = 0.6
+wait_time = 0.35
 one_shot = true
 
 [node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
@@ -393,4 +377,16 @@ one_shot = true
 
 [node name="EnergyReloadDelay" type="Timer" parent="Timers"]
 one_shot = true
+
+[node name="SwordSlice" type="Area2D" parent="."]
+position = Vector2( 14.1404, -2.76887 )
+collision_layer = 2
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordSlice"]
+position = Vector2( -1.84668, 0.230833 )
+shape = SubResource( 20 )
+disabled = true
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
+[connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]
