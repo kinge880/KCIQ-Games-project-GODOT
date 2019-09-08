@@ -25,7 +25,6 @@ const SNAP = Vector2(0, 8)
 var velocity = Vector2.ZERO
 var state = State.STANDING
 var delay_after_damage = true
-
 var direction = 1
 
 func _ready():
@@ -34,6 +33,7 @@ func _ready():
 
 # função para capturar a direção do Player
 func update_velocity():
+	
 	velocity.x = WALK_SPEED * direction
 
 
@@ -65,8 +65,8 @@ func standing(delta):
 func damage(delta):
 	
 	# verifica se o Player está parado
-	$AnimationPlayer2.play("take_damage")
-	$AnimationPlayer.play("hurt")
+	animation_effets.play("take_damage")
+	animation.play("hurt")
 	
 	velocity.y += GRAVITY * delta
 
@@ -74,22 +74,23 @@ func damage(delta):
 #função que recebe o dano e reduz a vida do player
 func take_damage(damage):
 	
-	if current_life <=0:
+	current_life -= damage
+	print(current_life)
+	state = State.DAMAGE
+	if current_life <= 0:
 		drop_power_crystal()
 		state = State.DEATH
-	else:
-		current_life -= damage
-		state = State.DAMAGE
-
 
 #função que ativa a condição de morte, fazer depois
 func death():
+	
 	$Body.disabled = true
-	$AnimationPlayer.play("death")
-	$AnimationPlayer2.play("take_damage")
+	animation.play("death")
+	animation_effets.play("take_damage")
 
 
 func drop_power_crystal():
+	
 	var pos = global_position
 	emit_signal('power_crystal_drop', pos)
 

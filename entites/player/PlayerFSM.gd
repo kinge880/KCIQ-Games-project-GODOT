@@ -64,6 +64,7 @@ var enemy_damage_position
 var enemy_damage_force
 
 func _ready(): 
+	
 	life_changed()
 	power_crystal_changed()
 	add_to_group("player")
@@ -281,6 +282,7 @@ func gel_shoot():
 
 # estado de recarga da energia
 func reload():
+	
 	animation.play("crouch")
 	
 	if Input.is_action_just_released("reload_energy") or current_energy == max_energy or power_crystal <= 0:
@@ -302,7 +304,7 @@ func attack():
 	dash_transition()
 	
 	if Input.is_action_pressed("ataque_arma_primaria") and attack_delay.time_left == 0:
-		animation.play("atk1")
+		animation.play("atk2")
 		attack_delay.start()
 
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
@@ -415,11 +417,13 @@ func take_damage(delta):
 
 #função que ativa a condição de morte, fazer depois
 func death():
+	
 	queue_free()
 
 
 #função que coleta os cristais, nossa moeda e nossa fonte de energia
 func collect_power_crystal(crystal_value):
+	
 	power_crystal += crystal_value
 	power_crystal_changed()
 
@@ -466,11 +470,13 @@ func _on_DashTimer_timeout():
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	if anim_name == "atk1" or anim_name == "air_atk":
+	
+	if anim_name == "atk1" or anim_name == "atk2" or anim_name == "air_atk":
 		state = State.STANDING
 
 
 func _on_SwordSlice_body_entered(body):
+	
 	if body.is_in_group("enemies"):
 		if body.has_method('take_damage'):
 			body.take_damage(sword_damage)
