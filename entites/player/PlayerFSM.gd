@@ -45,7 +45,8 @@ enum State {
 	BIG_JUMP,
 	DOUBLE_JUMP,
 	ATTACK,
-	AIR_ATTACK
+	AIR_ATTACK,
+	DAMAGED
 }
 
 const WALK_SPEED = 200
@@ -59,10 +60,13 @@ var state = State.STANDING
 var delay_after_damage = true
 var power_crystal = 100
 var camera_zoom = false
+var enemy_damage_position
+var enemy_damage_force
 
 func _ready(): 
 	life_changed()
 	power_crystal_changed()
+	add_to_group("player")
 	
 # função para capturar a direção do Player
 func update_velocity():
@@ -70,11 +74,17 @@ func update_velocity():
 	velocity.x = 0
 	
 	if Input.is_action_pressed("ui_right"):
-		velocity.x += WALK_SPEED
+		if sprite.flip_h:
+			$SwordSlice.position.x *= -1
+			$Body.position.x *= -1
 		sprite.flip_h = false
+		velocity.x += WALK_SPEED
 	elif Input.is_action_pressed("ui_left"):
-		velocity.x -= WALK_SPEED
+		if not sprite.flip_h:
+			$SwordSlice.position.x *= -1
+			$Body.position.x *= -1
 		sprite.flip_h = true
+		velocity.x -= WALK_SPEED
 
 
 # estado em pé
@@ -365,17 +375,42 @@ func life_changed():
 	emit_signal('life_changed', current_life * (100/max_life))
 
 
-#função que recebe o dano e reduz a vida do player
-func take_damage(damage):
+#função auxiliar que recebe o dano, reduz a vida do player e muda para o estado damaged
+func take_damage_transition(damage, direction_damage, damage_force):
+	
+	#pega a direção do enemy que causou o dano e a força do impacto, isso permite criar um 
+	#tratamento para o player após ele receber o dano, como empurrar o player, ou algo do tipo
+	enemy_damage_position = direction_damage
+	enemy_damage_force = damage_force
 	
 	if delay_after_damage_time.time_left == 0:
 		current_life -= damage
 		life_changed()
 		delay_after_damage_time.start()
 		$AnimationPlayer2.play("take_damage")
-	if current_life <=0:
+		$AnimationPlayer.play("damaged")
+		state = State.DAMAGED
+	else:
+		state = State.STANDING
+
+#estado damaged
+func take_damage(delta):
+	
+	velocity.x = 0
+	
+	if enemy_damage_position.x > position.x:
+		velocity.x -= enemy_damage_force
+	if enemy_damage_position.x < position.x:
+		velocity.x += enemy_damage_force
+
+	if current_life <= 0:
 		#fazer funções de morte depois
 		death()
+	elif delay_after_damage_time.time_left == 0:
+		state = State.STANDING
+	
+	velocity.y += GRAVITY * delta
+	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 
 
 #função que ativa a condição de morte, fazer depois
@@ -412,6 +447,8 @@ func _physics_process(delta):
 			attack()
 		State.AIR_ATTACK:
 			air_attack(delta)
+		State.DAMAGED:
+			take_damage(delta)
 
 
 # finaliza o dash
@@ -434,7 +471,6 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 
 func _on_SwordSlice_body_entered(body):
-	print(body.name)
-	if body.name == "Enemy":
+	if body.is_in_group("enemies"):
 		if body.has_method('take_damage'):
 			body.take_damage(sword_damage)

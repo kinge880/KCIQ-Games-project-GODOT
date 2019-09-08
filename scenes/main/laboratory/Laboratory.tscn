@@ -254,8 +254,12 @@ position = Vector2( 24.595, 425.859 )
 
 [node name="Enemy" parent="." instance=ExtResource( 6 )]
 position = Vector2( 875.816, 366.157 )
+
+[node name="Enemy2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 521.244, 366.157 )
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="gel_shoot" from="Player" to="." method="_on_Player_gel_shoot"]
 [connection signal="life_changed" from="Player" to="HUD" method="_on_Player_life_changed"]
 [connection signal="power_crystal_changed" from="Player" to="HUD" method="_on_Player_power_crystal_changed"]
 [connection signal="power_crystal_drop" from="Enemy" to="." method="_on_EnemySlime_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="Enemy2" to="." method="_on_EnemySlime_power_crystal_drop"]

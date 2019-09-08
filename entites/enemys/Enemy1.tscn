@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://entites/enemys/Enemy1.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/Slime/slime-Sheet.png" type="Texture" id=2]
@@ -8,7 +8,7 @@ radius = 6.19994
 height = 7.78618
 
 [sub_resource type="Animation" id=2]
-length = 0.9
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
@@ -16,14 +16,45 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.12, 0.25, 0.38 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=3]
-resource_name = "idle"
+resource_name = "death"
+length = 0.32
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 17, 18, 19, 20 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "hurt"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 13, 14, 15, 16 ]
+}
+
+[sub_resource type="Animation" id=5]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -39,8 +70,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "walk"
+[sub_resource type="Animation" id=6]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -56,7 +86,7 @@ tracks/0/keys = {
 "values": [ 4, 5, 6, 7 ]
 }
 
-[sub_resource type="CapsuleShape2D" id=5]
+[sub_resource type="CapsuleShape2D" id=7]
 radius = 6.82859
 height = 8.15195
 
@@ -72,9 +102,10 @@ texture = ExtResource( 2 )
 flip_h = true
 vframes = 3
 hframes = 8
-frame = 1
+frame = 20
 
 [node name="Body" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -1.13033, 4.63873 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -83,13 +114,17 @@ shape = SubResource( 1 )
 anims/take_damage = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 3 )
-anims/walk = SubResource( 4 )
+anims/death = SubResource( 3 )
+anims/hurt = SubResource( 4 )
+anims/idle = SubResource( 5 )
+anims/walk = SubResource( 6 )
 
 [node name="DelayAfterDamageTime" type="Timer" parent="."]
+wait_time = 0.5
 one_shot = true
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 position = Vector2( -0.950397, 4.08742 )
 collision_layer = 16
 collision_mask = 2
@@ -98,13 +133,16 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
-shape = SubResource( 5 )
+shape = SubResource( 7 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+visible = false
 position = Vector2( 8.76139, 0.313083 )
 enabled = true
 cast_to = Vector2( 0, 12 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="DelayAfterDamageTime" to="." method="_on_Timer_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

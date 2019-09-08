@@ -47,6 +47,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 96, 97, 98 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("SwordSlice/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.15, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Animation" id=7]
 length = 0.66
@@ -70,10 +82,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.6 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.1, 0.25, 0.5, 0.55 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ false, true ]
+"values": [ false, true, false, true ]
 }
 
 [sub_resource type="Animation" id=8]
@@ -89,6 +101,22 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 66, 67, 68 ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "damaged"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 59, 60, 61, 62, 63, 64 ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -208,21 +236,6 @@ tracks/0/keys = {
 "values": [ 81, 82, 83, 84 ]
 }
 
-[sub_resource type="Animation" id=16]
-length = 0.9
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
-}
-
 [sub_resource type="Animation" id=17]
 length = 1.2
 loop = true
@@ -256,7 +269,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=19]
-length = 0.9
+length = 0.4
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
@@ -275,7 +289,7 @@ radius = 11.9704
 height = 8.767
 
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( -5.47917, -0.566811 )
+position = Vector2( 100, -0.567 )
 collision_layer = 2
 collision_mask = 28
 script = ExtResource( 1 )
@@ -284,7 +298,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 52
+frame = 63
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -294,11 +308,6 @@ shape = SubResource( 2 )
 offset = Vector2( 0, -40 )
 current = true
 process_mode = 0
-
-[node name="ColissionWall" type="RayCast2D" parent="."]
-rotation = 4.71239
-enabled = true
-cast_to = Vector2( 0, 7 )
 
 [node name="DoubleJumpParticle" type="Particles2D" parent="."]
 position = Vector2( 4.42004, 17.3101 )
@@ -327,6 +336,7 @@ texture = ExtResource( 3 )
 anims/air_atk = SubResource( 6 )
 anims/atk1 = SubResource( 7 )
 anims/crouch = SubResource( 8 )
+anims/damaged = SubResource( 21 )
 anims/dash = SubResource( 9 )
 anims/double_jump = SubResource( 10 )
 anims/fall = SubResource( 11 )
@@ -334,7 +344,6 @@ anims/idle = SubResource( 12 )
 anims/jump = SubResource( 13 )
 anims/jump_wall = SubResource( 14 )
 anims/ladder = SubResource( 15 )
-anims/take_damage = SubResource( 16 )
 anims/walk = SubResource( 17 )
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
@@ -342,7 +351,6 @@ anims/camera_zoom_super_jump = SubResource( 18 )
 anims/take_damage = SubResource( 19 )
 
 [node name="Timers" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 0.6
@@ -357,6 +365,7 @@ wait_time = 0.35
 one_shot = true
 
 [node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
+wait_time = 0.4
 one_shot = true
 
 [node name="AerialAttackTimer" type="Timer" parent="Timers"]
@@ -379,9 +388,12 @@ one_shot = true
 one_shot = true
 
 [node name="SwordSlice" type="Area2D" parent="."]
-position = Vector2( 14.1404, -2.76887 )
+position = Vector2( 14, -2.92391 )
 collision_layer = 2
 collision_mask = 16
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordSlice"]
 position = Vector2( -1.84668, 0.230833 )

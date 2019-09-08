@@ -8,11 +8,14 @@ onready var platform_drop = $RayCast2D
 export var max_life = 10
 export var current_life = 10
 export var damage = 10
+export var damage_force = 140
 
 signal power_crystal_drop
 
 enum State {
-	STANDING
+	STANDING,
+	DAMAGE,
+	DEATH
 }
 
 const WALK_SPEED = 50
@@ -25,9 +28,14 @@ var delay_after_damage = true
 
 var direction = 1
 
+func _ready():
+	add_to_group("enemies")
+
+
 # função para capturar a direção do Player
 func update_velocity():
 	velocity.x = WALK_SPEED * direction
+
 
 # estado em pé
 func standing(delta):
@@ -53,32 +61,37 @@ func standing(delta):
 			sprite.flip_h = false
 
 
+# estado em pé
+func damage(delta):
+	
+	# verifica se o Player está parado
+	$AnimationPlayer2.play("take_damage")
+	$AnimationPlayer.play("hurt")
+	
+	velocity.y += GRAVITY * delta
+
+
 #função que recebe o dano e reduz a vida do player
 func take_damage(damage):
 	
-	if $DelayAfterDamageTime.time_left ==0:
-		current_life -= damage
-		print(current_life)
-		$DelayAfterDamageTime.start()
-		$AnimationPlayer2.play("take_damage")
 	if current_life <=0:
-		#fazer funções de morte depois
-		death()
+		drop_power_crystal()
+		state = State.DEATH
+	else:
+		current_life -= damage
+		state = State.DAMAGE
 
 
 #função que ativa a condição de morte, fazer depois
 func death():
+	$Body.disabled = true
+	$AnimationPlayer.play("death")
+	$AnimationPlayer2.play("take_damage")
+
+
+func drop_power_crystal():
 	var pos = global_position
 	emit_signal('power_crystal_drop', pos)
-	queue_free()
-
-
-#spawna moeda pra testar
-func test_coin():
-	
-	if Input.is_action_just_pressed("teste_moeda"):
-		var mspos = get_global_mouse_position()
-		emit_signal('power_crystal_drop', mspos)
 
 
 func _physics_process(delta):
@@ -86,9 +99,25 @@ func _physics_process(delta):
 	match state:
 		State.STANDING:
 			standing(delta)
+		State.DAMAGE:
+			damage(delta)
+		State.DEATH:
+			death()
 
 
 func _on_Area2D_body_entered(body):
-	if body.name == "Player":
-		if body.has_method('take_damage'):
-			body.take_damage(damage)
+	
+	if body.is_in_group("player"):
+		if body.has_method('take_damage_transition'):
+			#passa o dano causado, a posição no momento do dano e a força de impacto do dano
+			#essa força de impacto é usada para por exemplo um monstro pequeno apenas causar um leve movimento e um socão
+			#muito loko feito por um boss jogar o player na pqp
+			body.take_damage_transition(damage, global_position, damage_force)
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	
+	if anim_name == "hurt":
+		state = State.STANDING
+	elif anim_name == "death":
+		queue_free()
