@@ -1,14 +1,16 @@
 extends KinematicBody2D
 
-onready var animation = $AnimationPlayer
-onready var animation_effets = $AnimationPlayer2
+onready var animation = $AnimationEnemy
+onready var animation_effets = $AnimationEnemy2
 onready var sprite = $Sprite
-onready var platform_drop = $RayCast2D
+onready var platform_drop = $FloorColision
 
 export var max_life = 10
 export var current_life = 10
 export var damage = 10
 export var damage_force = 140
+export var walk_speed = 50
+export var gravity = 800
 
 signal power_crystal_drop
 
@@ -18,8 +20,6 @@ enum State {
 	DEATH
 }
 
-const WALK_SPEED = 50
-const GRAVITY = 800
 const SNAP = Vector2(0, 8)
 
 var velocity = Vector2.ZERO
@@ -28,26 +28,27 @@ var delay_after_damage = true
 var direction = 1
 
 func _ready():
+	
 	add_to_group("enemies")
 
 
-# função para capturar a direção do Player
+# função para capturar a direção do enemy
 func update_velocity():
 	
-	velocity.x = WALK_SPEED * direction
+	velocity.x = walk_speed * direction
 
 
-# estado em pé
+# estado standing
 func standing(delta):
 	
-	# verifica se o Player está parado
+	# verifica se o enemy ta parado ou andando
 	if velocity.x == 0:
 		animation.play("idle")
 	else:
 		animation.play("walk")
 	
 	update_velocity()
-	velocity.y += GRAVITY * delta
+	velocity.y += gravity * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 	
 	if is_on_wall() or not platform_drop.is_colliding():
@@ -61,27 +62,27 @@ func standing(delta):
 			sprite.flip_h = false
 
 
-# estado em pé
+# estado sofreu dano
 func damage(delta):
 	
-	# verifica se o Player está parado
+	#ativa as animações de dano e bota uma gravidade
 	animation_effets.play("take_damage")
 	animation.play("hurt")
-	
-	velocity.y += GRAVITY * delta
+	velocity.y += gravity * delta
+	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 
 
-#função que recebe o dano e reduz a vida do player
+#função que recebe o dano e reduz a vida do enemy
 func take_damage(damage):
 	
 	current_life -= damage
-	print(current_life)
 	state = State.DAMAGE
+	
 	if current_life <= 0:
 		drop_power_crystal()
 		state = State.DEATH
 
-#função que ativa a condição de morte, fazer depois
+#função que ativa a condição de morte
 func death():
 	
 	$Body.disabled = true
@@ -89,6 +90,7 @@ func death():
 	animation_effets.play("take_damage")
 
 
+#função que dropa cristais após a morte do enemy
 func drop_power_crystal():
 	
 	var pos = global_position
@@ -106,6 +108,7 @@ func _physics_process(delta):
 			death()
 
 
+#função que verifica se o player entrou no area 2d do enemy e causa dano
 func _on_Area2D_body_entered(body):
 	
 	if body.is_in_group("player"):
@@ -116,6 +119,7 @@ func _on_Area2D_body_entered(body):
 			body.take_damage_transition(damage, global_position, damage_force)
 
 
+#função que ativa alguns estados ou condições após certas animações
 func _on_AnimationPlayer_animation_finished(anim_name):
 	
 	if anim_name == "hurt":

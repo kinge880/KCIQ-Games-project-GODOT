@@ -88,7 +88,7 @@ tracks/1/keys = {
 "values": [ false, true, false, true ]
 }
 
-[sub_resource type="Animation" id=21]
+[sub_resource type="Animation" id=8]
 resource_name = "atk2"
 length = 0.28
 step = 0.08
@@ -117,7 +117,7 @@ tracks/1/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -132,8 +132,7 @@ tracks/0/keys = {
 "values": [ 66, 67, 68 ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "damaged"
+[sub_resource type="Animation" id=10]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -148,7 +147,7 @@ tracks/0/keys = {
 "values": [ 59, 60, 61, 62, 63, 64 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=11]
 length = 0.55
 step = 0.2
 tracks/0/type = "value"
@@ -164,7 +163,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27, 28 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=12]
 length = 0.8
 step = 0.2
 tracks/0/type = "value"
@@ -180,7 +179,7 @@ tracks/0/keys = {
 "values": [ 18, 19, 20, 21 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 0.4
 loop = true
 step = 0.2
@@ -197,7 +196,7 @@ tracks/0/keys = {
 "values": [ 22, 23 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=14]
 length = 0.8
 loop = true
 step = 0.2
@@ -214,7 +213,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=15]
 length = 0.8
 loop = true
 step = 0.2
@@ -231,7 +230,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17 ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=16]
 length = 0.4
 loop = true
 step = 0.2
@@ -248,7 +247,7 @@ tracks/0/keys = {
 "values": [ 79, 80 ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=17]
 length = 0.8
 loop = true
 step = 0.2
@@ -265,7 +264,7 @@ tracks/0/keys = {
 "values": [ 81, 82, 83, 84 ]
 }
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=18]
 length = 1.2
 loop = true
 step = 0.2
@@ -282,8 +281,7 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=18]
-resource_name = "camera_zoom_super_jump"
+[sub_resource type="Animation" id=19]
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerCamera:zoom")
 tracks/0/interp = 1
@@ -297,7 +295,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 2, 2 ) ]
 }
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=20]
 length = 0.4
 step = 0.05
 tracks/0/type = "value"
@@ -313,7 +311,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="CapsuleShape2D" id=20]
+[sub_resource type="CapsuleShape2D" id=21]
 radius = 11.9704
 height = 8.767
 
@@ -364,21 +362,21 @@ texture = ExtResource( 3 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/air_atk = SubResource( 6 )
 anims/atk1 = SubResource( 7 )
-anims/atk2 = SubResource( 21 )
-anims/crouch = SubResource( 8 )
-anims/damaged = SubResource( 9 )
-anims/dash = SubResource( 10 )
-anims/double_jump = SubResource( 11 )
-anims/fall = SubResource( 12 )
-anims/idle = SubResource( 13 )
-anims/jump = SubResource( 14 )
-anims/jump_wall = SubResource( 15 )
-anims/ladder = SubResource( 16 )
-anims/walk = SubResource( 17 )
+anims/atk2 = SubResource( 8 )
+anims/crouch = SubResource( 9 )
+anims/damaged = SubResource( 10 )
+anims/dash = SubResource( 11 )
+anims/double_jump = SubResource( 12 )
+anims/fall = SubResource( 13 )
+anims/idle = SubResource( 14 )
+anims/jump = SubResource( 15 )
+anims/jump_wall = SubResource( 16 )
+anims/ladder = SubResource( 17 )
+anims/walk = SubResource( 18 )
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-anims/camera_zoom_super_jump = SubResource( 18 )
-anims/take_damage = SubResource( 19 )
+anims/camera_zoom_super_jump = SubResource( 19 )
+anims/take_damage = SubResource( 20 )
 
 [node name="Timers" type="Node" parent="."]
 
@@ -427,7 +425,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordSlice"]
 position = Vector2( -1.84668, 0.230833 )
-shape = SubResource( 20 )
+shape = SubResource( 21 )
 disabled = true
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
