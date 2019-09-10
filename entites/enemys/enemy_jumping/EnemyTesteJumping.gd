@@ -4,18 +4,24 @@ onready var animation = $AnimationEnemy
 onready var animation_effets = $AnimationEnemy2
 onready var sprite = $Sprite
 onready var platform_drop = $FloorColision
+onready var delay_move = $Timers/DelayMove
+onready var move_time = $Timers/MoveTime
+onready var move_distance = $Timers/MoveDistance
+onready var hit_box = $HitBox/HitBoxColision
 
 export var max_life = 10
 export var current_life = 10
 export var damage = 10
 export var damage_force = 140
-export var walk_speed = 50
-export var gravity = 800
+export var walk_speed = 150
+export var jump_speed = -200
+export var gravity = 400
 
 signal power_crystal_drop
 
 enum State {
 	STANDING,
+	JUMPING,
 	DAMAGE,
 	DEATH
 }
@@ -26,33 +32,68 @@ var velocity = Vector2.ZERO
 var state = State.STANDING
 var delay_after_damage = true
 var direction = 1
+var move_start = true
 
 func _ready():
 	
 	add_to_group("enemies")
 
 
-# função para capturar a direção do enemy
+#função que inicia o movimento de pulo assim que o timer chega a 0
 func update_velocity():
 	
-	velocity.x = walk_speed * direction
+	if delay_move.time_left == 0:
+		
+		#esse if auxilia para sincronizar os times no inicio do movimento
+		if move_start == true:
+			move_start = false
+			move_distance.start()
+			
+		move_time.start()
+		state = State.JUMPING
 
 
-# estado standing
+#estado onde o enemy fica parado pór alguns segundos após cada movimento
 func standing(delta):
 	
-	# verifica se o enemy ta parado ou andando
-	if velocity.x == 0:
-		animation.play("idle")
-	else:
-		animation.play("walk")
-	
+	velocity.x = 0
+	animation.play("idle")
+	#quando o timer chegar a 0 troca esse estado pelo estado de pulo
 	update_velocity()
 	velocity.y += gravity * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 	
-	if is_on_wall() or not platform_drop.is_colliding():
+	if move_distance.time_left == 0:
 		
+		move_distance.start()
+		direction *= -1
+		platform_drop.position.x *= -1
+		
+		if direction > 0:
+			sprite.flip_h = true
+		else:
+			sprite.flip_h = false
+
+
+#estado de pulo
+func jump(delta):
+	
+	#quando o timer do movimento chegar a 0 volta ao estado parado
+	if move_time.time_left == 0:
+		delay_move.start()
+		state = State.STANDING
+		
+	if is_on_floor():
+		velocity.y = jump_speed
+	
+	animation.play("walk")
+	velocity.x = walk_speed * direction
+	velocity.y += gravity * delta
+	velocity = move_and_slide(velocity, Vector2.UP)
+	
+	if move_distance.time_left == 0:
+		
+		move_distance.start()
 		direction *= -1
 		platform_drop.position.x *= -1
 		
@@ -69,7 +110,7 @@ func damage(delta):
 	animation_effets.play("take_damage")
 	animation.play("hurt")
 	velocity.y += gravity * delta
-	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 
 #função que recebe o dano e reduz a vida do enemy
@@ -77,17 +118,24 @@ func take_damage(damage):
 	
 	current_life -= damage
 	state = State.DAMAGE
+	move_distance.paused = true
+	delay_move.paused = true
+	move_distance.paused = true
 	
 	if current_life <= 0:
 		drop_power_crystal()
 		state = State.DEATH
 
+
 #função que ativa a condição de morte
-func death():
+func death(delta):
 	
-	$Body.disabled = true
+	hit_box.disabled = true
 	animation.play("death")
 	animation_effets.play("take_damage")
+	
+	velocity.y += gravity * delta
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 
 #função que dropa cristais após a morte do enemy
@@ -102,14 +150,16 @@ func _physics_process(delta):
 	match state:
 		State.STANDING:
 			standing(delta)
+		State.JUMPING:
+			jump(delta)
 		State.DAMAGE:
 			damage(delta)
 		State.DEATH:
-			death()
+			death(delta)
 
 
 #função que verifica se o player entrou no area 2d do enemy e causa dano
-func _on_Area2D_body_entered(body):
+func _on_HitBox_body_entered(body):
 	
 	if body.is_in_group("player"):
 		if body.has_method('take_damage_transition'):
@@ -124,5 +174,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	
 	if anim_name == "hurt":
 		state = State.STANDING
+		move_distance.paused = false
+		delay_move.paused = false
+		move_distance.paused = false
 	elif anim_name == "death":
 		queue_free()

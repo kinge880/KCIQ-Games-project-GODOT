@@ -3,7 +3,7 @@
 [ext_resource path="res://assets/package/bullets/GelBullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/bullet/Individual Sprites/slime-attack-0.png" type="Texture" id=2]
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=1]
 resource_name = "grow_up"
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:scale")
@@ -18,7 +18,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0.3, 0.3 ), Vector2( 0.4, 0.4 ), Vector2( 0.5, 0.5 ), Vector2( 0.6, 0.6 ), Vector2( 0.7, 0.7 ), Vector2( 0.8, 0.8 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ), Vector2( 1.1, 1.1 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=2]
 length = 1.4
 loop = true
 step = 0.2
@@ -43,8 +43,8 @@ autostart = true
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationBullet" type="AnimationPlayer" parent="."]
-anims/grow_up = SubResource( 4 )
-anims/idle = SubResource( 5 )
+anims/grow_up = SubResource( 1 )
+anims/idle = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -0.611273, -5.84801 )

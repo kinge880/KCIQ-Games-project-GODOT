@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://entites/enemys/EnemyTeste.gd" type="Script" id=1]
+[ext_resource path="res://entites/enemys/enemy_jumping/EnemyTesteJumping.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/Slime/slime-Sheet.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
@@ -90,7 +90,7 @@ tracks/0/keys = {
 radius = 6.82859
 height = 8.15195
 
-[node name="EnemyWalking" type="KinematicBody2D"]
+[node name="EnemyJumping" type="KinematicBody2D"]
 position = Vector2( 57.9632, -5.00452 )
 rotation = 0.00398407
 scale = Vector2( 1.5, 1.5 )
@@ -103,10 +103,9 @@ texture = ExtResource( 2 )
 flip_h = true
 vframes = 3
 hframes = 8
-frame = 20
+frame = 1
 
 [node name="Body" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( -1.13033, 4.63873 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -121,7 +120,6 @@ anims/idle = SubResource( 5 )
 anims/walk = SubResource( 6 )
 
 [node name="HitBox" type="Area2D" parent="."]
-visible = false
 position = Vector2( -0.950397, 4.08742 )
 collision_layer = 16
 collision_mask = 2
@@ -130,22 +128,32 @@ __meta__ = {
 }
 
 [node name="HitBoxColision" type="CollisionShape2D" parent="HitBox"]
-visible = false
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
 shape = SubResource( 7 )
 
 [node name="FloorColision" type="RayCast2D" parent="."]
-visible = false
 position = Vector2( 8.76139, 0.313083 )
 enabled = true
-cast_to = Vector2( 0, 12 )
+cast_to = Vector2( 0, 40 )
 
 [node name="Timers" type="Node" parent="."]
 
 [node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
 wait_time = 0.4
 one_shot = true
+
+[node name="DelayMove" type="Timer" parent="Timers"]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="MoveTime" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="MoveDistance" type="Timer" parent="Timers"]
+wait_time = 12.0
+one_shot = true
+autostart = true
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="body_entered" from="HitBox" to="." method="_on_Area2D_body_entered"]
-[connection signal="timeout" from="Timers/DelayAfterDamageTime" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]

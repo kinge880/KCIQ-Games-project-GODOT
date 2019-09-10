@@ -5,8 +5,9 @@
 [ext_resource path="res://assets/graphic/tiles/Castle Platformer Tileset [16x16][FREE] - RottingPixels/castle-tileset.png" type="Texture" id=3]
 [ext_resource path="res://ui/hud/Hud.tscn" type="PackedScene" id=4]
 [ext_resource path="res://entites/player/PlayerFSM.tscn" type="PackedScene" id=5]
-[ext_resource path="res://entites/enemys/EnemyTesteJumping/EnemyTesteJumping.tscn" type="PackedScene" id=6]
-[ext_resource path="res://entites/enemys/EnemyTesteWalking.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entites/enemys/enemy_jumping/EnemyTesteJumping.tscn" type="PackedScene" id=6]
+[ext_resource path="res://entites/enemys/enemy_walking/EnemyTesteWalking.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entites/enemys/turret/Turret.tscn" type="PackedScene" id=8]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -197,9 +198,6 @@ extents = Vector2( 7.37452, 275.883 )
 [sub_resource type="RectangleShape2D" id=16]
 extents = Vector2( 7.3, 104.146 )
 
-[sub_resource type="RectangleShape2D" id=17]
-extents = Vector2( 55.9655, 10 )
-
 [node name="Laboratory" type="Node"]
 script = ExtResource( 1 )
 
@@ -239,28 +237,24 @@ shape = SubResource( 16 )
 scale = Vector2( 0.3, 0.3 )
 transform = Transform2D( 0.3, 0, 0, 0.3, 0, 0 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 498.161, 566.11 )
-shape = SubResource( 17 )
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 590.578, 599.755 )
-rotation = 0.698132
-shape = SubResource( 17 )
-
 [node name="Player" parent="." instance=ExtResource( 5 )]
 position = Vector2( 118.461, 183.711 )
 
 [node name="EnemyJump" parent="." instance=ExtResource( 6 )]
-position = Vector2( 349.084, 184.088 )
+position = Vector2( 397.214, 189.362 )
 
 [node name="EnemyWalking" parent="." instance=ExtResource( 7 )]
-position = Vector2( 196.722, 363.658 )
+position = Vector2( 236.611, 361.501 )
+
+[node name="Turret" parent="." instance=ExtResource( 8 )]
+editor/display_folded = true
+position = Vector2( 644.293, 75.5221 )
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="gel_shoot" from="Player" to="." method="_on_Player_gel_shoot"]
 [connection signal="life_changed" from="Player" to="HUD" method="_on_Player_life_changed"]
 [connection signal="power_crystal_changed" from="Player" to="HUD" method="_on_Player_power_crystal_changed"]
 [connection signal="power_crystal_drop" from="EnemyJump" to="." method="_on_EnemyJump_power_crystal_drop"]
 [connection signal="power_crystal_drop" from="EnemyWalking" to="." method="_on_EnemyWalking_power_crystal_drop"]
+[connection signal="shoot" from="Turret/Turret" to="." method="_on_Turret_shoot"]
+
+[editable path="Turret"]

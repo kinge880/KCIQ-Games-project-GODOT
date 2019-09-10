@@ -1,0 +1,114 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://entites/enemys/turret/Turret.gd" type="Script" id=1]
+[ext_resource path="res://assets/graphic/sprites/enemys/turret/turret_02_mk1.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphic/bullet/turret_bullet/turret_mk1_bullet.png" type="Texture" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 19.3575
+height = 41.7391
+
+[sub_resource type="Animation" id=2]
+resource_name = "hurt"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25, 0.4, 0.5, 0.6, 0.75, 0.85, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "charge"
+length = 1.2
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "shoot"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="ConvexPolygonShape2D" id=3]
+
+[node name="Node" type="Node2D"]
+
+[node name="Turret" type="KinematicBody2D" parent="."]
+scale = Vector2( 0.7, 0.7 )
+collision_layer = 16
+collision_mask = 0
+script = ExtResource( 1 )
+walk_speed = 2.0
+
+[node name="Sprite" type="Sprite" parent="Turret"]
+position = Vector2( -0.815628, 0.407804 )
+texture = ExtResource( 2 )
+vframes = 3
+hframes = 2
+region_rect = Rect2( 43.289, -9.5, 939.23, 116.4 )
+
+[node name="SpawBulet" type="Sprite" parent="Turret/Sprite"]
+position = Vector2( 46.5918, 0.923279 )
+scale = Vector2( 0.0252137, 0.023773 )
+texture = ExtResource( 3 )
+
+[node name="Body" type="CollisionShape2D" parent="Turret"]
+position = Vector2( 6.26734, 0.616066 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="AnimationEffects" type="AnimationPlayer" parent="Turret"]
+anims/hurt = SubResource( 2 )
+
+[node name="AnimationEnemy" type="AnimationPlayer" parent="Turret"]
+anims/charge = SubResource( 4 )
+anims/shoot = SubResource( 5 )
+
+[node name="DelayShoot" type="Timer" parent="Turret"]
+wait_time = 3.0
+one_shot = true
+
+[node name="DetectArea" type="Area2D" parent="."]
+position = Vector2( 0.200577, -0.143198 )
+rotation = 0.00398407
+scale = Vector2( 1.5, 1.5 )
+collision_layer = 0
+collision_mask = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="DetectAreaColision" type="CollisionShape2D" parent="DetectArea"]
+position = Vector2( 0.0218391, 79.9068 )
+scale = Vector2( 20, 8 )
+shape = SubResource( 3 )
+[connection signal="animation_finished" from="Turret/AnimationEffects" to="Turret" method="_on_AnimationEnemy_animation_finished"]
+[connection signal="body_entered" from="DetectArea" to="Turret" method="_on_DetectArea_body_entered"]
+[connection signal="body_exited" from="DetectArea" to="Turret" method="_on_DetectArea_body_exited"]
