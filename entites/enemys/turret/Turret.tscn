@@ -23,7 +23,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "charge"
 length = 1.2
 step = 0.2
@@ -40,7 +40,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "shoot"
 length = 0.2
 tracks/0/type = "value"
@@ -56,7 +56,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="ConvexPolygonShape2D" id=3]
+[sub_resource type="ConvexPolygonShape2D" id=5]
 
 [node name="Node" type="Node2D"]
 
@@ -88,8 +88,8 @@ shape = SubResource( 1 )
 anims/hurt = SubResource( 2 )
 
 [node name="AnimationEnemy" type="AnimationPlayer" parent="Turret"]
-anims/charge = SubResource( 4 )
-anims/shoot = SubResource( 5 )
+anims/charge = SubResource( 3 )
+anims/shoot = SubResource( 4 )
 
 [node name="DelayShoot" type="Timer" parent="Turret"]
 wait_time = 3.0
@@ -108,7 +108,7 @@ __meta__ = {
 [node name="DetectAreaColision" type="CollisionShape2D" parent="DetectArea"]
 position = Vector2( 0.0218391, 79.9068 )
 scale = Vector2( 20, 8 )
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 [connection signal="animation_finished" from="Turret/AnimationEffects" to="Turret" method="_on_AnimationEnemy_animation_finished"]
 [connection signal="body_entered" from="DetectArea" to="Turret" method="_on_DetectArea_body_entered"]
 [connection signal="body_exited" from="DetectArea" to="Turret" method="_on_DetectArea_body_exited"]

@@ -156,4 +156,7 @@ wait_time = 12.0
 one_shot = true
 autostart = true
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
+[connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
+[connection signal="body_exited" from="HitBox" to="." method="_on_HitBox_body_exited"]

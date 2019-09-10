@@ -160,13 +160,17 @@ func _physics_process(delta):
 
 #função que verifica se o player entrou no area 2d do enemy e causa dano
 func _on_HitBox_body_entered(body):
-	
+	print(body.name)
 	if body.is_in_group("player"):
 		if body.has_method('take_damage_transition'):
 			#passa o dano causado, a posição no momento do dano e a força de impacto do dano
 			#essa força de impacto é usada para por exemplo um monstro pequeno apenas causar um leve movimento e um socão
 			#muito loko feito por um boss jogar o player na pqp
 			body.take_damage_transition(damage, global_position, damage_force)
+
+
+func time_bullet_zone():
+	pass
 
 
 #função que ativa alguns estados ou condições após certas animações
@@ -179,3 +183,18 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		move_distance.paused = false
 	elif anim_name == "death":
 		queue_free()
+
+func _on_HitBox_area_entered(area):
+	
+	if area.name == "TimeBullet":
+		walk_speed = 15
+		gravity = 40
+		jump_speed = -20
+
+
+func _on_HitBox_area_exited(area):
+	
+	if area.name == "TimeBullet":
+		walk_speed = 150
+		gravity = 400
+		jump_speed = -200

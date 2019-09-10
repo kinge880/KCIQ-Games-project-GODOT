@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4.05466, 4.48587 )
 
-[node name="Bullet" type="Area2D"]
+[node name="TurretBullet" type="Area2D"]
 position = Vector2( -6.79412, -0.933964 )
 scale = Vector2( 1.1, 1.1 )
 collision_layer = 16
@@ -30,8 +30,10 @@ texture = ExtResource( 2 )
 position = Vector2( -1.34005, 0.611746 )
 shape = SubResource( 1 )
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="ColissionCheck" type="RayCast2D" parent="."]
 position = Vector2( 0.462781, 0.97698 )
+enabled = true
+exclude_parent = false
 cast_to = Vector2( 2, 0 )
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
 [connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]

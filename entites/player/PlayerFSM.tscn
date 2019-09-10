@@ -196,6 +196,24 @@ tracks/0/keys = {
 "values": [ 22, 23 ]
 }
 
+[sub_resource type="Animation" id=16]
+resource_name = "grab_wall"
+length = 0.4
+loop = true
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 79, 80 ]
+}
+
 [sub_resource type="Animation" id=14]
 length = 0.8
 loop = true
@@ -228,23 +246,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 14, 15, 16, 17 ]
-}
-
-[sub_resource type="Animation" id=16]
-length = 0.4
-loop = true
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 79, 80 ]
 }
 
 [sub_resource type="Animation" id=17]
@@ -320,6 +321,9 @@ position = Vector2( 100, -0.567 )
 collision_layer = 2
 collision_mask = 28
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = SubResource( 1 )
@@ -336,7 +340,7 @@ offset = Vector2( 0, -40 )
 current = true
 process_mode = 0
 
-[node name="DoubleJumpParticle" type="Particles2D" parent="."]
+[node name="JetPackParticle" type="Particles2D" parent="."]
 position = Vector2( 4.42004, 17.3101 )
 rotation = 1.5708
 emitting = false
@@ -347,7 +351,7 @@ randomness = 1.0
 local_coords = false
 process_material = SubResource( 5 )
 
-[node name="DoubleJumpParticle2" type="Particles2D" parent="."]
+[node name="JetPackParticle2" type="Particles2D" parent="."]
 position = Vector2( -4.85854, 17.188 )
 rotation = 1.5708
 emitting = false
@@ -368,9 +372,9 @@ anims/damaged = SubResource( 10 )
 anims/dash = SubResource( 11 )
 anims/double_jump = SubResource( 12 )
 anims/fall = SubResource( 13 )
+anims/grab_wall = SubResource( 16 )
 anims/idle = SubResource( 14 )
 anims/jump = SubResource( 15 )
-anims/jump_wall = SubResource( 16 )
 anims/ladder = SubResource( 17 )
 anims/walk = SubResource( 18 )
 
@@ -379,6 +383,7 @@ anims/camera_zoom_super_jump = SubResource( 19 )
 anims/take_damage = SubResource( 20 )
 
 [node name="Timers" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 0.6

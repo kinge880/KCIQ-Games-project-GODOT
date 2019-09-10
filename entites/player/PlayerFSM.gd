@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 onready var animation = $AnimationPlayer
+onready var animation_effects = $AnimationPlayer2
 onready var dash_delay = $Timers/DashDelay
 onready var dash_timer = $Timers/DashTimer
 onready var energy_reload_timer = $Timers/EnergyReload
@@ -26,11 +27,13 @@ export var current_energy = 100
 export var big_jump_cost = 1
 export var gliding_cost = 1
 export var gel_gun_cost = 5
+export var time_gun_cost = 20
 export var reload_power_cristal_cost = 1
 export var reload_energy_restored = 1
 export var sword_damage = 5
 
 signal gel_shoot
+signal time_shoot
 signal life_changed
 signal energy_changed
 signal power_crystal_changed
@@ -46,14 +49,16 @@ enum State {
 	DOUBLE_JUMP,
 	ATTACK,
 	AIR_ATTACK,
-	DAMAGED
+	DAMAGED,
+	GRAB_WALL
 }
 
 const WALK_SPEED = 200
 const JUMP_SPEED = -250
 const GRAVITY = 800
 const SNAP = Vector2(0, 8)
-const GEL_BULLET = preload("res://assets/package/bullets/GelBullet.tscn")
+const GEL_BULLET = preload("res://assets/package/bullets/gel_bullet/GelBullet.tscn")
+const TIME_BULLET = preload("res://assets/package/bullets/time_bullet/time_bullet.tscn")
 
 var velocity = Vector2.ZERO
 var state = State.STANDING
@@ -103,13 +108,13 @@ func standing():
 	update_velocity()
 	jump_transition()
 	dash_transition()
-	gel_shoot()
+	time_shoot()
 	
 	if is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
 		state = State.ATTACK
 	if camera_zoom:
 		camera_zoom = false
-		$AnimationPlayer2.play_backwards("camera_zoom_super_jump")
+		animation_effects.play_backwards("camera_zoom_super_jump")
 	if Input.is_action_pressed("reload_energy") and current_energy < max_energy and power_crystal > 0:
 		energy_reload_timer_delay.start()
 		state = State.RELOAD
@@ -121,6 +126,7 @@ func standing():
 func jumping(delta):
 	
 	update_velocity()
+	grab_wall_transition()
 	
 	# verifica se o Player está subindo ou descendo
 	if velocity.y < 0:
@@ -131,7 +137,6 @@ func jumping(delta):
 	# limita a altura do pulo
 	if Input.is_action_just_released("ui_up"):
 		velocity.y = max(velocity.y, -50.0)
-	
 	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
@@ -164,28 +169,45 @@ func jump_transition():
 func double_jump(delta):
 	
 	update_velocity()
-	
-	# verifica se o Player está subindo ou descendo
-	if velocity.y < 0:
-		animation.play("double_jump")
-	else:
-		animation.play("fall")
-	
+	grab_wall_transition()
+	animation.play("double_jump")
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
-	
 	dash_transition()
+	
 	if current_energy > gliding_cost:
 		gliding_transition()
+	if not is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
+		state = State.AIR_ATTACK
+	if is_on_floor():
+		state = State.STANDING
+
+#em construção ainda
+func grab_wall(delta):
 	
 	if is_on_floor():
 		state = State.STANDING
+	if Input.is_action_just_pressed("ui_up"):
+		velocity.y = JUMP_SPEED
+		state = State.JUMPING
+	
+	animation.play("grab_wall")
+	velocity.y = GRAVITY * delta
+	velocity = move_and_slide(velocity, Vector2.UP)
+
+
+# função para auxiliar a transição para o estado agarrado na parede
+func grab_wall_transition():
+	
+	if not is_on_floor() and is_on_wall():
+		state = State.GRAB_WALL
 
 
 # estado planando
 func gliding(delta):
 	
 	update_velocity()
+	grab_wall_transition()
 	
 	if gliding_cost_timer.time_left == 0:
 		current_energy -= gliding_cost
@@ -244,17 +266,17 @@ func crouching():
 	if big_jump_delay.time_left == 0 and current_energy > big_jump_cost:
 		if Input.is_action_pressed("ui_up"):
 			camera_zoom = true
-			$AnimationPlayer2.play("camera_zoom_super_jump")
+			animation_effects.play("camera_zoom_super_jump")
 		big_jump_transition()
 		energy_changed()
-		$DoubleJumpParticle.emitting = true
-		$DoubleJumpParticle2.emitting = true
+		$JetPackParticle.emitting = true
+		$JetPackParticle2.emitting = true
 	else:
 		jump_transition()
 	if Input.is_action_just_released("ui_down"):
 		state = State.STANDING
-		$DoubleJumpParticle.emitting = false
-		$DoubleJumpParticle2.emitting = false
+		$JetPackParticle.emitting = false
+		$JetPackParticle2.emitting = false
 
 
 # auxilio para chegar corretamente no estado agachado
@@ -266,6 +288,7 @@ func crouching_transition():
 
 
 #ativa um tiro da arma de gel
+"""
 func gel_shoot():
 	
 	if current_energy >= gel_gun_cost:
@@ -277,7 +300,22 @@ func gel_shoot():
 			energy_changed()
 	else:
 		pass
-		#aplicar um som de não balas e pá
+		#aplicar um som de sem energia e pá
+"""
+
+#ativa um tiro da arma do tempo
+func time_shoot():
+	
+	if current_energy >= time_gun_cost:
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
+			#pega posição atual do mouse e emite o sinal de tiro para o mapa
+			var mspos = get_global_mouse_position()
+			emit_signal('time_shoot', TIME_BULLET, global_position, mspos - global_position)
+			current_energy -= time_gun_cost
+			energy_changed()
+	else:
+		pass
+		#aplicar um som de sem energia e pá
 
 
 # estado de recarga da energia
@@ -333,8 +371,8 @@ func big_jump(delta):
 	if velocity.y < 0:
 		animation.play("jump")
 	else:
-		$DoubleJumpParticle.emitting = false
-		$DoubleJumpParticle2.emitting = false
+		$JetPackParticle.emitting = false
+		$JetPackParticle2.emitting = false
 		state = State.JUMPING
 	
 	velocity.y += GRAVITY * delta
@@ -354,8 +392,8 @@ func big_jump_transition():
 		velocity.y = JUMP_SPEED
 		state = State.BIG_JUMP
 	elif Input.is_action_just_released("ui_up"):
-		$DoubleJumpParticle.emitting = false
-		$DoubleJumpParticle2.emitting = false
+		$JetPackParticle.emitting = false
+		$JetPackParticle2.emitting = false
 		state = State.JUMPING
 
 
@@ -389,8 +427,8 @@ func take_damage_transition(damage, direction_damage, damage_force):
 		current_life -= damage
 		life_changed()
 		delay_after_damage_time.start()
-		$AnimationPlayer2.play("take_damage")
-		$AnimationPlayer.play("damaged")
+		animation_effects.play("take_damage")
+		animation.play("damaged")
 		state = State.DAMAGED
 	else:
 		state = State.STANDING
@@ -453,7 +491,8 @@ func _physics_process(delta):
 			air_attack(delta)
 		State.DAMAGED:
 			take_damage(delta)
-
+		State.GRAB_WALL:
+			grab_wall(delta)
 
 # finaliza o dash
 func _on_DashTimer_timeout():
@@ -471,7 +510,7 @@ func _on_DashTimer_timeout():
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	
-	if anim_name == "atk1" or anim_name == "atk2" or anim_name == "air_atk":
+	if anim_name == "double_jump" or anim_name == "atk2" or anim_name == "air_atk":
 		state = State.STANDING
 
 

@@ -1,7 +1,6 @@
 extends Area2D
 
 export var speed = 500
-export var life = 10
 export var damage = 20
 export var damage_force = 200
 
@@ -10,7 +9,7 @@ var body_entered = false
 
 onready var tween = $Tween
 onready var life_time = $Lifetime
-onready var collider_check = $RayCast2D
+onready var check_collision = $ColissionCheck
 
 #essa função é chamada assim que a bala é instanciada
 func _start(_position, _direction):
@@ -30,7 +29,7 @@ func _on_Lifetime_timeout():
 
 func _process(delta):
 	
-	var on_wall = collider_check.is_colliding()
+	var on_wall = check_collision.is_colliding()
 	global_position += velocity * delta  * speed
 	
 	if on_wall:

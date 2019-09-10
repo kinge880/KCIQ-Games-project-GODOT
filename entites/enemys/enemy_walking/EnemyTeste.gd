@@ -120,6 +120,10 @@ func _on_HitBox_body_entered(body):
 			body.take_damage_transition(damage, global_position, damage_force)
 
 
+func time_bullet_zone():
+	pass
+
+
 #função que ativa alguns estados ou condições após certas animações
 func _on_AnimationPlayer_animation_finished(anim_name):
 	
@@ -127,3 +131,16 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		state = State.STANDING
 	elif anim_name == "death":
 		queue_free()
+
+func _on_HitBox_area_entered(area):
+	
+	if area.name == "TimeBullet":
+		walk_speed = 5
+		gravity = 80
+
+
+func _on_HitBox_area_exited(area):
+	
+	if area.name == "TimeBullet":
+		walk_speed = 50
+		gravity = 800
