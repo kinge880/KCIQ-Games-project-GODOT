@@ -12,6 +12,7 @@ onready var attack_delay = $Timers/AttackTimer
 onready var air_attack_delay = $Timers/AerialAttackTimer
 onready var delay_after_damage_time = $Timers/DelayAfterDamageTime
 onready var sprite = $Sprite
+onready var check_wall = $RayCast2D
 
 #coloquei variaveis de todo tipo de custo/energia e pá, como exportadas, para facilitar os testes, já que basta alterar no inspetor
 #as variaveis de custo são necessarias no futuro quando implementarmos os mods para o nucleo de energia
@@ -67,6 +68,7 @@ var power_crystal = 100
 var camera_zoom = false
 var enemy_damage_position
 var enemy_damage_force
+var in_jump = false
 
 func _ready(): 
 	
@@ -83,12 +85,14 @@ func update_velocity():
 		if sprite.flip_h:
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
+			check_wall.cast_to *= -1
 		sprite.flip_h = false
 		velocity.x += WALK_SPEED
 	elif Input.is_action_pressed("ui_left"):
 		if not sprite.flip_h:
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
+			check_wall.cast_to *= -1
 		sprite.flip_h = true
 		velocity.x -= WALK_SPEED
 
@@ -182,17 +186,47 @@ func double_jump(delta):
 	if is_on_floor():
 		state = State.STANDING
 
-#em construção ainda
+#pulo DELICIOSO na parede
 func grab_wall(delta):
 	
-	if is_on_floor():
-		state = State.STANDING
-	if Input.is_action_just_pressed("ui_up"):
+	#saltos para a direita e esquerda da parede
+	if Input.is_action_pressed("ui_right") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == true:
+		velocity.x = WALK_SPEED * 1.5
 		velocity.y = JUMP_SPEED
-		state = State.JUMPING
+		in_jump = true
+		sprite.flip_h = false
+		check_wall.cast_to *= -1
+	if Input.is_action_pressed("ui_left") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == false:
+		velocity.x = -WALK_SPEED * 1.5
+		velocity.y = JUMP_SPEED
+		in_jump = true
+		sprite.flip_h = true
+		check_wall.cast_to *= -1
 	
-	animation.play("grab_wall")
-	velocity.y = GRAVITY * delta
+	#essa in_jump define se eu saltei ou não, é preciso usar ela para uma transição controlada entre os estados
+	#permitindo alterna entre as gravidades no momento correto e executar o salto em si
+	if in_jump:
+		if velocity.y < 0:
+			animation.play("jump")
+		else:
+			in_jump = false
+			state = State.JUMPING
+		update_velocity()
+		velocity.y += GRAVITY * delta
+	else:
+		if not check_wall.is_colliding():
+			state = State.JUMPING
+		animation.play("grab_wall")
+		velocity.y = GRAVITY * delta
+		
+	if is_on_floor() or Input.is_action_just_pressed("ui_down"):
+		if sprite.flip_h == false:
+			sprite.flip_h = true
+		if sprite.flip_h == true:
+			sprite.flip_h = false
+		check_wall.cast_to *= -1
+		state = State.JUMPING
+			
 	velocity = move_and_slide(velocity, Vector2.UP)
 
 
