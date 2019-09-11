@@ -254,8 +254,8 @@ position = Vector2( 642.861, 29.6987 )
 [connection signal="life_changed" from="Player" to="HUD" method="_on_Player_life_changed"]
 [connection signal="power_crystal_changed" from="Player" to="HUD" method="_on_Player_power_crystal_changed"]
 [connection signal="time_shoot" from="Player" to="." method="_on_Player_time_shoot"]
-[connection signal="power_crystal_drop" from="EnemyJump" to="." method="_on_EnemyJump_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="EnemyWalking" to="." method="_on_EnemyWalking_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="EnemyJump" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="EnemyWalking" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="shoot" from="Turret/Turret" to="." method="_on_Turret_shoot"]
 
 [editable path="Turret"]

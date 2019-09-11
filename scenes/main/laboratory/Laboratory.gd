@@ -26,21 +26,7 @@ func _on_Turret_shoot(bullet, position, direction):
 
 
 #spawna cristais de energia no chão após derrotar um monstro, destruir um grande cristal condensado ou bater em chefes
-func _on_EnemyJump_power_crystal_drop(position):
-	
-	randomize()
-	var count = randi() % 5 + 1
-	
-	for i in range(count):
-		var a = MOEDA_TESTE.instance()   
-		a.global_position = position
-		add_child(a)
-
-
-func _on_EnemyWalking_power_crystal_drop(position):
-	
-	randomize()
-	var count = randi() % 5 + 1
+func _on_Enemy_power_crystal_drop(position, count):
 	
 	for i in range(count):
 		var a = MOEDA_TESTE.instance()   

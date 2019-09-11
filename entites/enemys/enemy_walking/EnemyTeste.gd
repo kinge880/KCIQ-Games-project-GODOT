@@ -94,8 +94,23 @@ func death():
 #função que dropa cristais após a morte do enemy
 func drop_power_crystal():
 	
+	randomize()
+	var count
+	var percent = randf()
 	var pos = global_position
-	emit_signal('power_crystal_drop', pos)
+	
+	if (percent > 0.5):
+		count = 1
+	elif (percent > 0.25):
+		count = 2
+	elif (percent > 0.10):
+		count = 3
+	elif (percent > 0.03):
+		count = 4
+	else:
+		count = 5
+		
+	emit_signal('power_crystal_drop', pos, count)
 
 
 func _physics_process(delta):

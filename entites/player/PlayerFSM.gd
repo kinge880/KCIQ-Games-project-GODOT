@@ -13,14 +13,10 @@ onready var air_attack_delay = $Timers/AerialAttackTimer
 onready var delay_after_damage_time = $Timers/DelayAfterDamageTime
 onready var sprite = $Sprite
 onready var check_wall = $RayCast2D
+onready var check_wall2 = $RayCast2D2
 
 #coloquei variaveis de todo tipo de custo/energia e pá, como exportadas, para facilitar os testes, já que basta alterar no inspetor
 #as variaveis de custo são necessarias no futuro quando implementarmos os mods para o nucleo de energia
-export var dash_obted = true
-export var double_jump_obted = true
-export var jetpack_obted = true
-export var gel_gun_obted = true
-export var time_gun_obted = true
 export var max_life = 100
 export var current_life = 100
 export var max_energy = 100
@@ -71,7 +67,6 @@ var enemy_damage_force
 var in_jump = false
 
 func _ready(): 
-	
 	life_changed()
 	power_crystal_changed()
 	add_to_group("player")
@@ -85,14 +80,12 @@ func update_velocity():
 		if sprite.flip_h:
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
-			check_wall.cast_to *= -1
 		sprite.flip_h = false
 		velocity.x += WALK_SPEED
 	elif Input.is_action_pressed("ui_left"):
 		if not sprite.flip_h:
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
-			check_wall.cast_to *= -1
 		sprite.flip_h = true
 		velocity.x -= WALK_SPEED
 
@@ -137,22 +130,17 @@ func jumping(delta):
 		animation.play("jump")
 	else:
 		animation.play("fall")
-	
 	# limita a altura do pulo
 	if Input.is_action_just_released("ui_up"):
 		velocity.y = max(velocity.y, -50.0)
 	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
-	
 	dash_transition()
+	double_jump_transition()
+	
 	if current_energy > gliding_cost:
 		gliding_transition()
-	
-	#ativa o estado de pulo duplo
-	if Input.is_action_just_pressed("ui_up") and double_jump_obted:
-		velocity.y = JUMP_SPEED
-		state = State.DOUBLE_JUMP
 	if not is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
 		state = State.AIR_ATTACK
 	if is_on_floor():
@@ -186,6 +174,15 @@ func double_jump(delta):
 	if is_on_floor():
 		state = State.STANDING
 
+
+#ativa o estado de pulo duplo
+func double_jump_transition():
+
+	if  player_globals_variables.double_jump_obted and Input.is_action_just_pressed("ui_up"):
+		velocity.y = JUMP_SPEED
+		state = State.DOUBLE_JUMP
+
+
 #pulo DELICIOSO na parede
 func grab_wall(delta):
 	
@@ -195,13 +192,15 @@ func grab_wall(delta):
 		velocity.y = JUMP_SPEED
 		in_jump = true
 		sprite.flip_h = false
-		check_wall.cast_to *= -1
+		$SwordSlice.position.x *= -1
+		$Body.position.x *= -1
 	if Input.is_action_pressed("ui_left") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == false:
 		velocity.x = -WALK_SPEED * 1.5
 		velocity.y = JUMP_SPEED
 		in_jump = true
 		sprite.flip_h = true
-		check_wall.cast_to *= -1
+		$SwordSlice.position.x *= -1
+		$Body.position.x *= -1
 	
 	#essa in_jump define se eu saltei ou não, é preciso usar ela para uma transição controlada entre os estados
 	#permitindo alterna entre as gravidades no momento correto e executar o salto em si
@@ -214,26 +213,31 @@ func grab_wall(delta):
 		update_velocity()
 		velocity.y += GRAVITY * delta
 	else:
-		if not check_wall.is_colliding():
+		if check_wall.is_colliding() or check_wall2.is_colliding():
+			animation.play("grab_wall")
+			velocity.y = GRAVITY * delta
+		else:
 			state = State.JUMPING
-		animation.play("grab_wall")
-		velocity.y = GRAVITY * delta
 		
 	if is_on_floor() or Input.is_action_just_pressed("ui_down"):
 		if sprite.flip_h == false:
 			sprite.flip_h = true
+			$SwordSlice.position.x *= -1
+			$Body.position.x *= -1
 		if sprite.flip_h == true:
 			sprite.flip_h = false
-		check_wall.cast_to *= -1
+			$SwordSlice.position.x *= -1
+			$Body.position.x *= -1
+		
 		state = State.JUMPING
-			
+		
 	velocity = move_and_slide(velocity, Vector2.UP)
 
 
 # função para auxiliar a transição para o estado agarrado na parede
 func grab_wall_transition():
 	
-	if not is_on_floor() and is_on_wall():
+	if player_globals_variables.wall_jump_obted and not is_on_floor() and is_on_wall():
 		state = State.GRAB_WALL
 
 
@@ -265,7 +269,7 @@ func gliding(delta):
 # função para auxiliar a transição para o estado planando
 func gliding_transition():
 	
-	if jetpack_obted and not is_on_floor():
+	if player_globals_variables.jetpack_obted and not is_on_floor():
 		if Input.is_action_just_pressed("gliding"):
 			state = State.GLIDING
 		elif Input.is_action_just_released("gliding"):
@@ -287,7 +291,7 @@ func dashing():
 func dash_transition():
 
 	# verifica se o delay do dash já acabou e se o player está se movendo 
-	if dash_obted and dash_delay.time_left == 0 && velocity.x != 0:
+	if player_globals_variables.dash_obted and dash_delay.time_left == 0 && velocity.x != 0:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
 
@@ -325,7 +329,7 @@ func crouching_transition():
 """
 func gel_shoot():
 	
-	if current_energy >= gel_gun_cost:
+	if current_energy >= gel_gun_cost and player_globals_variables.gel_gun_obted:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			#pega posição atual do mouse e emite o sinal de tiro para o mapa
 			var mspos = get_global_mouse_position()
@@ -340,7 +344,7 @@ func gel_shoot():
 #ativa um tiro da arma do tempo
 func time_shoot():
 	
-	if current_energy >= time_gun_cost:
+	if player_globals_variables.time_gun_obted and current_energy >= time_gun_cost:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			#pega posição atual do mouse e emite o sinal de tiro para o mapa
 			var mspos = get_global_mouse_position()
@@ -419,7 +423,7 @@ func big_jump(delta):
 # função para auxiliar a transição para o estado pulando
 func big_jump_transition():
 	
-	if Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
+	if player_globals_variables.big_jump_obted and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
 		if gliding_cost_timer.time_left == 0:
 			current_energy -= big_jump_cost
 			energy_changed()
@@ -552,4 +556,4 @@ func _on_SwordSlice_body_entered(body):
 	
 	if body.is_in_group("enemies"):
 		if body.has_method('take_damage'):
-			body.take_damage(sword_damage)
+			body.take_damage(sword_damage)	

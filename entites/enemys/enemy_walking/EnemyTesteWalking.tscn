@@ -103,7 +103,7 @@ texture = ExtResource( 2 )
 flip_h = true
 vframes = 3
 hframes = 8
-frame = 20
+frame = 1
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
@@ -121,7 +121,6 @@ anims/idle = SubResource( 5 )
 anims/walk = SubResource( 6 )
 
 [node name="HitBox" type="Area2D" parent="."]
-visible = false
 position = Vector2( -0.950397, 4.08742 )
 collision_layer = 16
 collision_mask = 2
@@ -130,13 +129,11 @@ __meta__ = {
 }
 
 [node name="HitBoxColision" type="CollisionShape2D" parent="HitBox"]
-visible = false
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
 shape = SubResource( 7 )
 
 [node name="FloorColision" type="RayCast2D" parent="."]
-visible = false
 position = Vector2( 8.76139, 0.313083 )
 enabled = true
 cast_to = Vector2( 0, 12 )

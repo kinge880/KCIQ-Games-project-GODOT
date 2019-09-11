@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/sprites/particles/Fogo_propuncao.png" type="Texture" id=3]
+[ext_resource path="res://ui/pause/PausePopUp.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -48,7 +49,7 @@ tracks/0/keys = {
 "values": [ 96, 97, 98 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SwordSlice/CollisionShape2D:disabled")
+tracks/1/path = NodePath("SwordSlice/SwordColision:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -76,7 +77,7 @@ tracks/0/keys = {
 "values": [ 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SwordSlice/CollisionShape2D:disabled")
+tracks/1/path = NodePath("SwordSlice/SwordColision:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -105,7 +106,7 @@ tracks/0/keys = {
 "values": [ 49, 50, 51, 52 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SwordSlice/CollisionShape2D:disabled")
+tracks/1/path = NodePath("SwordSlice/SwordColision:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -339,6 +340,7 @@ shape = SubResource( 2 )
 offset = Vector2( 0, -40 )
 current = true
 process_mode = 0
+smoothing_speed = 6.0
 
 [node name="JetPackParticle" type="Particles2D" parent="."]
 position = Vector2( 4.42004, 17.3101 )
@@ -428,7 +430,7 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordSlice"]
+[node name="SwordColision" type="CollisionShape2D" parent="SwordSlice"]
 position = Vector2( -1.84668, 0.230833 )
 shape = SubResource( 21 )
 disabled = true
@@ -437,6 +439,15 @@ disabled = true
 position = Vector2( 0.92, 3.865 )
 enabled = true
 cast_to = Vector2( 10, 0 )
+
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+position = Vector2( 0.92, 3.865 )
+enabled = true
+cast_to = Vector2( -10, 0 )
+
+[node name="PausePopUp" parent="." instance=ExtResource( 4 )]
+visible = false
+position = Vector2( -76.5822, -53.6956 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
 [connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]
