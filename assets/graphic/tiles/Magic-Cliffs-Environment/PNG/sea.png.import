@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/intbuilding7a.png-65dba70242eb6227a964c5320c3f5388.stex"
+path="res://.import/sea.png-d6665c580fd73afe3a1bba3fbd8e9685.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic/tiles/intbuilding7a.png"
-dest_files=[ "res://.import/intbuilding7a.png-65dba70242eb6227a964c5320c3f5388.stex" ]
+source_file="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/sea.png"
+dest_files=[ "res://.import/sea.png-d6665c580fd73afe3a1bba3fbd8e9685.stex" ]
 
 [params]
 

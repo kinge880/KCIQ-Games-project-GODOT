@@ -337,9 +337,12 @@ position = Vector2( 0.120441, 3.59325 )
 shape = SubResource( 2 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
+position = Vector2( 6.82562, 36.9721 )
 offset = Vector2( 0, -40 )
 current = true
 process_mode = 0
+limit_left = -50
+limit_bottom = 880
 smoothing_speed = 6.0
 
 [node name="JetPackParticle" type="Particles2D" parent="."]

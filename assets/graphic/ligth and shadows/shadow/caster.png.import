@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sample_map.png-bf185285e1299adf6ef32086ca1296f9.stex"
+path="res://.import/caster.png-e97a42e7912e60973600935bef2a1ff8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic/tiles/sample_map.png"
-dest_files=[ "res://.import/sample_map.png-bf185285e1299adf6ef32086ca1296f9.stex" ]
+source_file="res://assets/graphic/ligth and shadows/shadow/caster.png"
+dest_files=[ "res://.import/caster.png-e97a42e7912e60973600935bef2a1ff8.stex" ]
 
 [params]
 

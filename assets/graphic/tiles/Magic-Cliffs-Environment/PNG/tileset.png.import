@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/castle-tileset.png-86fddbfcb9185b026f99407a625bae9c.stex"
+path="res://.import/tileset.png-9d20303b4c1c54152a06b2e516822694.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic/tiles/Castle Platformer Tileset [16x16][FREE] - RottingPixels/castle-tileset.png"
-dest_files=[ "res://.import/castle-tileset.png-86fddbfcb9185b026f99407a625bae9c.stex" ]
+source_file="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/tileset.png"
+dest_files=[ "res://.import/tileset.png-9d20303b4c1c54152a06b2e516822694.stex" ]
 
 [params]
 

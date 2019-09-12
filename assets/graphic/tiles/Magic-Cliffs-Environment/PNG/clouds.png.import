@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cover_itch.png-9bcaffb791e2747e11dcf9078add196a.stex"
+path="res://.import/clouds.png-eaba2a5dbfd58ce0ef94cbd8b8b6e411.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic/tiles/cover_itch.png"
-dest_files=[ "res://.import/cover_itch.png-9bcaffb791e2747e11dcf9078add196a.stex" ]
+source_file="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/clouds.png"
+dest_files=[ "res://.import/clouds.png-eaba2a5dbfd58ce0ef94cbd8b8b6e411.stex" ]
 
 [params]
 
