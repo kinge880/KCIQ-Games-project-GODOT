@@ -342,7 +342,7 @@ offset = Vector2( 0, -40 )
 current = true
 process_mode = 0
 limit_left = -50
-limit_bottom = 880
+limit_bottom = 800
 smoothing_speed = 6.0
 
 [node name="JetPackParticle" type="Particles2D" parent="."]

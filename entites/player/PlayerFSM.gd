@@ -116,8 +116,8 @@ func standing():
 		energy_reload_timer_delay.start()
 		state = State.RELOAD
 	
+	
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
-
 
 # estado pulando
 func jumping(delta):
@@ -556,4 +556,4 @@ func _on_SwordSlice_body_entered(body):
 	
 	if body.is_in_group("enemies"):
 		if body.has_method('take_damage'):
-			body.take_damage(sword_damage)	
+			body.take_damage(sword_damage)

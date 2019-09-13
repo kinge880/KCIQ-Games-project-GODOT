@@ -1,7 +1,11 @@
 extends Node
 
 const MOEDA_TESTE = preload("res://assets/package/collectible/PowerCristal.tscn")
+var day = true
 
+func _ready():
+	$AnimationPlayer.play("day_cicle")
+	
 #Permite ao mapa controlar a bala de gel
 func _on_Player_gel_shoot(bullet, _position, _direction):
 	
@@ -32,3 +36,19 @@ func _on_Enemy_power_crystal_drop(position, count):
 		var a = MOEDA_TESTE.instance()   
 		a.global_position = position
 		add_child(a)
+
+
+func _on_FallDeath_body_entered(body):
+	
+	if body.is_in_group("player"):
+		get_tree().reload_current_scene()
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	
+	if anim_name == "day_cicle" and day:
+		$AnimationPlayer.play_backwards("day_cicle")
+		day = false
+	elif anim_name == "day_cicle" and not day:
+		$AnimationPlayer.play("day_cicle")
+		day = true

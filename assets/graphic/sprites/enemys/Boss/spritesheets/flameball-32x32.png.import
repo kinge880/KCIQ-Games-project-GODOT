@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/far-grounds.png-62f4903c19553477b2191c7fd58ffc2d.stex"
+path="res://.import/flameball-32x32.png-16a411afc63200d1fa28062fcd18a530.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/far-grounds.png"
-dest_files=[ "res://.import/far-grounds.png-62f4903c19553477b2191c7fd58ffc2d.stex" ]
+source_file="res://assets/graphic/sprites/enemys/Boss/spritesheets/flameball-32x32.png"
+dest_files=[ "res://.import/flameball-32x32.png-16a411afc63200d1fa28062fcd18a530.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
