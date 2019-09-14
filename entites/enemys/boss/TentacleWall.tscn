@@ -2,14 +2,14 @@
 
 [ext_resource path="res://assets/graphic/sprites/enemys/Boss/spritesheets/tentacles-25x90.png" type="Texture" id=1]
 
-[sub_resource type="GDScript" id=5]
+[sub_resource type="GDScript" id=1]
 script/source = "extends KinematicBody2D
 
 func _ready():
 	pass
 "
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="CapsuleShape2D" id=2]
 height = 72.0146
 
 [sub_resource type="Animation" id=3]
@@ -61,7 +61,7 @@ tracks/1/keys = {
 [node name="TentacleWall" type="KinematicBody2D"]
 position = Vector2( -30.462, 92.1722 )
 scale = Vector2( 1.5, 2 )
-script = SubResource( 5 )
+script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -70,7 +70,7 @@ hframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.1178, 0.127139 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

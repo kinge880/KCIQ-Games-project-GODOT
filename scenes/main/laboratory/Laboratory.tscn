@@ -1,4 +1,4 @@
-[gd_scene load_steps=140 format=2]
+[gd_scene load_steps=139 format=2]
 
 [ext_resource path="res://scenes/main/laboratory/Laboratory.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/tileset.png" type="Texture" id=2]
@@ -13,9 +13,8 @@
 [ext_resource path="res://entites/enemys/enemy_walking/EnemyTesteWalking.tscn" type="PackedScene" id=11]
 [ext_resource path="res://entites/enemys/enemy_jumping/EnemyTesteJumping.tscn" type="PackedScene" id=12]
 [ext_resource path="res://entites/enemys/turret/Turret.tscn" type="PackedScene" id=13]
-[ext_resource path="res://scenes/main/laboratory/BossBatle.gd" type="Script" id=14]
-[ext_resource path="res://entites/enemys/boss/Boss.tscn" type="PackedScene" id=15]
-[ext_resource path="res://entites/enemys/boss/TentacleWall.tscn" type="PackedScene" id=16]
+[ext_resource path="res://entites/enemys/boss/Boss.tscn" type="PackedScene" id=14]
+[ext_resource path="res://entites/enemys/boss/TentacleWall.tscn" type="PackedScene" id=15]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( -0.865784, 12.734, 33.0892, 12.734, 33.1246, 21.1411, -1.03503, 21.1411 )
@@ -1679,7 +1678,7 @@ scale = Vector2( 0.3, 0.3 )
 transform = Transform2D( 0.3, 0, 0, 0.3, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 2270.94, 443.116 )
+position = Vector2( 120.835, 333.1 )
 collision_mask = 29
 
 [node name="FallDeath" type="Area2D" parent="."]
@@ -1756,7 +1755,6 @@ position = Vector2( 203.063, 344.757 )
 texture = ExtResource( 10 )
 
 [node name="monsters" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="EnemyWalking" parent="monsters" instance=ExtResource( 11 )]
 position = Vector2( 413.283, 341.062 )
@@ -1793,20 +1791,24 @@ position = Vector2( 1654.34, 295.287 )
 editor/display_folded = true
 position = Vector2( 2104.62, 296.647 )
 
+[node name="DetectArea" parent="monsters/Node2" index="1"]
+position = Vector2( -832.098, -129.293 )
+
 [node name="BossBatle" type="Area2D" parent="."]
+editor/display_folded = true
 position = Vector2( 2581.22, 444.234 )
 collision_layer = 0
 collision_mask = 2
-script = ExtResource( 14 )
 
-[node name="Boss" parent="BossBatle" instance=ExtResource( 15 )]
-visible = false
-position = Vector2( 167.771, -109.334 )
+[node name="Boss" parent="BossBatle" instance=ExtResource( 14 )]
+position = Vector2( 434.087, -101.966 )
 
-[node name="TentacleWall" parent="BossBatle" instance=ExtResource( 16 )]
+[node name="TentacleWall" parent="BossBatle" instance=ExtResource( 15 )]
 editor/display_folded = true
 position = Vector2( -100.438, -59.6122 )
+collision_layer = 0
 collision_mask = 3
+script = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BossBatle"]
 position = Vector2( 0, -420.973 )
@@ -1829,9 +1831,10 @@ shape = SubResource( 123 )
 [connection signal="power_crystal_drop" from="monsters/EnemyJumping3" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="shoot" from="monsters/Node/Turret" to="." method="_on_Turret_shoot"]
 [connection signal="shoot" from="monsters/Node2/Turret" to="." method="_on_Turret_shoot"]
+[connection signal="body_entered" from="BossBatle" to="." method="_on_BossBatle_body_entered"]
 [connection signal="body_entered" from="BossBatle" to="BossBatle" method="_on_BossBatle_body_entered"]
 [connection signal="power_crystal_drop" from="BossBatle/Boss" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="animation_finished" from="BossBatle/TentacleWall/AnimationPlayer" to="BossBatle" method="_on_AnimationPlayer_animation_finished"]
+[connection signal="animation_finished" from="BossBatle/TentacleWall/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
 [editable path="monsters/Node"]
 

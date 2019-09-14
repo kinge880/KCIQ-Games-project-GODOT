@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mage-3-87x110-1.png.png-b53043027e00c7a73b0791b0afed6f60.stex"
+path="res://.import/580b585b2edbce24c47b26d9.png-ce30d941bbe07fa5582c0c1d9baffb28.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mage-3-87x110-1.png.png"
-dest_files=[ "res://.import/mage-3-87x110-1.png.png-b53043027e00c7a73b0791b0afed6f60.stex" ]
+source_file="res://assets/graphic/ligth and shadows/ligth/580b585b2edbce24c47b26d9.png"
+dest_files=[ "res://.import/580b585b2edbce24c47b26d9.png-ce30d941bbe07fa5582c0c1d9baffb28.stex" ]
 
 [params]
 

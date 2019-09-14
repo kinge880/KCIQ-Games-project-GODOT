@@ -6,9 +6,12 @@ onready var sprite = $Sprite
 
 export var max_life = 100
 export var current_life = 100
-export var gravity = 50
+export var gravity = 400
 
 signal power_crystal_drop
+signal is_death
+
+var is_defence = false
 
 enum State {
 	DEFENCE,
@@ -17,13 +20,8 @@ enum State {
 	DEATH
 }
 
-const SNAP = Vector2(0, 8)
-
 var velocity = Vector2.ZERO
-var state = State.DEFENCE
-var delay_after_damage = true
-var direction = 1
-var move_start = true
+var state = State.VULNERABLE
 
 func _ready():
 	
@@ -32,12 +30,23 @@ func _ready():
 
 func defence(delta):
 	
+	if not is_defence:
+		$TentacleWall/AnimationTentacleWall.play("start")
+		is_defence = true
+	
 	animation.play("idle")
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
 
+
 func vulnerable(delta):
-	pass
+	
+	if $Timers/VulnerableTime.time_left == 0:
+		state = State.DEFENCE
+		is_defence = false
+	
+	velocity.y += gravity * delta
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 
 # estado sofreu dano
@@ -45,6 +54,7 @@ func damage(delta):
 	
 	#ativa as animações de dano e bota uma gravidade
 	animation_effets.play("take_damage")
+	state = State.VULNERABLE
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
 
@@ -61,14 +71,10 @@ func take_damage(damage):
 
 
 #função que ativa a condição de morte
-func death(delta):
+func death():
 	
+	emit_signal('is_death')
 	queue_free()
-	animation_effets.play("take_damage")
-	
-	velocity.y += gravity * delta
-	velocity = move_and_slide(velocity, Vector2.UP)
-
 
 #função que dropa cristais após a morte do enemy
 func drop_power_crystal():
@@ -102,14 +108,11 @@ func _physics_process(delta):
 		State.DAMAGE:
 			damage(delta)
 		State.DEATH:
-			death(delta)
+			death()
 
 
 #função que ativa alguns estados ou condições após certas animações
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_Animation_animation_finished(anim_name):
 	
-	pass
-
-func _on_AnimationEnemy2_animation_finished(anim_name):
-	
-	pass
+	if anim_name == "start":
+		$TentacleWall/AnimationTentacleWall.play("idle")

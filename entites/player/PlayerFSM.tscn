@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/sprites/particles/Fogo_propuncao.png" type="Texture" id=3]
 [ext_resource path="res://ui/pause/PausePopUp.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/graphic/ligth and shadows/ligth/580b585b2edbce24c47b26d9.png" type="Texture" id=5]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -322,9 +323,6 @@ position = Vector2( 100, -0.567 )
 collision_layer = 2
 collision_mask = 28
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = SubResource( 1 )
@@ -426,6 +424,7 @@ one_shot = true
 one_shot = true
 
 [node name="SwordSlice" type="Area2D" parent="."]
+editor/display_folded = true
 position = Vector2( 14, -2.92391 )
 collision_layer = 2
 collision_mask = 16
@@ -438,19 +437,30 @@ position = Vector2( -1.84668, 0.230833 )
 shape = SubResource( 21 )
 disabled = true
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2( 0.92, 3.865 )
-enabled = true
-cast_to = Vector2( 10, 0 )
-
-[node name="RayCast2D2" type="RayCast2D" parent="."]
-position = Vector2( 0.92, 3.865 )
-enabled = true
-cast_to = Vector2( -10, 0 )
-
 [node name="PausePopUp" parent="." instance=ExtResource( 4 )]
 visible = false
 position = Vector2( -76.5822, -53.6956 )
+
+[node name="CheckWallTop" type="RayCast2D" parent="."]
+position = Vector2( 0.919998, -9.5 )
+enabled = true
+cast_to = Vector2( 10, 0 )
+
+[node name="CheckWallBotton" type="RayCast2D" parent="."]
+position = Vector2( 0.92, 17 )
+enabled = true
+cast_to = Vector2( 10, 0 )
+
+[node name="LanternTest" type="Light2D" parent="."]
+visible = false
+position = Vector2( 85.8325, 8.29675 )
+rotation = -1.5708
+scale = Vector2( 0.0624757, 0.200315 )
+texture = ExtResource( 5 )
+shadow_enabled = true
+shadow_gradient_length = 1.1
+shadow_filter = 5
+shadow_filter_smooth = 11.1
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
 [connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]

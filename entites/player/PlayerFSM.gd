@@ -12,8 +12,10 @@ onready var attack_delay = $Timers/AttackTimer
 onready var air_attack_delay = $Timers/AerialAttackTimer
 onready var delay_after_damage_time = $Timers/DelayAfterDamageTime
 onready var sprite = $Sprite
-onready var check_wall = $RayCast2D
-onready var check_wall2 = $RayCast2D2
+onready var check_wall_botton = $CheckWallBotton
+#onready var check_wall_left = $RayCasts/CheckWallLeft
+onready var check_wall_top = $CheckWallTop
+#onready var check_wall_top_left = $RayCasts/CheckWallTopLeft
 
 #coloquei variaveis de todo tipo de custo/energia e pá, como exportadas, para facilitar os testes, já que basta alterar no inspetor
 #as variaveis de custo são necessarias no futuro quando implementarmos os mods para o nucleo de energia
@@ -80,12 +82,16 @@ func update_velocity():
 		if sprite.flip_h:
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
+			check_wall_botton.cast_to.x = 10
+			check_wall_top.cast_to.x = 10
 		sprite.flip_h = false
 		velocity.x += WALK_SPEED
 	elif Input.is_action_pressed("ui_left"):
 		if not sprite.flip_h:
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
+			check_wall_botton.cast_to.x = -10
+			check_wall_top.cast_to.x = -10
 		sprite.flip_h = true
 		velocity.x -= WALK_SPEED
 
@@ -101,7 +107,9 @@ func standing():
 	
 	if Input.is_action_pressed("ui_down"):
 		crouching_transition()
-	
+	if Input.is_action_pressed("test_ligth"):
+		$LanternTest.show()
+		
 	update_velocity()
 	jump_transition()
 	dash_transition()
@@ -186,19 +194,24 @@ func double_jump_transition():
 #pulo DELICIOSO na parede
 func grab_wall(delta):
 	
-	#saltos para a direita e esquerda da parede
+	#saltos para a direita e esquerda da parede, bixo isso ficou muito verboso kkk, maas não tem jeito, preciso fazer esses ajustes em cada pulo
 	if Input.is_action_pressed("ui_right") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == true:
 		velocity.x = WALK_SPEED * 1.5
 		velocity.y = JUMP_SPEED
 		in_jump = true
 		sprite.flip_h = false
+		check_wall_botton.cast_to.x = 10
+		check_wall_top.cast_to.x = 10
 		$SwordSlice.position.x *= -1
 		$Body.position.x *= -1
+		
 	if Input.is_action_pressed("ui_left") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == false:
 		velocity.x = -WALK_SPEED * 1.5
 		velocity.y = JUMP_SPEED
 		in_jump = true
 		sprite.flip_h = true
+		check_wall_botton.cast_to.x = -10
+		check_wall_top.cast_to.x = -10
 		$SwordSlice.position.x *= -1
 		$Body.position.x *= -1
 	
@@ -213,7 +226,7 @@ func grab_wall(delta):
 		update_velocity()
 		velocity.y += GRAVITY * delta
 	else:
-		if check_wall.is_colliding() or check_wall2.is_colliding():
+		if check_wall_botton.is_colliding() and check_wall_top.is_colliding():
 			animation.play("grab_wall")
 			velocity.y = GRAVITY * delta
 		else:
@@ -224,10 +237,14 @@ func grab_wall(delta):
 			sprite.flip_h = true
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
+			check_wall_botton.cast_to.x = -10
+			check_wall_top.cast_to.x = -10
 		if sprite.flip_h == true:
 			sprite.flip_h = false
 			$SwordSlice.position.x *= -1
 			$Body.position.x *= -1
+			check_wall_botton.cast_to.x = 10
+			check_wall_top.cast_to.x = 10
 		
 		state = State.JUMPING
 		
@@ -475,6 +492,7 @@ func take_damage_transition(damage, direction_damage, damage_force):
 func take_damage(delta):
 	
 	velocity.x = 0
+	velocity.y = 0
 	
 	if enemy_damage_position.x > position.x:
 		velocity.x -= enemy_damage_force

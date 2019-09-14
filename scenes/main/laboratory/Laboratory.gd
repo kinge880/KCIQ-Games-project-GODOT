@@ -2,6 +2,7 @@ extends Node
 
 const MOEDA_TESTE = preload("res://assets/package/collectible/PowerCristal.tscn")
 var day = true
+var start = true
 
 func _ready():
 	$AnimationPlayer.play("day_cicle")
@@ -52,3 +53,13 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif anim_name == "day_cicle" and not day:
 		$AnimationPlayer.play("day_cicle")
 		day = true
+	if anim_name == "start":
+		$BossBatle/TentacleWall/AnimationPlayer.play("idle")
+
+func _on_BossBatle_body_entered(body):
+	
+	if body.is_in_group("player") and start:
+		$BossBatle/TentacleWall/AnimationPlayer.play("start")
+		$BossBatle/Boss.show()
+		
+	start = false
