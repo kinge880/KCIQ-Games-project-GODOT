@@ -184,6 +184,7 @@ anims/take_damage = SubResource( 1 )
 anims/idle = SubResource( 2 )
 
 [node name="TentacleWall" type="KinematicBody2D" parent="."]
+editor/display_folded = true
 position = Vector2( -10.9737, 10.703 )
 collision_layer = 16
 collision_mask = 2
