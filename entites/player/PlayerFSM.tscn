@@ -299,19 +299,19 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=20]
-length = 0.4
-step = 0.05
+length = 1.2
+step = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
+tracks/0/path = NodePath("Sprite:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.25, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="CapsuleShape2D" id=21]
@@ -386,7 +386,6 @@ anims/camera_zoom_super_jump = SubResource( 19 )
 anims/take_damage = SubResource( 20 )
 
 [node name="Timers" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 0.6
@@ -400,8 +399,8 @@ one_shot = true
 wait_time = 0.3
 one_shot = true
 
-[node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
-wait_time = 0.4
+[node name="DelayAfterDamage" type="Timer" parent="Timers"]
+wait_time = 1.2
 one_shot = true
 
 [node name="AerialAttackTimer" type="Timer" parent="Timers"]
@@ -421,6 +420,10 @@ wait_time = 3.0
 one_shot = true
 
 [node name="EnergyReloadDelay" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="DamageForceDuration" type="Timer" parent="Timers"]
+wait_time = 0.2
 one_shot = true
 
 [node name="SwordSlice" type="Area2D" parent="."]

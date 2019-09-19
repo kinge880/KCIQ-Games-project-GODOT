@@ -4,11 +4,12 @@ onready var animation = $AnimationEnemy
 onready var animation_effets = $AnimationEnemy2
 onready var sprite = $Sprite
 onready var hit_box = $HitBox/HitBoxColision
+onready var delay_after_damage = $Timers/DelayAfterDamage
 
 export var max_life = 10
 export var current_life = 10
 export var damage = 10
-export var damage_force = 300
+export var damage_force = 150
 export var walk_speed = 50
 
 signal power_crystal_drop
@@ -18,12 +19,12 @@ enum State {
 	WALK,
 	ATTACK,
 	DAMAGE,
-	DEATH
+	DEATH,
+	DELAY_AFTER_DAMAGE
 }
 
 var velocity = Vector2.ZERO
 var state = State.STANDING
-var delay_after_damage = true
 var to_player
 var player = null
 var dash_direction
@@ -43,8 +44,6 @@ func update_velocity():
 # estado standing
 func standing(delta):
 	
-	modulate = Color.white
-	
 	if player:
 		state = State.WALK
 	elif velocity.x == 0:
@@ -55,7 +54,6 @@ func walking(delta):
 	
 	if player:
 		to_player = player.global_position - global_position
-		dash_direction = player.global_position - global_position
 		#print(to_player)
 		to_player = to_player.normalized()
 		move_and_slide(to_player * walk_speed)
@@ -74,19 +72,38 @@ func walking(delta):
 
 func attack(delta):
 	
-	if $Timers/DashDuration.time_left > 0:
+	if $Timers/DashDuration.time_left > 1:
+		dash_direction = player.global_position - global_position
 		modulate = Color.yellow
-		move_and_slide(dash_direction.normalized() * 400)
+		animation.play("pre_dash")
+	elif $Timers/DashDuration.time_left > 0:
+		animation.play("dash")
+		move_and_slide(dash_direction.normalized() * walk_speed * 8)
 	else:
-		$Timers/DashDelay.start()
+		standing_after_damage_transition()
+		
+func standing_after_damage():
+	 
+	modulate = Color.white
+	
+	if delay_after_damage.time_left == 0:
 		state = State.STANDING
+	elif velocity.x == 0:
+		animation.play("idle")
+
+
+func standing_after_damage_transition():
+	$Timers/DashDelay.start()
+	delay_after_damage.start()
+	state = State.DELAY_AFTER_DAMAGE
+
 
 # estado sofreu dano
 func damage(delta):
 	
 	#ativa as animações de dano e bota uma gravidade
 	animation_effets.play("take_damage")
-	state = State.STANDING
+	animation.play("hurt")
 
 #função que recebe o dano e reduz a vida do enemy
 func take_damage(damage):
@@ -141,6 +158,8 @@ func _physics_process(delta):
 			damage(delta)
 		State.DEATH:
 			death()
+		State.DELAY_AFTER_DAMAGE:
+			standing_after_damage()
 
 
 #função que verifica se o player entrou no area 2d do enemy e causa dano
@@ -152,6 +171,7 @@ func _on_HitBox_body_entered(body):
 			#essa força de impacto é usada para por exemplo um monstro pequeno apenas causar um leve movimento e um socão
 			#muito loko feito por um boss jogar o player na pqp
 			body.take_damage_transition(damage, global_position, damage_force)
+			standing_after_damage_transition()
 
 
 func time_bullet_zone():
@@ -170,12 +190,14 @@ func _on_HitBox_area_entered(area):
 	
 	if area.name == "TimeBullet":
 		walk_speed = 5
+		animation.playback_speed = 0.1
 
 
 func _on_HitBox_area_exited(area):
 	
 	if area.name == "TimeBullet":
 		walk_speed = 50
+		animation.playback_speed = 1
 
 func _on_VisionPlayer_body_entered(body):
 	

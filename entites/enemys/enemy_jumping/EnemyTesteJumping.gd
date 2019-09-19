@@ -109,6 +109,8 @@ func damage(delta):
 	#ativa as animações de dano e bota uma gravidade
 	animation_effets.play("take_damage")
 	animation.play("hurt")
+	
+	velocity.x = 0
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
 
@@ -205,6 +207,7 @@ func _on_HitBox_area_entered(area):
 		walk_speed = 15
 		gravity = 40
 		jump_speed = -20
+		animation.playback_speed = 0.1
 
 
 func _on_HitBox_area_exited(area):
@@ -213,3 +216,4 @@ func _on_HitBox_area_exited(area):
 		walk_speed = 150
 		gravity = 400
 		jump_speed = -200
+		animation.playback_speed = 1

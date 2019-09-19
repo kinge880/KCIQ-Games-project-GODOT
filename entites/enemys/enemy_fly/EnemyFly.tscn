@@ -7,7 +7,6 @@
 extents = Vector2( 16.4993, 17.0048 )
 
 [sub_resource type="Animation" id=2]
-length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
@@ -15,17 +14,69 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.12, 0.25, 0.38 ),
+"times": PoolRealArray( 0, 0.3, 0.7, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="Animation" id=13]
+resource_name = "dash"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10.0, 360.0 ]
+}
+
 [sub_resource type="Animation" id=3]
-length = 0.32
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1, 0.2, 0.4, 0.6, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 1, 0.5 ), Vector2( 0.5, 1 ), Vector2( 0.5, 0.5 ), Vector2( 0.5, 0.01 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:collision_mask")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("HitBox/HitBoxColision:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=4]
-length = 0.4
+length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -37,6 +88,30 @@ tracks/0/keys = {
 "transitions": PoolRealArray(  ),
 "update": 1,
 "values": [  ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, -360.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.5, 0.7 ), Vector2( 1, 0.8 ), Vector2( 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -54,20 +129,32 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 32, 33, 34, 35, 36, 37, 38, 39 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
 
-[sub_resource type="Animation" id=6]
-length = 0.6
+[sub_resource type="Animation" id=14]
+resource_name = "pre_dash"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("Sprite:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"times": PoolRealArray( 0, 0.3, 0.6, 0.8, 0.9, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 1, 2, 3, 4, 5 ]
+"update": 0,
+"values": [ 0.0, 180.0, 0.0, 180.0, 360.0, 0.0 ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -84,6 +171,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 16, 17, 18, 19, 20, 21 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
 
 [sub_resource type="Animation" id=8]
 length = 0.6
@@ -99,20 +198,17 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
-
-[sub_resource type="Animation" id=9]
-length = 0.6
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 24, 25, 26, 27, 28, 29 ]
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
 }
 
 [sub_resource type="RectangleShape2D" id=10]
@@ -126,7 +222,6 @@ radius = 535.479
 
 [node name="EnemyFly" type="KinematicBody2D"]
 position = Vector2( 57.9632, -5.00452 )
-rotation = 0.00398407
 scale = Vector2( 0.5, 0.5 )
 collision_layer = 0
 collision_mask = 3
@@ -141,6 +236,7 @@ frame = 19
 region_rect = Rect2( -1.05261, 0, 377.053, 117 )
 
 [node name="Body" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -0.176426, -0.231606 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -149,15 +245,29 @@ shape = SubResource( 1 )
 anims/take_damage = SubResource( 2 )
 
 [node name="AnimationEnemy" type="AnimationPlayer" parent="."]
+anims/dash = SubResource( 13 )
 anims/death = SubResource( 3 )
 anims/hurt = SubResource( 4 )
 anims/idle = SubResource( 5 )
-anims/walk_down = SubResource( 6 )
+anims/pre_dash = SubResource( 14 )
 anims/walk_left = SubResource( 7 )
 anims/walk_rigth = SubResource( 8 )
-anims/walk_top = SubResource( 9 )
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="DashDuration" type="Timer" parent="Timers"]
+wait_time = 1.8
+one_shot = true
+
+[node name="DashDelay" type="Timer" parent="Timers"]
+wait_time = 5.0
+one_shot = true
+
+[node name="DelayAfterDamage" type="Timer" parent="Timers"]
+one_shot = true
 
 [node name="HitBox" type="Area2D" parent="."]
+visible = false
 position = Vector2( 0.0150647, -0.289104 )
 collision_layer = 16
 collision_mask = 2
@@ -166,21 +276,13 @@ __meta__ = {
 }
 
 [node name="HitBoxColision" type="CollisionShape2D" parent="HitBox"]
+visible = false
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
 shape = SubResource( 10 )
 
-[node name="Timers" type="Node" parent="."]
-
-[node name="DashDuration" type="Timer" parent="Timers"]
-wait_time = 0.8
-one_shot = true
-
-[node name="DashDelay" type="Timer" parent="Timers"]
-wait_time = 5.0
-one_shot = true
-
 [node name="DashZone" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -188,6 +290,7 @@ collision_mask = 2
 shape = SubResource( 11 )
 
 [node name="VisionPlayer" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2
 

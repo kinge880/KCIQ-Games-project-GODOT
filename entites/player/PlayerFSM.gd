@@ -10,7 +10,8 @@ onready var gliding_cost_timer = $Timers/GlidingEnergyConsumed
 onready var big_jump_delay = $Timers/BigJumpDelay
 onready var attack_delay = $Timers/AttackTimer
 onready var air_attack_delay = $Timers/AerialAttackTimer
-onready var delay_after_damage_time = $Timers/DelayAfterDamageTime
+onready var delay_after_damage = $Timers/DelayAfterDamage
+onready var damage_force_duration = $Timers/DamageForceDuration
 onready var sprite = $Sprite
 onready var check_wall_botton = $CheckWallBotton
 #onready var check_wall_left = $RayCasts/CheckWallLeft
@@ -61,7 +62,6 @@ const TIME_BULLET = preload("res://assets/package/bullets/time_bullet/time_bulle
 
 var velocity = Vector2.ZERO
 var state = State.STANDING
-var delay_after_damage = true
 var power_crystal = 100
 var camera_zoom = false
 var enemy_damage_position
@@ -478,15 +478,15 @@ func take_damage_transition(damage, direction_damage, damage_force):
 	enemy_damage_position = direction_damage
 	enemy_damage_force = damage_force
 	
-	if delay_after_damage_time.time_left == 0:
+	if delay_after_damage.time_left == 0:
 		current_life -= damage
 		life_changed()
-		delay_after_damage_time.start()
+		delay_after_damage.start()
+		damage_force_duration.start()
 		animation_effects.play("take_damage")
 		animation.play("damaged")
 		state = State.DAMAGED
-	else:
-		state = State.STANDING
+
 
 #estado damaged
 func take_damage(delta):
@@ -496,13 +496,13 @@ func take_damage(delta):
 	
 	if enemy_damage_position.x > position.x:
 		velocity.x -= enemy_damage_force
-	if enemy_damage_position.x < position.x:
+	elif enemy_damage_position.x < position.x:
 		velocity.x += enemy_damage_force
 
 	if current_life <= 0:
 		#fazer funções de morte depois
 		death()
-	elif delay_after_damage_time.time_left == 0:
+	elif damage_force_duration.time_left == 0:
 		state = State.STANDING
 	
 	velocity.y += GRAVITY * delta
@@ -522,6 +522,9 @@ func collect_power_crystal(crystal_value):
 	power_crystal_changed()
 
 
+func change_colisors():
+	pass
+	
 func _physics_process(delta):
 	
 	match state:

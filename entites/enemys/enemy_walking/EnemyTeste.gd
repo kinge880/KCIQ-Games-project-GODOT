@@ -69,6 +69,8 @@ func damage(delta):
 	#ativa as animações de dano e bota uma gravidade
 	animation_effets.play("take_damage")
 	animation.play("hurt")
+	
+	velocity.x = 0
 	velocity.y += gravity * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 
@@ -86,7 +88,6 @@ func take_damage(damage):
 #função que ativa a condição de morte
 func death():
 	
-	hit_box.disabled = true
 	animation.play("death")
 	animation_effets.play("take_damage")
 
@@ -152,6 +153,7 @@ func _on_HitBox_area_entered(area):
 	if area.name == "TimeBullet":
 		walk_speed = 5
 		gravity = 80
+		animation.playback_speed = 0.1
 
 
 func _on_HitBox_area_exited(area):
@@ -159,3 +161,4 @@ func _on_HitBox_area_exited(area):
 	if area.name == "TimeBullet":
 		walk_speed = 50
 		gravity = 800
+		animation.playback_speed = 1

@@ -5,7 +5,7 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.19994
-height = 7.78618
+height = 4.15403
 
 [sub_resource type="Animation" id=2]
 length = 0.4
@@ -24,7 +24,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=3]
 resource_name = "death"
-length = 0.32
+length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -32,10 +32,22 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 17, 18, 19, 20 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HitBox/HitBoxColision:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -103,10 +115,8 @@ texture = ExtResource( 2 )
 flip_h = true
 vframes = 3
 hframes = 8
-frame = 1
 
 [node name="Body" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( -1.13033, 4.63873 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -134,7 +144,7 @@ rotation = 1.5708
 shape = SubResource( 7 )
 
 [node name="FloorColision" type="RayCast2D" parent="."]
-position = Vector2( 8.76139, 0.313083 )
+position = Vector2( 9.40169, -0.470379 )
 enabled = true
 cast_to = Vector2( 0, 12 )
 
