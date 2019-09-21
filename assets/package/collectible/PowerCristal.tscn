@@ -4,10 +4,10 @@
 [ext_resource path="res://assets/package/collectible/PowerCristal.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 3.39193
+radius = 2.84348
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 3.76411
+radius = 4.3653
 
 [node name="PowerCristal" type="RigidBody2D"]
 mass = 2.0

@@ -1721,7 +1721,6 @@ shape = SubResource( 127 )
 anims/day_cicle = SubResource( 128 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-editor/display_folded = true
 
 [node name="Sea" type="ParallaxLayer" parent="ParallaxBackground"]
 modulate = Color( 0, 0.94902, 1, 1 )
@@ -1780,20 +1779,17 @@ texture = ExtResource( 10 )
 
 [node name="monsters" type="Node" parent="."]
 
-[node name="EnemyWalking" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 413.283, 341.062 )
-
-[node name="EnemyWalking3" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 1811.75, 652.589 )
-
 [node name="EnemyWalking4" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 1492.06, 618.58 )
+position = Vector2( 1495.27, 619.488 )
+
+[node name="EnemyWalking6" parent="monsters" instance=ExtResource( 11 )]
+position = Vector2( 229.863, 347.965 )
 
 [node name="EnemyWalking5" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 1647.15, 441.73 )
+position = Vector2( 1648.37, 443.756 )
 
 [node name="EnemyWalking2" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 836.361, 364.189 )
+position = Vector2( 839.335, 364.571 )
 
 [node name="EnemyJumping" parent="monsters" instance=ExtResource( 12 )]
 position = Vector2( 1155.38, 341.062 )
@@ -1846,9 +1842,8 @@ shape = SubResource( 129 )
 [connection signal="time_shoot" from="Player" to="." method="_on_Player_time_shoot"]
 [connection signal="body_entered" from="FallDeath" to="." method="_on_FallDeath_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="power_crystal_drop" from="monsters/EnemyWalking" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyWalking3" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="power_crystal_drop" from="monsters/EnemyWalking4" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="monsters/EnemyWalking6" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="power_crystal_drop" from="monsters/EnemyWalking5" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="power_crystal_drop" from="monsters/EnemyWalking2" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="power_crystal_drop" from="monsters/EnemyJumping" to="." method="_on_Enemy_power_crystal_drop"]
@@ -1857,8 +1852,9 @@ shape = SubResource( 129 )
 [connection signal="power_crystal_drop" from="monsters/EnemyJumping3" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="shoot" from="monsters/Node/Turret" to="." method="_on_Turret_shoot"]
 [connection signal="shoot" from="monsters/Node2/Turret" to="." method="_on_Turret_shoot"]
-[connection signal="body_entered" from="BossBatle" to="." method="_on_BossBatle_body_entered"]
+[connection signal="power_crystal_drop" from="monsters/EnemyFly" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="body_entered" from="BossBatle" to="BossBatle" method="_on_BossBatle_body_entered"]
+[connection signal="body_entered" from="BossBatle" to="." method="_on_BossBatle_body_entered"]
 [connection signal="power_crystal_drop" from="BossBatle/Boss" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="animation_finished" from="BossBatle/TentacleWall/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 

@@ -8,6 +8,7 @@ onready var delay_move = $Timers/DelayMove
 onready var move_time = $Timers/MoveTime
 onready var move_distance = $Timers/MoveDistance
 onready var hit_box = $HitBox/HitBoxColision
+onready var hit_area = $HitBox
 
 export var max_life = 10
 export var current_life = 10
@@ -33,6 +34,7 @@ var state = State.STANDING
 var delay_after_damage = true
 var direction = 1
 var move_start = true
+var player 
 
 func _ready():
 	
@@ -60,6 +62,7 @@ func standing(delta):
 	animation.play("idle")
 	#quando o timer chegar a 0 troca esse estado pelo estado de pulo
 	update_velocity()
+	player_overlapse()
 	velocity.y += gravity * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 	
@@ -86,6 +89,7 @@ func jump(delta):
 	if is_on_floor():
 		velocity.y = jump_speed
 	
+	player_overlapse()
 	animation.play("walk")
 	velocity.x = walk_speed * direction
 	velocity.y += gravity * delta
@@ -101,6 +105,12 @@ func jump(delta):
 			sprite.flip_h = true
 		else:
 			sprite.flip_h = false
+
+
+func player_overlapse():
+	if player:
+		if hit_area.overlaps_body(player):
+			player.take_damage_transition(damage, global_position, damage_force)
 
 
 # estado sofreu dano
@@ -125,6 +135,7 @@ func take_damage(damage):
 	move_distance.paused = true
 	
 	if current_life <= 0:
+		hit_box.disabled = true
 		drop_power_crystal()
 		state = State.DEATH
 
@@ -132,7 +143,6 @@ func take_damage(damage):
 #função que ativa a condição de morte
 func death(delta):
 	
-	hit_box.disabled = true
 	animation.play("death")
 	animation_effets.play("take_damage")
 	
@@ -177,13 +187,20 @@ func _physics_process(delta):
 
 #função que verifica se o player entrou no area 2d do enemy e causa dano
 func _on_HitBox_body_entered(body):
-	print(body.name)
+	
 	if body.is_in_group("player"):
+		player = body
 		if body.has_method('take_damage_transition'):
 			#passa o dano causado, a posição no momento do dano e a força de impacto do dano
 			#essa força de impacto é usada para por exemplo um monstro pequeno apenas causar um leve movimento e um socão
 			#muito loko feito por um boss jogar o player na pqp
 			body.take_damage_transition(damage, global_position, damage_force)
+
+
+func _on_HitBox_body_exited(body):
+	
+	if body.is_in_group("player"):
+		player = null
 
 
 func time_bullet_zone():
@@ -201,19 +218,22 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif anim_name == "death":
 		queue_free()
 
+
+#verifica colisão com a bala no tempo
 func _on_HitBox_area_entered(area):
 	
 	if area.name == "TimeBullet":
-		walk_speed = 15
-		gravity = 40
-		jump_speed = -20
+		walk_speed = walk_speed / 10
+		gravity = gravity / 10
+		jump_speed = jump_speed / 10
 		animation.playback_speed = 0.1
 
 
+#verifica fim da colisão com a bala no tempo
 func _on_HitBox_area_exited(area):
 	
 	if area.name == "TimeBullet":
-		walk_speed = 150
-		gravity = 400
-		jump_speed = -200
+		walk_speed = walk_speed * 10
+		gravity = gravity * 10
+		jump_speed = jump_speed * 10
 		animation.playback_speed = 1

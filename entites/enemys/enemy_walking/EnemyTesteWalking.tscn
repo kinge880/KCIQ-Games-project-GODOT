@@ -103,12 +103,14 @@ radius = 6.82859
 height = 8.15195
 
 [node name="EnemyWalking" type="KinematicBody2D"]
-position = Vector2( 57.9632, -5.00452 )
 rotation = 0.00398407
 scale = Vector2( 1.5, 1.5 )
 collision_layer = 0
 collision_mask = 3
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 4257.49 ]
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
@@ -144,9 +146,14 @@ rotation = 1.5708
 shape = SubResource( 7 )
 
 [node name="FloorColision" type="RayCast2D" parent="."]
-position = Vector2( 9.40169, -0.470379 )
+position = Vector2( 15.7328, -2.81528 )
 enabled = true
-cast_to = Vector2( 0, 12 )
+cast_to = Vector2( 0, 15 )
+
+[node name="WallColision" type="RayCast2D" parent="."]
+position = Vector2( -0.146893, 3.98879 )
+enabled = true
+cast_to = Vector2( 14, 0 )
 
 [node name="Timers" type="Node" parent="."]
 

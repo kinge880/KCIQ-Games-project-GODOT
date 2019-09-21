@@ -4,6 +4,7 @@ onready var animation = $AnimationEnemy
 onready var animation_effets = $AnimationEnemy2
 onready var sprite = $Sprite
 onready var hit_box = $HitBox/HitBoxColision
+onready var hit_area = $HitBox
 onready var delay_after_damage = $Timers/DelayAfterDamage
 
 export var max_life = 10
@@ -50,8 +51,10 @@ func standing(delta):
 		animation.play("idle")
 
 
+#função que ativa o movimento, pegando a posição do player enquanto ele tiver na visão
 func walking(delta):
 	
+	player_overlapse()
 	if player:
 		to_player = player.global_position - global_position
 		#print(to_player)
@@ -70,6 +73,7 @@ func walking(delta):
 		state = State.STANDING
 
 
+#função que ativa o ataque a cada 5 segundos
 func attack(delta):
 	
 	if $Timers/DashDuration.time_left > 1:
@@ -81,7 +85,11 @@ func attack(delta):
 		move_and_slide(dash_direction.normalized() * walk_speed * 8)
 	else:
 		standing_after_damage_transition()
-		
+	
+	player_overlapse()
+
+
+#após terminar o ataque para por alguns segundos
 func standing_after_damage():
 	 
 	modulate = Color.white
@@ -92,6 +100,14 @@ func standing_after_damage():
 		animation.play("idle")
 
 
+#verifica se o player ainda ta dentro da hitbox, pa impedir que ele possa encostar no monstro e ficar la pra sempre
+func player_overlapse():
+	if player:
+		if hit_area.overlaps_body(player):
+			player.take_damage_transition(damage, global_position, damage_force)
+
+
+#transição após o ataque
 func standing_after_damage_transition():
 	$Timers/DashDelay.start()
 	delay_after_damage.start()
@@ -112,13 +128,13 @@ func take_damage(damage):
 	state = State.DAMAGE
 	
 	if current_life <= 0:
+		hit_box.disabled = true
 		drop_power_crystal()
 		state = State.DEATH
 
 #função que ativa a condição de morte
 func death():
 	
-	hit_box.disabled = true
 	animation.play("death")
 	animation_effets.play("take_damage")
 
@@ -186,36 +202,45 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif anim_name == "death":
 		queue_free()
 
+
+#verifica a colisão com a bala do tempo
 func _on_HitBox_area_entered(area):
 	
 	if area.name == "TimeBullet":
-		walk_speed = 5
+		walk_speed = walk_speed / 10
 		animation.playback_speed = 0.1
 
 
+#verifica o fim da colisão com a bala do tempo
 func _on_HitBox_area_exited(area):
 	
 	if area.name == "TimeBullet":
-		walk_speed = 50
+		walk_speed = walk_speed * 10
 		animation.playback_speed = 1
 
+
+#verifica se o player entrou na visão
 func _on_VisionPlayer_body_entered(body):
 	
 	if body.is_in_group("player"):
 		player = body
 
+
+#verifica se o player saiu da visão
 func _on_VisionPlayer_body_exited(body):
 	
 	if body.is_in_group("player"):
 		player = null
 
 
+#verifica se o player entrou na zona de dash
 func _on_DashZone_body_entered(body):
 	
 	if body.is_in_group("player"):
 		dash_zone = true
 
 
+#verifica se o player saiu da zona de dash
 func _on_DashZone_body_exited(body):
 	
 	if body.is_in_group("player"):

@@ -135,7 +135,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=10]
-length = 0.4
+length = 0.3
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -143,10 +144,22 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 59, 60, 61, 62, 63, 64 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:collision_layer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 32 ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -299,7 +312,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=20]
-length = 1.2
+length = 1.35
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:modulate")
@@ -308,10 +321,22 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:collision_layer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.35 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 34 ]
 }
 
 [sub_resource type="CapsuleShape2D" id=21]
@@ -320,7 +345,7 @@ height = 8.767
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 100, -0.567 )
-collision_layer = 2
+collision_layer = 34
 collision_mask = 28
 script = ExtResource( 1 )
 
@@ -328,7 +353,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 52
+frame = 59
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, 3.59325 )
@@ -399,10 +424,6 @@ one_shot = true
 wait_time = 0.3
 one_shot = true
 
-[node name="DelayAfterDamage" type="Timer" parent="Timers"]
-wait_time = 1.2
-one_shot = true
-
 [node name="AerialAttackTimer" type="Timer" parent="Timers"]
 wait_time = 0.4
 one_shot = true
@@ -420,10 +441,6 @@ wait_time = 3.0
 one_shot = true
 
 [node name="EnergyReloadDelay" type="Timer" parent="Timers"]
-one_shot = true
-
-[node name="DamageForceDuration" type="Timer" parent="Timers"]
-wait_time = 0.2
 one_shot = true
 
 [node name="SwordSlice" type="Area2D" parent="."]
@@ -465,5 +482,6 @@ shadow_gradient_length = 1.1
 shadow_filter = 5
 shadow_filter_smooth = 11.1
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="animation_finished" from="AnimationPlayer2" to="." method="_on_AnimationPlayer2_animation_finished"]
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
 [connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]

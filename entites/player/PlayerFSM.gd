@@ -10,8 +10,6 @@ onready var gliding_cost_timer = $Timers/GlidingEnergyConsumed
 onready var big_jump_delay = $Timers/BigJumpDelay
 onready var attack_delay = $Timers/AttackTimer
 onready var air_attack_delay = $Timers/AerialAttackTimer
-onready var delay_after_damage = $Timers/DelayAfterDamage
-onready var damage_force_duration = $Timers/DamageForceDuration
 onready var sprite = $Sprite
 onready var check_wall_botton = $CheckWallBotton
 #onready var check_wall_left = $RayCasts/CheckWallLeft
@@ -67,6 +65,7 @@ var camera_zoom = false
 var enemy_damage_position
 var enemy_damage_force
 var in_jump = false
+var delay_after_damage = false
 
 func _ready(): 
 	life_changed()
@@ -113,7 +112,7 @@ func standing():
 	update_velocity()
 	jump_transition()
 	dash_transition()
-	time_shoot()
+	gel_shoot()
 	
 	if is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
 		state = State.ATTACK
@@ -186,7 +185,7 @@ func double_jump(delta):
 #ativa o estado de pulo duplo
 func double_jump_transition():
 
-	if  player_globals_variables.double_jump_obted and Input.is_action_just_pressed("ui_up"):
+	if  PlayerGlobalsVariables.double_jump_obted and Input.is_action_just_pressed("ui_up"):
 		velocity.y = JUMP_SPEED
 		state = State.DOUBLE_JUMP
 
@@ -254,7 +253,7 @@ func grab_wall(delta):
 # função para auxiliar a transição para o estado agarrado na parede
 func grab_wall_transition():
 	
-	if player_globals_variables.wall_jump_obted and not is_on_floor() and is_on_wall():
+	if PlayerGlobalsVariables.wall_jump_obted and not is_on_floor() and is_on_wall():
 		state = State.GRAB_WALL
 
 
@@ -286,7 +285,7 @@ func gliding(delta):
 # função para auxiliar a transição para o estado planando
 func gliding_transition():
 	
-	if player_globals_variables.jetpack_obted and not is_on_floor():
+	if PlayerGlobalsVariables.jetpack_obted and not is_on_floor():
 		if Input.is_action_just_pressed("gliding"):
 			state = State.GLIDING
 		elif Input.is_action_just_released("gliding"):
@@ -308,7 +307,7 @@ func dashing():
 func dash_transition():
 
 	# verifica se o delay do dash já acabou e se o player está se movendo 
-	if player_globals_variables.dash_obted and dash_delay.time_left == 0 && velocity.x != 0:
+	if PlayerGlobalsVariables.dash_obted and dash_delay.time_left == 0 && velocity.x != 0:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
 
@@ -343,10 +342,10 @@ func crouching_transition():
 
 
 #ativa um tiro da arma de gel
-"""
+
 func gel_shoot():
 	
-	if current_energy >= gel_gun_cost and player_globals_variables.gel_gun_obted:
+	if current_energy >= gel_gun_cost and PlayerGlobalsVariables.gel_gun_obted:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			#pega posição atual do mouse e emite o sinal de tiro para o mapa
 			var mspos = get_global_mouse_position()
@@ -356,12 +355,12 @@ func gel_shoot():
 	else:
 		pass
 		#aplicar um som de sem energia e pá
-"""
 
+"""
 #ativa um tiro da arma do tempo
 func time_shoot():
 	
-	if player_globals_variables.time_gun_obted and current_energy >= time_gun_cost:
+	if PlayerGlobalsVariables.time_gun_obted and current_energy >= time_gun_cost:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			#pega posição atual do mouse e emite o sinal de tiro para o mapa
 			var mspos = get_global_mouse_position()
@@ -371,7 +370,7 @@ func time_shoot():
 	else:
 		pass
 		#aplicar um som de sem energia e pá
-
+"""
 
 # estado de recarga da energia
 func reload():
@@ -440,7 +439,7 @@ func big_jump(delta):
 # função para auxiliar a transição para o estado pulando
 func big_jump_transition():
 	
-	if player_globals_variables.big_jump_obted and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
+	if PlayerGlobalsVariables.big_jump_obted and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
 		if gliding_cost_timer.time_left == 0:
 			current_energy -= big_jump_cost
 			energy_changed()
@@ -478,11 +477,10 @@ func take_damage_transition(damage, direction_damage, damage_force):
 	enemy_damage_position = direction_damage
 	enemy_damage_force = damage_force
 	
-	if delay_after_damage.time_left == 0:
+	if not delay_after_damage:
 		current_life -= damage
 		life_changed()
-		delay_after_damage.start()
-		damage_force_duration.start()
+		delay_after_damage = true
 		animation_effects.play("take_damage")
 		animation.play("damaged")
 		state = State.DAMAGED
@@ -502,8 +500,6 @@ func take_damage(delta):
 	if current_life <= 0:
 		#fazer funções de morte depois
 		death()
-	elif damage_force_duration.time_left == 0:
-		state = State.STANDING
 	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
@@ -512,7 +508,7 @@ func take_damage(delta):
 #função que ativa a condição de morte, fazer depois
 func death():
 	
-	queue_free()
+	get_tree().reload_current_scene()
 
 
 #função que coleta os cristais, nossa moeda e nossa fonte de energia
@@ -524,7 +520,8 @@ func collect_power_crystal(crystal_value):
 
 func change_colisors():
 	pass
-	
+
+
 func _physics_process(delta):
 	
 	match state:
@@ -566,15 +563,22 @@ func _on_DashTimer_timeout():
 	else:
 		state = State.STANDING
 
-
+#ao terminar animações muda estados
 func _on_AnimationPlayer_animation_finished(anim_name):
 	
-	if anim_name == "double_jump" or anim_name == "atk2" or anim_name == "air_atk":
+	if anim_name =="damaged" or anim_name == "double_jump" or anim_name == "atk2" or anim_name == "air_atk":
 		state = State.STANDING
 
+#ao terminar animações muda estados
+func _on_AnimationPlayer2_animation_finished(anim_name):
+	
+	if anim_name =="take_damage":
+		delay_after_damage = false
 
+#causa dano no ataque
 func _on_SwordSlice_body_entered(body):
 	
 	if body.is_in_group("enemies"):
-		if body.has_method('take_damage'):
+		#o body.animation.current_animation é necessario para impedir casos onde continue dropando moedas após a morte
+		if body.has_method('take_damage') and body.animation.current_animation != "death":
 			body.take_damage(sword_damage)

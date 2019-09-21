@@ -121,6 +121,7 @@ anims/idle = SubResource( 5 )
 anims/walk = SubResource( 6 )
 
 [node name="HitBox" type="Area2D" parent="."]
+editor/display_folded = true
 position = Vector2( -0.950397, 4.08742 )
 collision_layer = 16
 collision_mask = 2
@@ -139,6 +140,7 @@ enabled = true
 cast_to = Vector2( 0, 40 )
 
 [node name="Timers" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
 wait_time = 0.4

@@ -1,10 +1,13 @@
+#tool
 extends KinematicBody2D
 
 onready var animation = $AnimationEnemy
 onready var animation_effets = $AnimationEnemy2
 onready var sprite = $Sprite
 onready var platform_drop = $FloorColision
+onready var platform_wall = $WallColision
 onready var hit_box = $HitBox/HitBoxColision
+onready var hit_area = $HitBox
 
 export var max_life = 10
 export var current_life = 10
@@ -25,18 +28,12 @@ const SNAP = Vector2(0, 8)
 
 var velocity = Vector2.ZERO
 var state = State.STANDING
-var delay_after_damage = true
 var direction = 1
+var player = null
 
 func _ready():
 	
 	add_to_group("enemies")
-
-
-# função para capturar a direção do enemy
-func update_velocity():
-	
-	velocity.x = walk_speed * direction
 
 
 # estado standing
@@ -48,19 +45,28 @@ func standing(delta):
 	else:
 		animation.play("walk")
 	
-	update_velocity()
+	player_overlapse()
+	velocity.x = walk_speed * direction
 	velocity.y += gravity * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 	
-	if is_on_wall() or not platform_drop.is_colliding():
+	if platform_wall.is_colliding() or not platform_drop.is_colliding():
 		
 		direction *= -1
 		platform_drop.position.x *= -1
 		
 		if direction > 0:
 			sprite.flip_h = true
+			platform_wall.cast_to.x = 14
 		else:
 			sprite.flip_h = false
+			platform_wall.cast_to.x = -14
+
+
+func player_overlapse():
+	if player:
+		if hit_area.overlaps_body(player):
+			player.take_damage_transition(damage, global_position, damage_force)
 
 
 # estado sofreu dano
@@ -82,6 +88,7 @@ func take_damage(damage):
 	state = State.DAMAGE
 	
 	if current_life <= 0:
+		hit_box.disabled = true
 		drop_power_crystal()
 		state = State.DEATH
 
@@ -129,11 +136,18 @@ func _physics_process(delta):
 func _on_HitBox_body_entered(body):
 	
 	if body.is_in_group("player"):
+		player = body
 		if body.has_method('take_damage_transition'):
 			#passa o dano causado, a posição no momento do dano e a força de impacto do dano
 			#essa força de impacto é usada para por exemplo um monstro pequeno apenas causar um leve movimento e um socão
 			#muito loko feito por um boss jogar o player na pqp
 			body.take_damage_transition(damage, global_position, damage_force)
+
+
+func _on_HitBox_body_exited(body):
+	
+	if body.is_in_group("player"):
+		player = null
 
 
 func time_bullet_zone():
@@ -148,17 +162,20 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif anim_name == "death":
 		queue_free()
 
+
+#verifica colisão com a bala no tempo
 func _on_HitBox_area_entered(area):
 	
 	if area.name == "TimeBullet":
-		walk_speed = 5
-		gravity = 80
+		walk_speed = walk_speed / 10
+		gravity = gravity / 10
 		animation.playback_speed = 0.1
 
 
+#verifica fim da colisão com a bala no tempo
 func _on_HitBox_area_exited(area):
 	
 	if area.name == "TimeBullet":
-		walk_speed = 50
-		gravity = 800
+		walk_speed = walk_speed * 10
+		gravity = gravity * 10
 		animation.playback_speed = 1
