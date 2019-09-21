@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://entites/enemys/turret/Turret.gd" type="Script" id=1]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/turret/Turret.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/turret/turret_02_mk1.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/bullet/turret_bullet/turret_mk1_bullet.png" type="Texture" id=3]
 
@@ -9,7 +9,7 @@ radius = 19.3575
 height = 41.7391
 
 [sub_resource type="Animation" id=2]
-resource_name = "hurt"
+resource_name = "take_damage"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:modulate")
 tracks/0/interp = 1
@@ -65,7 +65,6 @@ scale = Vector2( 0.7, 0.7 )
 collision_layer = 16
 collision_mask = 0
 script = ExtResource( 1 )
-walk_speed = 2.0
 
 [node name="Sprite" type="Sprite" parent="Turret"]
 position = Vector2( -0.815628, 0.407804 )
@@ -85,7 +84,7 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="AnimationEffects" type="AnimationPlayer" parent="Turret"]
-anims/hurt = SubResource( 2 )
+anims/take_damage = SubResource( 2 )
 
 [node name="AnimationEnemy" type="AnimationPlayer" parent="Turret"]
 anims/charge = SubResource( 3 )
@@ -95,7 +94,7 @@ anims/shoot = SubResource( 4 )
 wait_time = 3.0
 one_shot = true
 
-[node name="DetectArea" type="Area2D" parent="."]
+[node name="VisionPlayer" type="Area2D" parent="."]
 position = Vector2( 0.200577, -0.143198 )
 rotation = 0.00398407
 scale = Vector2( 1.5, 1.5 )
@@ -105,10 +104,11 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="DetectAreaColision" type="CollisionShape2D" parent="DetectArea"]
+[node name="DetectAreaColision" type="CollisionShape2D" parent="VisionPlayer"]
 position = Vector2( 0.0218391, 79.9068 )
 scale = Vector2( 20, 8 )
 shape = SubResource( 5 )
 [connection signal="animation_finished" from="Turret/AnimationEffects" to="Turret" method="_on_AnimationEnemy_animation_finished"]
-[connection signal="body_entered" from="DetectArea" to="Turret" method="_on_DetectArea_body_entered"]
-[connection signal="body_exited" from="DetectArea" to="Turret" method="_on_DetectArea_body_exited"]
+[connection signal="animation_finished" from="Turret/AnimationEnemy" to="Turret" method="_on_AnimationEnemy_animation_finished"]
+[connection signal="body_entered" from="VisionPlayer" to="Turret" method="_on_VisionPlayer_body_entered"]
+[connection signal="body_exited" from="VisionPlayer" to="Turret" method="_on_VisionPlayer_body_exited"]

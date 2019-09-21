@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://entites/enemys/enemy_fly/EnemyFlyh.gd" type="Script" id=1]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fly/EnemyFly.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/crusher_enemy/free_crusher_enemy/style_C/spritesheet/compact/spritesheet.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -241,7 +241,7 @@ position = Vector2( -0.176426, -0.231606 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
-[node name="AnimationEnemy2" type="AnimationPlayer" parent="."]
+[node name="AnimationEffects" type="AnimationPlayer" parent="."]
 anims/take_damage = SubResource( 2 )
 
 [node name="AnimationEnemy" type="AnimationPlayer" parent="."]
@@ -296,10 +296,11 @@ collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionPlayer"]
 shape = SubResource( 12 )
-[connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
 [connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
+[connection signal="body_exited" from="HitBox" to="." method="_on_HitBox_body_exited"]
 [connection signal="body_entered" from="DashZone" to="." method="_on_DashZone_body_entered"]
 [connection signal="body_exited" from="DashZone" to="." method="_on_DashZone_body_exited"]
 [connection signal="body_entered" from="VisionPlayer" to="." method="_on_VisionPlayer_body_entered"]

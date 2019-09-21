@@ -10,12 +10,12 @@
 [ext_resource path="res://scenes/main/laboratory/Clouds.gd" type="Script" id=8]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/clouds.png" type="Texture" id=9]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/far-grounds.png" type="Texture" id=10]
-[ext_resource path="res://entites/enemys/enemy_walking/EnemyTesteWalking.tscn" type="PackedScene" id=11]
-[ext_resource path="res://entites/enemys/enemy_jumping/EnemyTesteJumping.tscn" type="PackedScene" id=12]
-[ext_resource path="res://entites/enemys/turret/Turret.tscn" type="PackedScene" id=13]
-[ext_resource path="res://entites/enemys/enemy_fly/EnemyFly.tscn" type="PackedScene" id=14]
-[ext_resource path="res://entites/enemys/boss/Boss.tscn" type="PackedScene" id=15]
-[ext_resource path="res://entites/enemys/boss/TentacleWall.tscn" type="PackedScene" id=16]
+[ext_resource path="res://entites/enemys/boss/Boss.tscn" type="PackedScene" id=11]
+[ext_resource path="res://entites/enemys/boss/TentacleWall.tscn" type="PackedScene" id=12]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_walking/EnemyWalking.tscn" type="PackedScene" id=13]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_jumping/EnemyJumping.tscn" type="PackedScene" id=14]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fly/EnemyFly.tscn" type="PackedScene" id=15]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/turret/Turret.tscn" type="PackedScene" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( -0.865784, 12.734, 33.0892, 12.734, 33.1246, 21.1411, -1.03503, 21.1411 )
@@ -1721,6 +1721,7 @@ shape = SubResource( 127 )
 anims/day_cicle = SubResource( 128 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+editor/display_folded = true
 
 [node name="Sea" type="ParallaxLayer" parent="ParallaxBackground"]
 modulate = Color( 0, 0.94902, 1, 1 )
@@ -1777,55 +1778,15 @@ __meta__ = {
 position = Vector2( 203.063, 344.757 )
 texture = ExtResource( 10 )
 
-[node name="monsters" type="Node" parent="."]
-
-[node name="EnemyWalking4" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 1495.27, 619.488 )
-
-[node name="EnemyWalking6" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 229.863, 347.965 )
-
-[node name="EnemyWalking5" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 1648.37, 443.756 )
-
-[node name="EnemyWalking2" parent="monsters" instance=ExtResource( 11 )]
-position = Vector2( 839.335, 364.571 )
-
-[node name="EnemyJumping" parent="monsters" instance=ExtResource( 12 )]
-position = Vector2( 1155.38, 341.062 )
-
-[node name="EnemyJumping2" parent="monsters" instance=ExtResource( 12 )]
-position = Vector2( 1574.38, 9.12976 )
-
-[node name="EnemyJumping4" parent="monsters" instance=ExtResource( 12 )]
-position = Vector2( 2103.57, 441.73 )
-
-[node name="EnemyJumping3" parent="monsters" instance=ExtResource( 12 )]
-position = Vector2( 1768.92, 9.12975 )
-
-[node name="Node" parent="monsters" instance=ExtResource( 13 )]
-editor/display_folded = true
-position = Vector2( 1654.34, 295.287 )
-
-[node name="Node2" parent="monsters" instance=ExtResource( 13 )]
-editor/display_folded = true
-position = Vector2( 2104.62, 296.647 )
-
-[node name="DetectArea" parent="monsters/Node2" index="1"]
-position = Vector2( -832.098, -129.293 )
-
-[node name="EnemyFly" parent="monsters" instance=ExtResource( 14 )]
-position = Vector2( 694.975, 248.43 )
-
 [node name="BossBatle" type="Area2D" parent="."]
 position = Vector2( 2581.22, 444.234 )
 collision_layer = 0
 collision_mask = 2
 
-[node name="Boss" parent="BossBatle" instance=ExtResource( 15 )]
+[node name="Boss" parent="BossBatle" instance=ExtResource( 11 )]
 position = Vector2( 434.087, -101.966 )
 
-[node name="TentacleWall" parent="BossBatle" instance=ExtResource( 16 )]
+[node name="TentacleWall" parent="BossBatle" instance=ExtResource( 12 )]
 editor/display_folded = true
 position = Vector2( -100.438, -59.6122 )
 collision_layer = 0
@@ -1835,6 +1796,23 @@ script = null
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BossBatle"]
 position = Vector2( 0, -420.973 )
 shape = SubResource( 129 )
+
+[node name="Monster" type="Node" parent="."]
+
+[node name="EnemyWalking" parent="Monster" instance=ExtResource( 13 )]
+position = Vector2( 910.142, 363.377 )
+
+[node name="EnemyJumping" parent="Monster" instance=ExtResource( 14 )]
+position = Vector2( 773.088, 364.328 )
+
+[node name="EnemyFly" parent="Monster" instance=ExtResource( 15 )]
+position = Vector2( 1124.88, 248.912 )
+
+[node name="Turret" parent="Monster" instance=ExtResource( 16 )]
+position = Vector2( 326.582, 244.936 )
+
+[node name="Turret" parent="Monster/Turret" index="0"]
+editor/display_folded = true
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="gel_shoot" from="Player" to="." method="_on_Player_gel_shoot"]
 [connection signal="life_changed" from="Player" to="HUD" method="_on_Player_life_changed"]
@@ -1842,24 +1820,14 @@ shape = SubResource( 129 )
 [connection signal="time_shoot" from="Player" to="." method="_on_Player_time_shoot"]
 [connection signal="body_entered" from="FallDeath" to="." method="_on_FallDeath_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="power_crystal_drop" from="monsters/EnemyWalking4" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyWalking6" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyWalking5" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyWalking2" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyJumping" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyJumping2" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyJumping4" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="monsters/EnemyJumping3" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="shoot" from="monsters/Node/Turret" to="." method="_on_Turret_shoot"]
-[connection signal="shoot" from="monsters/Node2/Turret" to="." method="_on_Turret_shoot"]
-[connection signal="power_crystal_drop" from="monsters/EnemyFly" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="body_entered" from="BossBatle" to="BossBatle" method="_on_BossBatle_body_entered"]
 [connection signal="body_entered" from="BossBatle" to="." method="_on_BossBatle_body_entered"]
 [connection signal="power_crystal_drop" from="BossBatle/Boss" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="animation_finished" from="BossBatle/TentacleWall/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-
-[editable path="monsters/Node"]
-
-[editable path="monsters/Node2"]
+[connection signal="power_crystal_drop" from="Monster/EnemyWalking" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="Monster/EnemyJumping" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="Monster/EnemyFly" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="shoot" from="Monster/Turret/Turret" to="." method="_on_Turret_shoot"]
 
 [editable path="BossBatle/TentacleWall"]
+
+[editable path="Monster/Turret"]
