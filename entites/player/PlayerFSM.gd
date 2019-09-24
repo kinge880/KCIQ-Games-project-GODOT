@@ -57,7 +57,7 @@ enum State_hability {
 	GEL_SHOOT,
 	FAST_TIME,
 	TIME_TRAVEL,
-	BLINK
+	#BLINK
 }
 
 const SNAP = Vector2(0, 8)
@@ -200,7 +200,42 @@ func double_jump_transition():
 	if  PlayerGlobalsVariables.double_jump_obted and Input.is_action_just_pressed("ui_up"):
 		velocity.y = JUMP_SPEED
 		state = State.DOUBLE_JUMP
-		
+
+
+#estado do super pulo
+func big_jump(delta):
+	
+	update_velocity()
+	big_jump_transition()
+	
+	if velocity.y < 0:
+		animation.play("jump")
+	else:
+		$JetPackParticle.emitting = false
+		$JetPackParticle2.emitting = false
+		state = State.JUMPING
+	
+	velocity.y += GRAVITY * delta
+	velocity = move_and_slide(velocity, Vector2.UP)
+	
+	if is_on_floor():
+		state = State.STANDING
+
+
+# função para auxiliar a transição para o estado pulando
+func big_jump_transition():
+	
+	if PlayerGlobalsVariables.big_jump_obted and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
+		if gliding_cost_timer.time_left == 0:
+			current_energy -= big_jump_cost
+			energy_changed()
+		velocity.y = JUMP_SPEED
+		state = State.BIG_JUMP
+	elif Input.is_action_just_released("ui_up"):
+		$JetPackParticle.emitting = false
+		$JetPackParticle2.emitting = false
+		state = State.JUMPING
+
 
 #pulo DELICIOSO na parede
 func grab_wall(delta):
@@ -362,39 +397,38 @@ func crouching_transition():
 	state = State.CROUCHING
 
 
+func get_hability():
+	pass
+
+
 func change_hability():
 	
 	if Input.is_action_just_pressed("change_secondary_weapon_up"):
-		hability_active = false
 		hability += 1
-		modulate = Color.white
+		
 		if hability > State_hability.size():
 			hability = 1
 	
-		match hability:
-			1:
-				state_hability = State_hability.TIME_SHOOT
-				hability_name = "Time Shoot"
-			2:
-				state_hability = State_hability.GEL_SHOOT
-				hability_name = "Gel Shoot"
-			3:
-				state_hability = State_hability.FAST_TIME
-				hability_name = "Fast Time"
-			4:
-				state_hability = State_hability.TIME_TRAVEL
-				hability_name = "Time Travel"
-			5:
-				state_hability = State_hability.BLINK
-				hability_name = "BLINK"
-				
-		emit_signal('hability_changed', hability_name)
 	elif Input.is_action_just_pressed("change_secondary_weapon_down"):
 		hability -= 1
-		hability_active = false
-		modulate = Color.white
+		
 		if hability < 1:
 			hability = State_hability.size()
+	
+	if Input.is_action_just_pressed("change_secondary_weapon_down") or Input.is_action_just_pressed("change_secondary_weapon_up"):
+		
+		if hability_active and modulate == Color.red:
+			get_tree().call_group("enemies","stop_player_fast_time")
+			hability_active = false
+			modulate = Color.white
+			WALK_SPEED /= 1.5
+			JUMP_SPEED /= 1.5
+			GRAVITY /= 1.5
+			animation.playback_speed = 1
+			animation.playback_speed = 1
+		
+		hability_active = false
+		modulate = Color.white
 		
 		match hability:
 			1:
@@ -409,13 +443,14 @@ func change_hability():
 			4:
 				state_hability = State_hability.TIME_TRAVEL
 				hability_name = "Time Travel"
-			5:
-				state_hability = State_hability.BLINK
-				hability_name = "BLINK"
-				
+			#5:
+				#state_hability = State_hability.BLINK
+				#hability_name = "BLINK"
+			
 		emit_signal('hability_changed', hability_name)
-	
+		
 	match state_hability:
+		
 		State_hability.TIME_SHOOT:
 			time_shoot()
 		State_hability.GEL_SHOOT:
@@ -424,8 +459,8 @@ func change_hability():
 			fast_time()
 		State_hability.TIME_TRAVEL:
 			time_travel()
-		State_hability.BLINK:
-			blink_transition()
+		#State_hability.BLINK:
+			#blink_transition()
 
 #função que ativa a habilidade fast_time, tornando os inimigos lentos e o player mais rapido (velocidade e animações)
 func fast_time():
@@ -476,7 +511,7 @@ func time_travel():
 		#ativar algo que indique falta de energia
 
 
-func blink_transition():
+"""func blink_transition():
 	
 	var teleport_distance = 100
 	var direction = Vector2()
@@ -508,7 +543,7 @@ func blink_transition():
 func blink():
 	#var movement = direction * speed * 7
 #	movement = move_and_slide(movement)
-	state = State.STANDING
+	state = State.STANDING"""
 
 
 #ativa um tiro da arma de gel
@@ -583,41 +618,6 @@ func air_attack(delta):
 	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
-
-
-#estado do super pulo
-func big_jump(delta):
-	
-	update_velocity()
-	big_jump_transition()
-	
-	if velocity.y < 0:
-		animation.play("jump")
-	else:
-		$JetPackParticle.emitting = false
-		$JetPackParticle2.emitting = false
-		state = State.JUMPING
-	
-	velocity.y += GRAVITY * delta
-	velocity = move_and_slide(velocity, Vector2.UP)
-	
-	if is_on_floor():
-		state = State.STANDING
-
-
-# função para auxiliar a transição para o estado pulando
-func big_jump_transition():
-	
-	if PlayerGlobalsVariables.big_jump_obted and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
-		if gliding_cost_timer.time_left == 0:
-			current_energy -= big_jump_cost
-			energy_changed()
-		velocity.y = JUMP_SPEED
-		state = State.BIG_JUMP
-	elif Input.is_action_just_released("ui_up"):
-		$JetPackParticle.emitting = false
-		$JetPackParticle2.emitting = false
-		state = State.JUMPING
 
 
 #emite o sinal que altera o numero de cristais de energia HUD
@@ -725,7 +725,6 @@ func _physics_process(delta):
 func _on_DashTimer_timeout():
 	
 	dash_delay.start()
-	
 	# reseta o movimento do Player após o dash
 	velocity = Vector2.ZERO
 	
