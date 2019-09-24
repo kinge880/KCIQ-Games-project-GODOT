@@ -9,7 +9,7 @@ func _ready():
 	damage = 10
 	damage_force = 150
 	walk_speed = 50
-
+	gravity = 100
 
 # função para capturar a direção do enemy
 func update_velocity():
@@ -52,7 +52,8 @@ func walking(delta):
 func attack(delta):
 	
 	if $Timers/DashDuration.time_left > 1:
-		dash_direction = player.global_position - global_position
+		if player:
+			dash_direction = player.global_position - global_position
 		modulate = Color.yellow
 		animation.play("pre_dash")
 	elif $Timers/DashDuration.time_left > 0:

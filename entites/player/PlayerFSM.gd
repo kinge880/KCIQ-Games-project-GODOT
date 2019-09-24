@@ -1,13 +1,14 @@
 extends KinematicBody2D
 
 onready var animation = $AnimationPlayer
-onready var animation_effects = $AnimationPlayer2
+onready var animation_effects = $AnimationEffects
 onready var dash_delay = $Timers/DashDelay
 onready var dash_timer = $Timers/DashTimer
 onready var energy_reload_timer = $Timers/EnergyReload
 onready var energy_reload_timer_delay = $Timers/EnergyReloadDelay
 onready var gliding_cost_timer = $Timers/GlidingEnergyConsumed
 onready var big_jump_delay = $Timers/BigJumpDelay
+onready var fast_time_timer = $Timers/FastTimeCost
 onready var attack_delay = $Timers/AttackTimer
 onready var air_attack_delay = $Timers/AerialAttackTimer
 onready var sprite = $Sprite
@@ -35,6 +36,7 @@ signal time_shoot
 signal life_changed
 signal energy_changed
 signal power_crystal_changed
+signal hability_changed
 
 enum State {
 	CROUCHING,
@@ -50,27 +52,40 @@ enum State {
 	DAMAGED,
 	GRAB_WALL
 }
+enum State_hability {
+	TIME_SHOOT,
+	GEL_SHOOT,
+	FAST_TIME,
+	TIME_TRAVEL,
+	BLINK
+}
 
-const WALK_SPEED = 200
-const JUMP_SPEED = -250
-const GRAVITY = 800
 const SNAP = Vector2(0, 8)
 const GEL_BULLET = preload("res://assets/package/bullets/gel_bullet/GelBullet.tscn")
 const TIME_BULLET = preload("res://assets/package/bullets/time_bullet/time_bullet.tscn")
 
+var JUMP_SPEED = -250
+var GRAVITY = 800
+var WALK_SPEED = 200
 var velocity = Vector2.ZERO
 var state = State.STANDING
+var state_hability = State_hability.TIME_SHOOT
 var power_crystal = 100
 var camera_zoom = false
 var enemy_damage_position
 var enemy_damage_force
 var in_jump = false
 var delay_after_damage = false
+var hability = 1
+var hability_name = "Time Shoot"
+var player_global_position
+var hability_active = false
 
 func _ready(): 
 	life_changed()
 	power_crystal_changed()
 	add_to_group("player")
+	emit_signal('hability_changed', hability_name)
 	
 # função para capturar a direção do Player
 func update_velocity():
@@ -106,13 +121,10 @@ func standing():
 	
 	if Input.is_action_pressed("ui_down"):
 		crouching_transition()
-	if Input.is_action_pressed("test_ligth"):
-		$LanternTest.show()
 		
 	update_velocity()
 	jump_transition()
 	dash_transition()
-	gel_shoot()
 	
 	if is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
 		state = State.ATTACK
@@ -188,14 +200,14 @@ func double_jump_transition():
 	if  PlayerGlobalsVariables.double_jump_obted and Input.is_action_just_pressed("ui_up"):
 		velocity.y = JUMP_SPEED
 		state = State.DOUBLE_JUMP
-
+		
 
 #pulo DELICIOSO na parede
 func grab_wall(delta):
 	
 	#saltos para a direita e esquerda da parede, bixo isso ficou muito verboso kkk, maas não tem jeito, preciso fazer esses ajustes em cada pulo
-	if Input.is_action_pressed("ui_right") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == true:
-		velocity.x = WALK_SPEED * 1.5
+	if Input.is_action_pressed("ui_right") and not Input.is_action_just_pressed("ui_left") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == true:
+		velocity.x += WALK_SPEED
 		velocity.y = JUMP_SPEED
 		in_jump = true
 		sprite.flip_h = false
@@ -203,9 +215,9 @@ func grab_wall(delta):
 		check_wall_top.cast_to.x = 10
 		$SwordSlice.position.x *= -1
 		$Body.position.x *= -1
-		
-	if Input.is_action_pressed("ui_left") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == false:
-		velocity.x = -WALK_SPEED * 1.5
+		$Timers/WallJumpDelay.start()
+	if Input.is_action_pressed("ui_left") and not Input.is_action_pressed("ui_right") and Input.is_action_just_pressed("ui_up") and not in_jump and sprite.flip_h == false:
+		velocity.x -= WALK_SPEED
 		velocity.y = JUMP_SPEED
 		in_jump = true
 		sprite.flip_h = true
@@ -213,39 +225,42 @@ func grab_wall(delta):
 		check_wall_top.cast_to.x = -10
 		$SwordSlice.position.x *= -1
 		$Body.position.x *= -1
+		$Timers/WallJumpDelay.start()
 	
 	#essa in_jump define se eu saltei ou não, é preciso usar ela para uma transição controlada entre os estados
 	#permitindo alterna entre as gravidades no momento correto e executar o salto em si
 	if in_jump:
-		if velocity.y < 0:
-			animation.play("jump")
-		else:
+		if $Timers/WallJumpDelay.time_left == 0:
 			in_jump = false
 			state = State.JUMPING
-		update_velocity()
+		animation.play("jump")
+		#update_velocity()
 		velocity.y += GRAVITY * delta
 	else:
 		if check_wall_botton.is_colliding() and check_wall_top.is_colliding():
 			animation.play("grab_wall")
 			velocity.y = GRAVITY * delta
+			
+			if is_on_floor() or Input.is_action_just_pressed("ui_down"):
+				if sprite.flip_h == false:
+					sprite.flip_h = true
+					$SwordSlice.position.x *= -1
+					$Body.position.x *= -1
+					check_wall_botton.cast_to.x = -10
+					check_wall_top.cast_to.x = -10
+				if sprite.flip_h == true:
+					sprite.flip_h = false
+					$SwordSlice.position.x *= -1
+					$Body.position.x *= -1
+					check_wall_botton.cast_to.x = 10
+					check_wall_top.cast_to.x = 10
+				state = State.JUMPING
+		#isso aqui permite que o player de uma leve subidinha ao tocar na ponta de uma borda (será bom uma animação dele agarando na borda e subindo)
+		elif not check_wall_top.is_colliding() and check_wall_botton.is_colliding():
+			velocity.y = JUMP_SPEED / 2
+			animation.play("ladder")
 		else:
 			state = State.JUMPING
-		
-	if is_on_floor() or Input.is_action_just_pressed("ui_down"):
-		if sprite.flip_h == false:
-			sprite.flip_h = true
-			$SwordSlice.position.x *= -1
-			$Body.position.x *= -1
-			check_wall_botton.cast_to.x = -10
-			check_wall_top.cast_to.x = -10
-		if sprite.flip_h == true:
-			sprite.flip_h = false
-			$SwordSlice.position.x *= -1
-			$Body.position.x *= -1
-			check_wall_botton.cast_to.x = 10
-			check_wall_top.cast_to.x = 10
-		
-		state = State.JUMPING
 		
 	velocity = move_and_slide(velocity, Vector2.UP)
 
@@ -262,19 +277,19 @@ func gliding(delta):
 	
 	update_velocity()
 	grab_wall_transition()
-	
-	if gliding_cost_timer.time_left == 0:
+	"""if gliding_cost_timer.time_left == 0:
 		current_energy -= gliding_cost
 		energy_changed()
 		gliding_cost_timer.start()
 		
-	if current_energy > gliding_cost:
-		animation.play("ladder")
-		# muda a gravidade durante a planagem
-		velocity.y = GRAVITY * 2 * delta
-		velocity = move_and_slide(velocity, Vector2.UP)
-	else:
-		state = State.JUMPING
+	if current_energy > gliding_cost:"""
+	animation.play("ladder")
+	# muda a gravidade durante a planagem
+	velocity.y = GRAVITY * 2 * delta
+	velocity.x = velocity.x / 2
+	velocity = move_and_slide(velocity, Vector2.UP)
+	"""else:
+		state = State.JUMPING"""
 		
 	gliding_transition()
 	
@@ -295,21 +310,27 @@ func gliding_transition():
 # estado "arrojado" (Google Translate)
 func dashing():
 	
-	animation.play("dash")
-	
-	var dash_velocity = Vector2(velocity.x * 2, 1)
-	dash_velocity = move_and_slide(dash_velocity, Vector2.UP)
+	var dash_velocity = Vector2(WALK_SPEED * 2, 1)
+	if sprite.flip_h == true:
+		dash_velocity = move_and_slide(-dash_velocity, Vector2.UP)
+	else:
+		dash_velocity = move_and_slide(dash_velocity, Vector2.UP)
 	if dash_timer.time_left == 0:
 		dash_timer.start()
 
 
 # função para auxiliar a transição para o estado "arrojado"
 func dash_transition():
-
-	# verifica se o delay do dash já acabou e se o player está se movendo 
-	if PlayerGlobalsVariables.dash_obted and dash_delay.time_left == 0 && velocity.x != 0:
+	
+	#verifica se o delay do dash já acabou e se o player está se movendo, além de verificar se ele esta no ar ou em terra
+	if not is_on_floor() and PlayerGlobalsVariables.dash_obted and dash_delay.time_left == 0:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
+			animation.play("air_dash")
+	elif dash_delay.time_left == 0:
+		if Input.is_action_just_pressed("ui_select"):
+			state = State.DASHING
+			animation.play("dash")
 
 
 # estado agachado
@@ -341,8 +362,156 @@ func crouching_transition():
 	state = State.CROUCHING
 
 
-#ativa um tiro da arma de gel
+func change_hability():
+	
+	if Input.is_action_just_pressed("change_secondary_weapon_up"):
+		hability_active = false
+		hability += 1
+		modulate = Color.white
+		if hability > State_hability.size():
+			hability = 1
+	
+		match hability:
+			1:
+				state_hability = State_hability.TIME_SHOOT
+				hability_name = "Time Shoot"
+			2:
+				state_hability = State_hability.GEL_SHOOT
+				hability_name = "Gel Shoot"
+			3:
+				state_hability = State_hability.FAST_TIME
+				hability_name = "Fast Time"
+			4:
+				state_hability = State_hability.TIME_TRAVEL
+				hability_name = "Time Travel"
+			5:
+				state_hability = State_hability.BLINK
+				hability_name = "BLINK"
+				
+		emit_signal('hability_changed', hability_name)
+	elif Input.is_action_just_pressed("change_secondary_weapon_down"):
+		hability -= 1
+		hability_active = false
+		modulate = Color.white
+		if hability < 1:
+			hability = State_hability.size()
+		
+		match hability:
+			1:
+				state_hability = State_hability.TIME_SHOOT
+				hability_name = "Time Shoot"
+			2:
+				state_hability = State_hability.GEL_SHOOT
+				hability_name = "Gel Shoot"
+			3:
+				state_hability = State_hability.FAST_TIME
+				hability_name = "Fast Time"
+			4:
+				state_hability = State_hability.TIME_TRAVEL
+				hability_name = "Time Travel"
+			5:
+				state_hability = State_hability.BLINK
+				hability_name = "BLINK"
+				
+		emit_signal('hability_changed', hability_name)
+	
+	match state_hability:
+		State_hability.TIME_SHOOT:
+			time_shoot()
+		State_hability.GEL_SHOOT:
+			gel_shoot()
+		State_hability.FAST_TIME:
+			fast_time()
+		State_hability.TIME_TRAVEL:
+			time_travel()
+		State_hability.BLINK:
+			blink_transition()
 
+#função que ativa a habilidade fast_time, tornando os inimigos lentos e o player mais rapido (velocidade e animações)
+func fast_time():
+	
+		if not hability_active and current_energy >= PlayerGlobalsVariables.fast_time_cost:
+			if Input.is_action_just_pressed("ataque_arma_secundaria"):
+				get_tree().call_group("enemies","start_player_fast_time")
+				hability_active = true
+				modulate = Color.red
+				WALK_SPEED *= 1.5
+				JUMP_SPEED *= 1.5
+				GRAVITY *= 1.5
+				animation.playback_speed = 1.5
+				animation.playback_speed = 1.5
+				fast_time_timer.start()
+		elif hability_active and current_energy >= PlayerGlobalsVariables.fast_time_cost:
+			if Input.is_action_just_pressed("ataque_arma_secundaria") or current_energy <= PlayerGlobalsVariables.fast_time_cost:
+				get_tree().call_group("enemies","stop_player_fast_time")
+				hability_active = false
+				modulate = Color.white
+				WALK_SPEED /= 1.5
+				JUMP_SPEED /= 1.5
+				GRAVITY /= 1.5
+				animation.playback_speed = 1
+				animation.playback_speed = 1
+			elif fast_time_timer.time_left == 0:
+				current_energy -= PlayerGlobalsVariables.fast_time_cost
+				energy_changed()
+				fast_time_timer.start()
+		else:
+			pass
+			#ativar algo que indique falta de energia
+
+func time_travel():
+	
+	if Input.is_action_just_pressed("ataque_arma_secundaria") and not hability_active and current_energy >= PlayerGlobalsVariables.time_travel_cost:
+		player_global_position = global_position
+		hability_active = true
+		modulate = Color.blue
+	elif Input.is_action_just_pressed("ataque_arma_secundaria") and hability_active:
+		global_position = player_global_position
+		hability_active = false
+		modulate = Color.white
+		current_energy -= PlayerGlobalsVariables.time_travel_cost
+		energy_changed()
+	else:
+		pass
+		#ativar algo que indique falta de energia
+
+
+func blink_transition():
+	
+	var teleport_distance = 100
+	var direction = Vector2()
+	var speed = WALK_SPEED
+	
+	if Input.is_action_just_pressed("ataque_arma_secundaria"):
+		print("chegou")
+		if len($TeleportArea.get_overlapping_bodies()) == 0:
+			position = $TeleportArea.global_position
+			#state = State.BLINK
+		else:
+			position = $TeleportColision.get_collision_point()
+			#state = State.BLINK
+	# This section listens for User Input.
+	if Input.is_action_pressed("ui_up"):
+		direction.y = -1
+	if Input.is_action_pressed("ui_left"):
+		direction.x = -1
+	if Input.is_action_pressed("ui_down"):
+		direction.y = 1
+	if Input.is_action_pressed("ui_right"):
+		direction.x = 1
+	
+	direction = direction.normalized()
+	$TeleportArea.position = teleport_distance * direction
+	$TeleportColision.rotate(direction.angle())
+ 
+
+func blink():
+	#var movement = direction * speed * 7
+#	movement = move_and_slide(movement)
+	state = State.STANDING
+
+
+#ativa um tiro da arma de gel
 func gel_shoot():
 	
 	if current_energy >= gel_gun_cost and PlayerGlobalsVariables.gel_gun_obted:
@@ -356,7 +525,7 @@ func gel_shoot():
 		pass
 		#aplicar um som de sem energia e pá
 
-"""
+
 #ativa um tiro da arma do tempo
 func time_shoot():
 	
@@ -370,7 +539,7 @@ func time_shoot():
 	else:
 		pass
 		#aplicar um som de sem energia e pá
-"""
+
 
 # estado de recarga da energia
 func reload():
@@ -523,6 +692,8 @@ func change_colisors():
 
 
 func _physics_process(delta):
+	
+	change_hability()
 	
 	match state:
 		State.STANDING:

@@ -79,6 +79,11 @@ func jump(delta):
 	
 	pass
 
+#estado de tiro
+func shoot():
+	
+	pass
+
 
 #função que ativa o ataque a cada 5 segundos
 func attack(delta):
@@ -166,6 +171,8 @@ func _physics_process(delta):
 			damage(delta)
 		State.DEATH:
 			death()
+		State.SHOOT:
+			shoot()
 		State.DELAY_AFTER_DAMAGE:
 			standing_after_damage()
 		State.JUMPING:
@@ -176,6 +183,18 @@ func _physics_process(delta):
 
 func time_bullet_zone():
 	pass
+
+
+func start_player_fast_time():
+	walk_speed = walk_speed / 10
+	gravity = gravity / 10
+	animation.playback_speed = 0.1
+
+
+func stop_player_fast_time():
+	walk_speed = walk_speed * 10
+	gravity = gravity * 10
+	animation.playback_speed = 1
 
 
 #função que verifica se o player entrou no area 2d do enemy e causa dano
