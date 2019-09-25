@@ -135,7 +135,7 @@ func standing():
 		energy_reload_timer_delay.start()
 		state = State.RELOAD
 	
-	
+	velocity.normalized()
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 
 # estado pulando

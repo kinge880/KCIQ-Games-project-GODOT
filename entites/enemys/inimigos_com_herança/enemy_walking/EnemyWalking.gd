@@ -12,7 +12,9 @@ func _ready():
 	walk_speed = 50
 	gravity = 800
 
-
+	start_position = position
+	end_position = start_position + Vector2(move_distance,0)
+	
 # estado standing
 func standing(delta):
 	
@@ -25,9 +27,10 @@ func standing(delta):
 	player_overlapse()
 	velocity.x = walk_speed * direction
 	velocity.y += gravity * delta
+	velocity.normalized()
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 	
-	if platform_wall.is_colliding() or not platform_drop.is_colliding():
+	if platform_wall.is_colliding() or not platform_drop.is_colliding() or position.x >= end_position.x or position.x <= start_position.x:
 		
 		direction *= -1
 		platform_drop.position.x *= -1
@@ -38,8 +41,7 @@ func standing(delta):
 		else:
 			sprite.flip_h = false
 			platform_wall.cast_to.x = -14
-
-
+	
 func _on_HitBox_body_entered(body):
 	
 	_on_HitBox_body_entered_father(body)

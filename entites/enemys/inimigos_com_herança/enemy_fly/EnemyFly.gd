@@ -1,5 +1,7 @@
 extends "res://entites/enemys/inimigos_com_herança/actors.gd"
 
+onready var navigation = $"../../Navigation2D"
+
 func _ready():
 
 	add_to_group("enemies")
@@ -22,8 +24,12 @@ func standing(delta):
 	
 	if player:
 		state = State.WALK
-	elif velocity.x == 0:
-		animation.play("idle")
+	elif save_player:
+		if vision_player.overlaps_body(save_player):
+			player = save_player
+			state = State.WALK
+	
+	animation.play("idle")
 
 
 #função que ativa o movimento, pegando a posição do player enquanto ele tiver na visão
@@ -31,8 +37,13 @@ func walking(delta):
 	
 	player_overlapse()
 	if player:
+		
+		var path_navigation = navigation.get_simple_path(global_position, player.global_position, true)
+		#var nextPos = path_navigation[0]
+		print(path_navigation)
+		#to_player = nextPos - global_position
+		
 		to_player = player.global_position - global_position
-		#print(to_player)
 		to_player = to_player.normalized()
 		move_and_slide(to_player * walk_speed)
 		
@@ -67,13 +78,12 @@ func attack(delta):
 
 #após terminar o ataque para por alguns segundos
 func standing_after_damage():
-	 
+	
 	modulate = Color.white
+	animation.play("idle")
 	
 	if delay_after_damage.time_left == 0:
 		state = State.STANDING
-	elif velocity.x == 0:
-		animation.play("idle")
 
 
 #transição após o ataque
