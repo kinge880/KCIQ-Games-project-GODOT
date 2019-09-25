@@ -218,7 +218,7 @@ extents = Vector2( 17.0495, 17.681 )
 radius = 260.067
 
 [sub_resource type="CircleShape2D" id=12]
-radius = 535.479
+radius = 1238.78
 
 [node name="EnemyFly" type="KinematicBody2D"]
 position = Vector2( 57.9632, -5.00452 )
@@ -256,7 +256,6 @@ anims/walk_rigth = SubResource( 9 )
 [node name="Timers" type="Node" parent="."]
 
 [node name="DashDuration" type="Timer" parent="Timers"]
-wait_time = 1.8
 one_shot = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
