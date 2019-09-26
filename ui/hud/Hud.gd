@@ -3,6 +3,8 @@ extends CanvasLayer
 onready var life = $Margin/HBoxContainer/Recipe/LifeBar
 onready var stamina = $Margin/HBoxContainer/Recipe/StaminaBar
 onready var power_cristal = $Margin/HBoxContainer/EnergyFragments
+onready var hability = $Margin/HBoxContainer/Hability
+
 onready var tween = $Tween
 
 func _update_lifeBar(new_life):
@@ -25,6 +27,10 @@ func _update_staminaBar(new_stamina):
 
 func _update_cristal_number(new_cristal_number):
 	power_cristal.text = String(new_cristal_number)
+
+
+func _on_Player_hability_changed(new_hability):
+	hability.text = String(new_hability)
 
 
 func _on_Player_life_changed(life):

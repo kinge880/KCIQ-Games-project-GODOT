@@ -218,7 +218,7 @@ extents = Vector2( 17.0495, 17.681 )
 radius = 260.067
 
 [sub_resource type="CircleShape2D" id=12]
-radius = 535.479
+radius = 1238.78
 
 [node name="EnemyFly" type="KinematicBody2D"]
 position = Vector2( 57.9632, -5.00452 )
@@ -256,7 +256,6 @@ anims/walk_rigth = SubResource( 9 )
 [node name="Timers" type="Node" parent="."]
 
 [node name="DashDuration" type="Timer" parent="Timers"]
-wait_time = 1.8
 one_shot = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
@@ -267,7 +266,6 @@ one_shot = true
 one_shot = true
 
 [node name="HitBox" type="Area2D" parent="."]
-visible = false
 position = Vector2( 0.0150647, -0.289104 )
 collision_layer = 16
 collision_mask = 2
@@ -276,13 +274,11 @@ __meta__ = {
 }
 
 [node name="HitBoxColision" type="CollisionShape2D" parent="HitBox"]
-visible = false
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
 shape = SubResource( 10 )
 
 [node name="DashZone" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -290,7 +286,6 @@ collision_mask = 2
 shape = SubResource( 11 )
 
 [node name="VisionPlayer" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 32
 

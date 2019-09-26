@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_jumping/EnemyJumping.gd" type="Script" id=1]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_jumping_V2_teste/EnemyJumpingV2.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/Slime/slime-Sheet.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
@@ -91,7 +91,7 @@ radius = 6.82859
 height = 8.15195
 
 [node name="EnemyJumping" type="KinematicBody2D"]
-position = Vector2( 57.9632, -5.00452 )
+position = Vector2( 0.308746, 0.526036 )
 rotation = 0.00398407
 scale = Vector2( 1.5, 1.5 )
 collision_layer = 0
@@ -134,29 +134,20 @@ position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
 shape = SubResource( 7 )
 
-[node name="FloorColision" type="RayCast2D" parent="."]
-position = Vector2( 8.76139, 0.313083 )
-enabled = true
-cast_to = Vector2( 0, 40 )
-
 [node name="Timers" type="Node" parent="."]
 
-[node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
-wait_time = 0.4
-one_shot = true
-
-[node name="DelayMove" type="Timer" parent="Timers"]
+[node name="DelayJump" type="Timer" parent="Timers"]
 wait_time = 2.0
 one_shot = true
 autostart = true
 
-[node name="MoveTime" type="Timer" parent="Timers"]
-one_shot = true
+[node name="FloorColision" type="RayCast2D" parent="."]
+enabled = true
 
-[node name="MoveDistance" type="Timer" parent="Timers"]
-wait_time = 12.0
-one_shot = true
-autostart = true
+[node name="WallColision" type="RayCast2D" parent="."]
+position = Vector2( -0.0842334, 5.25972 )
+enabled = true
+cast_to = Vector2( 14, 0 )
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
 [connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]

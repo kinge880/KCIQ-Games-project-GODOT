@@ -9,6 +9,7 @@ func _ready():
 	max_life = 10
 	current_life = 10
 	walk_speed = 1.0
+	gravity = 100
 	turret_rotation = Vector2(1, 0).rotated(turret.global_rotation)
 	turret_posiiton = global_position
 	add_to_group("enemies")
@@ -44,7 +45,7 @@ func shoot():
 	emit_signal('shoot', BULLET, global_position, $Sprite/SpawBulet.global_position - global_position)
 	animation.play("shoot")
 	charge = false
-	
+
 	if player:
 		state = State.WALK
 	else: 

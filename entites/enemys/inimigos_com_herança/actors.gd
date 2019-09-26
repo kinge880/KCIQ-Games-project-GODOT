@@ -5,15 +5,16 @@ onready var animation_effets = $AnimationEffects
 onready var sprite = $Sprite
 onready var hit_box = $HitBox/HitBoxColision
 onready var hit_area = $HitBox
+onready var vision_player = $VisionPlayer
 onready var delay_after_damage = $Timers/DelayAfterDamage
 onready var dash_delay = $Timers/DashDelay
 onready var dash_duration = $Timers/DashDuration
 onready var platform_drop = $FloorColision
 onready var platform_wall = $WallColision
-onready var delay_move = $Timers/DelayMove
-onready var move_time = $Timers/MoveTime
-onready var move_distance = $Timers/MoveDistance
 
+export (int) var move_distance = 500
+var start_position = position
+var end_position = start_position + Vector2(move_distance,0)
 var max_life
 var current_life
 var damage
@@ -25,6 +26,7 @@ var velocity = Vector2.ZERO
 var state = State.STANDING
 var to_player
 var player = null
+var save_player = null
 var dash_direction
 var dash_zone = false
 var direction = 1
@@ -79,6 +81,11 @@ func jump(delta):
 	
 	pass
 
+#estado de tiro
+func shoot():
+	
+	pass
+
 
 #função que ativa o ataque a cada 5 segundos
 func attack(delta):
@@ -125,10 +132,13 @@ func take_damage(damage):
 		state = State.DEATH
 
 #função que ativa a condição de morte
-func death():
+func death(delta):
 	
+	velocity.x = 0
 	animation.play("death")
 	animation_effets.play("take_damage")
+	velocity.y += gravity * delta
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 
 #função que dropa cristais após a morte do enemy
@@ -165,7 +175,9 @@ func _physics_process(delta):
 		State.DAMAGE:
 			damage(delta)
 		State.DEATH:
-			death()
+			death(delta)
+		State.SHOOT:
+			shoot()
 		State.DELAY_AFTER_DAMAGE:
 			standing_after_damage()
 		State.JUMPING:
@@ -176,6 +188,18 @@ func _physics_process(delta):
 
 func time_bullet_zone():
 	pass
+
+
+func start_player_fast_time():
+	walk_speed = walk_speed / 10
+	gravity = gravity / 10
+	animation.playback_speed = 0.1
+
+
+func stop_player_fast_time():
+	walk_speed = walk_speed * 10
+	gravity = gravity * 10
+	animation.playback_speed = 1
 
 
 #função que verifica se o player entrou no area 2d do enemy e causa dano
@@ -232,6 +256,7 @@ func _on_VisionPlayer_body_entered_father(body):
 	
 	if body.is_in_group("player"):
 		player = body
+		save_player = body
 
 
 #verifica se o player saiu da visão

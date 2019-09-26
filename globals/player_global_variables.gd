@@ -18,6 +18,8 @@ var time_gun_cost
 var reload_power_cristal_cost
 var reload_energy_restored
 var sword_damage
+var fast_time_cost = 1
+var time_travel_cost = 20
 
 func _ready():
 	pass
