@@ -1,8 +1,10 @@
 extends "res://entites/enemys/inimigos_com_herança/actors.gd"
 
+onready var delay_fall = $Timers/DelayFall
 
 func _ready():
 	
+	state = null
 	add_to_group("enemies")
 	start_position = position
 	end_position = start_position + Vector2(move_distance,0)
@@ -47,6 +49,19 @@ func standing(delta):
 		platform_wall.cast_to.x = 14
 
 
+func fall(delta):
+	
+	if delay_fall.time_left == 0:
+		sprite.rotation_degrees = 0
+		velocity.y += gravity * delta
+		velocity = move_and_slide(velocity, Vector2.UP)
+	else:
+		animation.play("Pre_fall")
+	
+	if $FallCast.is_colliding():
+		state = State.STANDING
+
+
 func _on_HitBox_body_entered(body):
 	
 	_on_HitBox_body_entered_father(body)
@@ -70,3 +85,10 @@ func _on_HitBox_area_entered(area):
 func _on_HitBox_area_exited(area):
 	
 	_on_HitBox_area_exited_father(area)
+
+func _on_FallColision_body_entered(body):
+	
+	$FallColision/FallBoxColision.disabled = true
+	delay_fall.start()
+	state = State.FALL
+	

@@ -20,16 +20,18 @@ func standing(delta):
 	
 	if is_on_floor() and $Timers/DelayJump.time_left == 0:
 		#vira o enemy caso chegue a posição final ou inicial
-		if position.x >= end_position.x or position.x <= start_position.x:
-			direction *= -1
-			platform_drop.position.x *= -1
-			
-			if direction > 0:
-				sprite.flip_h = true
-				platform_wall.cast_to.x = 14
-			else:
-				sprite.flip_h = false
-				platform_wall.cast_to.x = -14
+		if position.x >= end_position.x:
+		
+			direction = -1
+			platform_drop.position.x = -15.733
+			sprite.flip_h = false
+			platform_wall.cast_to.x = -14
+		elif position.x <= start_position.x:
+		
+			direction = 1
+			platform_drop.position.x = 15.733
+			sprite.flip_h = true
+			platform_wall.cast_to.x = 14
 				
 		velocity.y = jump_speed
 		$Timers/DelayJump.start()

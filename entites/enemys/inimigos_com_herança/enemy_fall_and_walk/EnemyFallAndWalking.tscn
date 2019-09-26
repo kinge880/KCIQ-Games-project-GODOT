@@ -1,0 +1,216 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall_and_walk/EnemyFallAndWalking.gd" type="Script" id=1]
+[ext_resource path="res://assets/graphic/sprites/enemys/Slime/slime-Sheet.png" type="Texture" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 6.19994
+height = 4.15403
+
+[sub_resource type="Animation" id=2]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.12, 0.25, 0.38 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Pre_fall"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 10 ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 17, 18, 19, 20 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HitBox/HitBoxColision:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 13, 14, 15, 16 ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 4, 5, 6, 7 ]
+}
+
+[sub_resource type="CapsuleShape2D" id=9]
+radius = 6.82859
+height = 8.15195
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 170.489, 10 )
+
+[node name="EnemyFallAndWalking" type="KinematicBody2D"]
+rotation = 0.00398407
+scale = Vector2( 1.5, 1.5 )
+collision_layer = 0
+collision_mask = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 4257.49 ]
+}
+max_life = 10
+current_life = 10
+damage = 10
+damage_force = 100
+walk_speed = 50.0
+gravity = 400
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = 3.14159
+texture = ExtResource( 2 )
+flip_h = true
+vframes = 3
+hframes = 8
+frame = 12
+
+[node name="Body" type="CollisionShape2D" parent="."]
+position = Vector2( -1.13033, 4.63873 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="AnimationEffects" type="AnimationPlayer" parent="."]
+anims/take_damage = SubResource( 2 )
+
+[node name="AnimationEnemy" type="AnimationPlayer" parent="."]
+anims/Pre_fall = SubResource( 3 )
+anims/death = SubResource( 4 )
+anims/hurt = SubResource( 6 )
+anims/idle = SubResource( 7 )
+anims/walk = SubResource( 8 )
+
+[node name="HitBox" type="Area2D" parent="."]
+position = Vector2( -0.950397, 4.08742 )
+collision_layer = 16
+collision_mask = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="HitBoxColision" type="CollisionShape2D" parent="HitBox"]
+position = Vector2( -0.081398, 0.000320435 )
+rotation = 1.5708
+shape = SubResource( 9 )
+
+[node name="FallColision" type="Area2D" parent="."]
+position = Vector2( -1.0805, 166.602 )
+collision_layer = 16
+collision_mask = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="FallBoxColision" type="CollisionShape2D" parent="FallColision"]
+position = Vector2( -0.081398, 0.000320435 )
+rotation = 1.5708
+shape = SubResource( 10 )
+
+[node name="FloorColision" type="RayCast2D" parent="."]
+position = Vector2( 15.7328, -2.81528 )
+enabled = true
+cast_to = Vector2( 0, 15 )
+
+[node name="FallCast" type="RayCast2D" parent="."]
+position = Vector2( -0.84575, -3.88445 )
+enabled = true
+cast_to = Vector2( 0, 15 )
+
+[node name="WallColision" type="RayCast2D" parent="."]
+position = Vector2( -0.146893, 3.98879 )
+enabled = true
+cast_to = Vector2( 14, 0 )
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="DelayAfterDamageTime" type="Timer" parent="Timers"]
+wait_time = 0.4
+one_shot = true
+
+[node name="DelayFall" type="Timer" parent="Timers"]
+wait_time = 0.5
+one_shot = true
+[connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
+[connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
+[connection signal="body_exited" from="HitBox" to="." method="_on_HitBox_body_exited"]
+[connection signal="body_entered" from="FallColision" to="." method="_on_FallColision_body_entered"]

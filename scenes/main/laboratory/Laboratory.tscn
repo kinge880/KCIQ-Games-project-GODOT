@@ -1,4 +1,4 @@
-[gd_scene load_steps=145 format=2]
+[gd_scene load_steps=146 format=2]
 
 [ext_resource path="res://scenes/main/laboratory/Laboratory.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/tileset.png" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_jumping_V2_teste/EnemyJumpingV2.tscn" type="PackedScene" id=13]
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_walking/EnemyWalking.tscn" type="PackedScene" id=14]
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fly/EnemyFly.tscn" type="PackedScene" id=15]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall_and_walk/EnemyFallAndWalking.tscn" type="PackedScene" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( -0.865784, 12.734, 33.0892, 12.734, 33.1246, 21.1411, -1.03503, 21.1411 )
@@ -1707,7 +1708,7 @@ navpoly = SubResource( 126 )
 [node name="HUD" parent="." instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 579.276, 344.546 )
+position = Vector2( 1395.07, 612.967 )
 collision_mask = 29
 
 [node name="FallDeath" type="Area2D" parent="."]
@@ -1813,6 +1814,9 @@ move_distance = 100
 
 [node name="EnemyFly" parent="Monster" instance=ExtResource( 15 )]
 position = Vector2( 437.342, 244.83 )
+
+[node name="EnemyFallAndWalking" parent="Monster" instance=ExtResource( 16 )]
+position = Vector2( 1556.82, 565.61 )
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="gel_shoot" from="Player" to="." method="_on_Player_gel_shoot"]
 [connection signal="hability_changed" from="Player" to="HUD" method="_on_Player_hability_changed"]
@@ -1824,8 +1828,5 @@ position = Vector2( 437.342, 244.83 )
 [connection signal="body_entered" from="BossBatle" to="." method="_on_BossBatle_body_entered"]
 [connection signal="power_crystal_drop" from="BossBatle/Boss" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="animation_finished" from="BossBatle/TentacleWall/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="power_crystal_drop" from="Monster/EnemyJumpingv2" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="Monster/EnemyWalking" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="power_crystal_drop" from="Monster/EnemyFly" to="." method="_on_Enemy_power_crystal_drop"]
 
 [editable path="BossBatle/TentacleWall"]

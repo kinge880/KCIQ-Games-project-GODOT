@@ -49,7 +49,8 @@ enum State {
 	DAMAGE,
 	DEATH,
 	DELAY_AFTER_DAMAGE,
-	JUMPING
+	JUMPING,
+	FALL
 }
 
 
@@ -101,6 +102,12 @@ func standing_after_damage():
 
 #transição após o ataque
 func standing_after_damage_transition():
+	
+	pass
+
+
+func fall(delta):
+	
 	pass
 
 
@@ -184,6 +191,8 @@ func _physics_process(delta):
 			jump(delta)
 		State.DELAY_AFTER_DAMAGE:
 			standing_after_damage()
+		State.FALL:
+			fall(delta)
 
 
 func time_bullet_zone():
