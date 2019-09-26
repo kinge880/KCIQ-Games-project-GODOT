@@ -15,13 +15,13 @@ onready var platform_wall = $WallColision
 export (int) var move_distance = 500
 var start_position = position
 var end_position = start_position + Vector2(move_distance,0)
-var max_life
-var current_life
-var damage
-var damage_force
-var walk_speed
-var gravity
-var jump_speed
+export (int) var max_life
+export (int) var current_life
+export (int) var damage
+export (int) var damage_force
+export (float) var walk_speed
+export (int) var gravity
+export (int) var jump_speed
 var velocity = Vector2.ZERO
 var state = State.STANDING
 var to_player

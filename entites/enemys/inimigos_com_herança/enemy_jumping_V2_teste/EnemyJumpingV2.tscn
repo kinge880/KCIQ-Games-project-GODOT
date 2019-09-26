@@ -97,6 +97,14 @@ scale = Vector2( 1.5, 1.5 )
 collision_layer = 0
 collision_mask = 3
 script = ExtResource( 1 )
+move_distance = 400
+max_life = 10
+current_life = 10
+damage = 20
+damage_force = 140
+walk_speed = 100.0
+gravity = 800
+jump_speed = -250
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.0313726, 1, 0, 1 )
@@ -142,7 +150,9 @@ one_shot = true
 autostart = true
 
 [node name="FloorColision" type="RayCast2D" parent="."]
+position = Vector2( 15.6004, -0.422894 )
 enabled = true
+cast_to = Vector2( 0, 40 )
 
 [node name="WallColision" type="RayCast2D" parent="."]
 position = Vector2( -0.0842334, 5.25972 )

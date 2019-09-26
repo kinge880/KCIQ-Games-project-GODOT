@@ -4,14 +4,6 @@ extends "res://entites/enemys/inimigos_com_herança/actors.gd"
 func _ready():
 	
 	add_to_group("enemies")
-	
-	max_life = 10
-	current_life = 10
-	damage = 20
-	damage_force = 140
-	walk_speed = 50
-	gravity = 800
-
 	start_position = position
 	end_position = start_position + Vector2(move_distance,0)
 	

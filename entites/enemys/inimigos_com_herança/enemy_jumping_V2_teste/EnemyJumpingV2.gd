@@ -3,16 +3,6 @@ extends "res://entites/enemys/inimigos_com_herança/actors.gd"
 func _ready():
 	
 	add_to_group("enemies")
-	#adiciona os valores basicos das estatisticas, acredito que futuramente precisaremos 
-	#fazer isso vim via inspector, já que um msm inimigo pode ter valores diferentes dependendo da cena
-	max_life = 10
-	current_life = 10
-	damage = 20
-	damage_force = 140
-	walk_speed = 100
-	gravity = 800
-	jump_speed = -250
-		
 	start_position = position
 	end_position = start_position + Vector2(move_distance,0)
 

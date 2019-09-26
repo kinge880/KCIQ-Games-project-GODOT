@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -10,21 +10,21 @@
 atlas = ExtResource( 2 )
 region = Rect2( -0.131714, -1.1324, 350.803, 595.849 )
 
-[sub_resource type="RayShape2D" id=22]
+[sub_resource type="RayShape2D" id=2]
 length = 18.0
 
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 4.51336
 height = 11.4823
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.222222, 0.933333, 1 )
 colors = PoolColorArray( 1, 0.839216, 0.105882, 1, 0.952941, 0.537255, 0.0941176, 1, 1, 0.230017, 0.0313725, 1, 1, 1, 1, 1 )
 
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=6]
 emission_shape = 1
 emission_sphere_radius = 1.0
 flag_disable_z = true
@@ -36,9 +36,9 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 1.5
 scale_random = 1.0
-color_ramp = SubResource( 4 )
+color_ramp = SubResource( 5 )
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 length = 0.45
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -65,8 +65,7 @@ tracks/1/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "air_dash"
+[sub_resource type="Animation" id=8]
 length = 0.55
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -81,7 +80,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 length = 0.66
 step = 0.05
 tracks/0/type = "value"
@@ -109,7 +108,7 @@ tracks/1/keys = {
 "values": [ false, true, false, true ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=10]
 length = 0.28
 step = 0.08
 tracks/0/type = "value"
@@ -137,7 +136,7 @@ tracks/1/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=11]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -152,7 +151,7 @@ tracks/0/keys = {
 "values": [ 66, 67, 68 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=12]
 length = 0.3
 step = 0.05
 tracks/0/type = "value"
@@ -180,7 +179,7 @@ tracks/1/keys = {
 "values": [ 32 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 0.55
 step = 0.2
 tracks/0/type = "value"
@@ -196,7 +195,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27, 28 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=14]
 length = 0.8
 step = 0.2
 tracks/0/type = "value"
@@ -210,23 +209,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 18, 19, 20, 21 ]
-}
-
-[sub_resource type="Animation" id=14]
-length = 0.4
-loop = true
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 22, 23 ]
 }
 
 [sub_resource type="Animation" id=15]
@@ -243,11 +225,11 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 79, 80 ]
+"values": [ 22, 23 ]
 }
 
 [sub_resource type="Animation" id=16]
-length = 0.8
+length = 0.4
 loop = true
 step = 0.2
 tracks/0/type = "value"
@@ -257,10 +239,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 3 ]
+"values": [ 79, 80 ]
 }
 
 [sub_resource type="Animation" id=17]
@@ -277,7 +259,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 14, 15, 16, 17 ]
+"values": [ 0, 1, 2, 3 ]
 }
 
 [sub_resource type="Animation" id=18]
@@ -294,10 +276,27 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 81, 82, 83, 84 ]
+"values": [ 14, 15, 16, 17 ]
 }
 
 [sub_resource type="Animation" id=19]
+length = 0.8
+loop = true
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 81, 82, 83, 84 ]
+}
+
+[sub_resource type="Animation" id=20]
 length = 1.2
 loop = true
 step = 0.2
@@ -314,7 +313,7 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=20]
+[sub_resource type="Animation" id=21]
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerCamera:zoom")
 tracks/0/interp = 1
@@ -328,7 +327,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.5, 1.5 ) ]
 }
 
-[sub_resource type="Animation" id=21]
+[sub_resource type="Animation" id=22]
 length = 1.35
 step = 0.2
 tracks/0/type = "value"
@@ -356,10 +355,6 @@ tracks/1/keys = {
 "values": [ 34 ]
 }
 
-[sub_resource type="CapsuleShape2D" id=22]
-radius = 11.9704
-height = 8.767
-
 [sub_resource type="RectangleShape2D" id=23]
 extents = Vector2( 9.14109, 15.6709 )
 
@@ -376,11 +371,11 @@ hframes = 7
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 22 )
+shape = SubResource( 2 )
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( 0.120441, -1.40675 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 position = Vector2( 6.82562, 36.9721 )
@@ -400,7 +395,7 @@ lifetime = 0.4
 speed_scale = 1.5
 randomness = 1.0
 local_coords = false
-process_material = SubResource( 5 )
+process_material = SubResource( 6 )
 
 [node name="JetPackParticle2" type="Particles2D" parent="."]
 position = Vector2( -4.85854, 17.188 )
@@ -411,30 +406,31 @@ lifetime = 0.4
 speed_scale = 1.5
 randomness = 1.0
 local_coords = false
-process_material = SubResource( 5 )
+process_material = SubResource( 6 )
 texture = ExtResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/air_atk = SubResource( 6 )
-anims/air_dash = SubResource( 7 )
-anims/atk1 = SubResource( 8 )
-anims/atk2 = SubResource( 9 )
-anims/crouch = SubResource( 10 )
-anims/damaged = SubResource( 11 )
-anims/dash = SubResource( 12 )
-anims/double_jump = SubResource( 13 )
-anims/fall = SubResource( 14 )
-anims/grab_wall = SubResource( 15 )
-anims/idle = SubResource( 16 )
-anims/jump = SubResource( 17 )
-anims/ladder = SubResource( 18 )
-anims/walk = SubResource( 19 )
+anims/air_atk = SubResource( 7 )
+anims/air_dash = SubResource( 8 )
+anims/atk1 = SubResource( 9 )
+anims/atk2 = SubResource( 10 )
+anims/crouch = SubResource( 11 )
+anims/damaged = SubResource( 12 )
+anims/dash = SubResource( 13 )
+anims/double_jump = SubResource( 14 )
+anims/fall = SubResource( 15 )
+anims/grab_wall = SubResource( 16 )
+anims/idle = SubResource( 17 )
+anims/jump = SubResource( 18 )
+anims/ladder = SubResource( 19 )
+anims/walk = SubResource( 20 )
 
 [node name="AnimationEffects" type="AnimationPlayer" parent="."]
-anims/camera_zoom_super_jump = SubResource( 20 )
-anims/take_damage = SubResource( 21 )
+anims/camera_zoom_super_jump = SubResource( 21 )
+anims/take_damage = SubResource( 22 )
 
 [node name="Timers" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 0.6
@@ -475,7 +471,6 @@ wait_time = 0.15
 one_shot = true
 
 [node name="SwordSlice" type="Area2D" parent="."]
-editor/display_folded = true
 position = Vector2( 14, -2.92391 )
 collision_layer = 2
 collision_mask = 16
@@ -485,7 +480,7 @@ __meta__ = {
 
 [node name="SwordColision" type="CollisionShape2D" parent="SwordSlice"]
 position = Vector2( -1.84668, 0.230833 )
-shape = SubResource( 22 )
+shape = SubResource( 2 )
 disabled = true
 
 [node name="PausePopUp" parent="." instance=ExtResource( 4 )]

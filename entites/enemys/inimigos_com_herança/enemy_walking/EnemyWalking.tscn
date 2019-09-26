@@ -111,6 +111,13 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [ 4257.49 ]
 }
+max_life = 10
+current_life = 10
+damage = 10
+damage_force = 100
+walk_speed = 50.0
+gravity = 800
+jump_speed = -250
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )

@@ -11,7 +11,7 @@ func _ready():
 	crystal.applied_force.x =  rand_range(-400, 400)
 	crystal.applied_force.y = -1100
 	force_life_time.start()
-	crystal_value = randi() % 3 + 1
+	crystal_value = randi() % 4 + 1
 
 
 #apaga o cristal após o player pegar ele

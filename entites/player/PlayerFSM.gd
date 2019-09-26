@@ -60,9 +60,6 @@ enum State_hability {
 	#BLINK
 }
 
-const WALK_SPEED = 150
-const JUMP_SPEED = -200
-const GRAVITY = 400
 const SNAP = Vector2(0, 8)
 const GEL_BULLET = preload("res://assets/package/bullets/gel_bullet/GelBullet.tscn")
 const TIME_BULLET = preload("res://assets/package/bullets/time_bullet/time_bullet.tscn")
@@ -233,7 +230,7 @@ func big_jump(delta):
 # função para auxiliar a transição para o estado pulando
 func big_jump_transition():
 	
-	if PlayerGlobalsVariables.big_jump_obted and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
+	if PlayerGlobalsVariables.big_jump_obtained and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
 		if gliding_cost_timer.time_left == 0:
 			current_energy -= big_jump_cost
 			energy_changed()
@@ -626,41 +623,6 @@ func air_attack(delta):
 	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
-
-
-#estado do super pulo
-func big_jump(delta):
-	
-	update_velocity()
-	big_jump_transition()
-	
-	if velocity.y < 0:
-		animation.play("jump")
-	else:
-		$JetPackParticle.emitting = false
-		$JetPackParticle2.emitting = false
-		state = State.JUMPING
-	
-	velocity.y += GRAVITY * delta
-	velocity = move_and_slide(velocity, Vector2.UP)
-	
-	if is_on_floor():
-		state = State.STANDING
-
-
-# função para auxiliar a transição para o estado pulando
-func big_jump_transition():
-	
-	if PlayerGlobalsVariables.big_jump_obtained and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
-		if gliding_cost_timer.time_left == 0:
-			current_energy -= big_jump_cost
-			energy_changed()
-		velocity.y = JUMP_SPEED
-		state = State.BIG_JUMP
-	elif Input.is_action_just_released("ui_up"):
-		$JetPackParticle.emitting = false
-		$JetPackParticle2.emitting = false
-		state = State.JUMPING
 
 
 #emite o sinal que altera o numero de cristais de energia HUD
