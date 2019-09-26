@@ -1,12 +1,12 @@
 extends Node
 
-var dash_obted = true
-var double_jump_obted = true
-var jetpack_obted = true
-var gel_gun_obted = true
-var time_gun_obted = true
-var wall_jump_obted = true
-var big_jump_obted = true
+var dash_obtained = true
+var double_jump_obtained = true
+var jetpack_obtained = true
+var gel_gun_obtained = true
+var time_gun_obtained = true
+var wall_jump_obtained = true
+var big_jump_obtained = true
 var max_life
 var current_life
 var max_energy

@@ -51,10 +51,10 @@ enum State {
 	GRAB_WALL
 }
 
-const WALK_SPEED = 200
-const JUMP_SPEED = -250
-const GRAVITY = 800
-const SNAP = Vector2(0, 8)
+const WALK_SPEED = 150
+const JUMP_SPEED = -200
+const GRAVITY = 400
+const SNAP = Vector2(0, 32)
 const GEL_BULLET = preload("res://assets/package/bullets/gel_bullet/GelBullet.tscn")
 const TIME_BULLET = preload("res://assets/package/bullets/time_bullet/time_bullet.tscn")
 
@@ -96,7 +96,7 @@ func update_velocity():
 
 
 # estado em pé
-func standing():
+func standing(delta):
 	
 	# verifica se o Player está parado
 	if velocity.x == 0:
@@ -110,7 +110,7 @@ func standing():
 		$LanternTest.show()
 		
 	update_velocity()
-	jump_transition()
+	
 	dash_transition()
 	gel_shoot()
 	
@@ -123,14 +123,16 @@ func standing():
 		energy_reload_timer_delay.start()
 		state = State.RELOAD
 	
-	
+	velocity.y += GRAVITY * delta
+	#velocity = velocity.normalized() * WALK_SPEED
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
+	
+	jump_transition()
 
 # estado pulando
 func jumping(delta):
 	
 	update_velocity()
-	grab_wall_transition()
 	
 	# verifica se o Player está subindo ou descendo
 	if velocity.y < 0:
@@ -143,6 +145,7 @@ func jumping(delta):
 	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
+	grab_wall_transition()
 	dash_transition()
 	double_jump_transition()
 	
@@ -168,24 +171,26 @@ func jump_transition():
 func double_jump(delta):
 	
 	update_velocity()
-	grab_wall_transition()
+	
 	animation.play("double_jump")
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
+	
+	grab_wall_transition()
 	dash_transition()
 	
 	if current_energy > gliding_cost:
 		gliding_transition()
-	if not is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
-		state = State.AIR_ATTACK
 	if is_on_floor():
 		state = State.STANDING
+	elif Input.is_action_pressed("ataque_arma_primaria"):
+		state = State.AIR_ATTACK
 
 
 #ativa o estado de pulo duplo
 func double_jump_transition():
-
-	if  PlayerGlobalsVariables.double_jump_obted and Input.is_action_just_pressed("ui_up"):
+	
+	if  PlayerGlobalsVariables.double_jump_obtained and Input.is_action_just_pressed("ui_up"):
 		velocity.y = JUMP_SPEED
 		state = State.DOUBLE_JUMP
 
@@ -253,7 +258,7 @@ func grab_wall(delta):
 # função para auxiliar a transição para o estado agarrado na parede
 func grab_wall_transition():
 	
-	if PlayerGlobalsVariables.wall_jump_obted and not is_on_floor() and is_on_wall():
+	if PlayerGlobalsVariables.wall_jump_obtained and not is_on_floor() and is_on_wall():
 		state = State.GRAB_WALL
 
 
@@ -285,7 +290,7 @@ func gliding(delta):
 # função para auxiliar a transição para o estado planando
 func gliding_transition():
 	
-	if PlayerGlobalsVariables.jetpack_obted and not is_on_floor():
+	if PlayerGlobalsVariables.jetpack_obtained and not is_on_floor():
 		if Input.is_action_just_pressed("gliding"):
 			state = State.GLIDING
 		elif Input.is_action_just_released("gliding"):
@@ -307,7 +312,7 @@ func dashing():
 func dash_transition():
 
 	# verifica se o delay do dash já acabou e se o player está se movendo 
-	if PlayerGlobalsVariables.dash_obted and dash_delay.time_left == 0 && velocity.x != 0:
+	if PlayerGlobalsVariables.dash_obtained and dash_delay.time_left == 0 && velocity.x != 0:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
 
@@ -345,7 +350,7 @@ func crouching_transition():
 
 func gel_shoot():
 	
-	if current_energy >= gel_gun_cost and PlayerGlobalsVariables.gel_gun_obted:
+	if current_energy >= gel_gun_cost and PlayerGlobalsVariables.gel_gun_obtained:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			#pega posição atual do mouse e emite o sinal de tiro para o mapa
 			var mspos = get_global_mouse_position()
@@ -360,7 +365,7 @@ func gel_shoot():
 #ativa um tiro da arma do tempo
 func time_shoot():
 	
-	if PlayerGlobalsVariables.time_gun_obted and current_energy >= time_gun_cost:
+	if PlayerGlobalsVariables.time_gun_obtained and current_energy >= time_gun_cost:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			#pega posição atual do mouse e emite o sinal de tiro para o mapa
 			var mspos = get_global_mouse_position()
@@ -439,7 +444,7 @@ func big_jump(delta):
 # função para auxiliar a transição para o estado pulando
 func big_jump_transition():
 	
-	if PlayerGlobalsVariables.big_jump_obted and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
+	if PlayerGlobalsVariables.big_jump_obtained and Input.is_action_pressed("ui_up") and current_energy > big_jump_cost:
 		if gliding_cost_timer.time_left == 0:
 			current_energy -= big_jump_cost
 			energy_changed()
@@ -526,7 +531,7 @@ func _physics_process(delta):
 	
 	match state:
 		State.STANDING:
-			standing()
+			standing(delta)
 		State.JUMPING:
 			jumping(delta)
 		State.DASHING:
@@ -565,7 +570,7 @@ func _on_DashTimer_timeout():
 
 #ao terminar animações muda estados
 func _on_AnimationPlayer_animation_finished(anim_name):
-	
+	#return
 	if anim_name =="damaged" or anim_name == "double_jump" or anim_name == "atk2" or anim_name == "air_atk":
 		state = State.STANDING
 

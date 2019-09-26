@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -10,9 +10,12 @@
 atlas = ExtResource( 2 )
 region = Rect2( -0.131714, -1.1324, 350.803, 595.849 )
 
+[sub_resource type="RayShape2D" id=22]
+length = 18.0
+
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 4.51336
-height = 20.8813
+height = 11.4823
 
 [sub_resource type="Gradient" id=3]
 offsets = PoolRealArray( 0, 0.222222, 0.933333, 1 )
@@ -353,10 +356,13 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 59
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 22 )
 
 [node name="Body" type="CollisionShape2D" parent="."]
-position = Vector2( 0.120441, 3.59325 )
+position = Vector2( 0.120441, -1.40675 )
 shape = SubResource( 2 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
