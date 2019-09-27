@@ -1,3 +1,4 @@
+
 extends "res://entites/enemys/inimigos_com_herança/actors.gd"
 
 onready var delay_fall = $Timers/DelayFall
@@ -88,7 +89,7 @@ func _on_HitBox_area_exited(area):
 
 func _on_FallColision_body_entered(body):
 	
-	$FallColision/FallBoxColision.disabled = true
+	$FallColision.queue_free()
 	delay_fall.start()
 	state = State.FALL
 	

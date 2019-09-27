@@ -37,6 +37,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 10 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -2, 0 ), Vector2( 2, 0 ), Vector2( -1, 0 ), Vector2( 1, 0 ), Vector2( -1, 0 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=4]
 length = 0.7
@@ -65,7 +77,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -80,7 +92,7 @@ tracks/0/keys = {
 "values": [ 13, 14, 15, 16 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -96,7 +108,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -112,11 +124,11 @@ tracks/0/keys = {
 "values": [ 4, 5, 6, 7 ]
 }
 
-[sub_resource type="CapsuleShape2D" id=9]
+[sub_resource type="CapsuleShape2D" id=8]
 radius = 6.82859
 height = 8.15195
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 170.489, 10 )
 
 [node name="EnemyFallAndWalking" type="KinematicBody2D"]
@@ -141,7 +153,6 @@ texture = ExtResource( 2 )
 flip_h = true
 vframes = 3
 hframes = 8
-frame = 12
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2( -1.13033, 4.63873 )
@@ -154,9 +165,9 @@ anims/take_damage = SubResource( 2 )
 [node name="AnimationEnemy" type="AnimationPlayer" parent="."]
 anims/Pre_fall = SubResource( 3 )
 anims/death = SubResource( 4 )
-anims/hurt = SubResource( 6 )
-anims/idle = SubResource( 7 )
-anims/walk = SubResource( 8 )
+anims/hurt = SubResource( 5 )
+anims/idle = SubResource( 6 )
+anims/walk = SubResource( 7 )
 
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2( -0.950397, 4.08742 )
@@ -169,7 +180,7 @@ __meta__ = {
 [node name="HitBoxColision" type="CollisionShape2D" parent="HitBox"]
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
-shape = SubResource( 9 )
+shape = SubResource( 8 )
 
 [node name="FallColision" type="Area2D" parent="."]
 position = Vector2( -1.0805, 166.602 )
@@ -182,7 +193,7 @@ __meta__ = {
 [node name="FallBoxColision" type="CollisionShape2D" parent="FallColision"]
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
-shape = SubResource( 10 )
+shape = SubResource( 9 )
 
 [node name="FloorColision" type="RayCast2D" parent="."]
 position = Vector2( 15.7328, -2.81528 )

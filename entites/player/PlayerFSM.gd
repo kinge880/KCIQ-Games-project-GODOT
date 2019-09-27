@@ -71,7 +71,6 @@ var velocity = Vector2.ZERO
 var state = State.STANDING
 var state_hability = State_hability.TIME_SHOOT
 var power_crystal = 100
-var camera_zoom = false
 var enemy_damage_position
 var enemy_damage_force
 var in_jump = false
@@ -132,12 +131,9 @@ func standing(delta):
 
 	if is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
 		state = State.ATTACK
-	if camera_zoom:
-		camera_zoom = false
-		animation_effects.play_backwards("camera_zoom_super_jump")
 	if Input.is_action_pressed("reload_energy") and current_energy < max_energy and power_crystal > 0:
 		energy_reload_timer_delay.start()
-		state = State.RELOAD	
+		state = State.RELOAD
 
 
 # estado pulando
@@ -379,9 +375,6 @@ func crouching():
 	animation.play("crouch")
 	
 	if big_jump_delay.time_left == 0 and current_energy > big_jump_cost:
-		if Input.is_action_pressed("ui_up"):
-			camera_zoom = true
-			animation_effects.play("camera_zoom_super_jump")
 		big_jump_transition()
 		energy_changed()
 		$JetPackParticle.emitting = true

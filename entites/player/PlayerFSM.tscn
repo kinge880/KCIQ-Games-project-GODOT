@@ -514,7 +514,6 @@ cast_to = Vector2( 100, 0 )
 collision_mask = 25
 
 [node name="TeleportArea" type="Area2D" parent="."]
-editor/display_folded = true
 collision_layer = 0
 collision_mask = 25
 
