@@ -498,12 +498,14 @@ func time_travel():
 		player_global_position = global_position
 		hability_active = true
 		modulate = Color.blue
+		$Sounds/TimeTravel/TimeTravelActive.play()
 	elif Input.is_action_just_pressed("ataque_arma_secundaria") and hability_active:
 		global_position = player_global_position
 		hability_active = false
 		modulate = Color.white
 		current_energy -= PlayerGlobalsVariables.time_travel_cost
 		energy_changed()
+		$Sounds/TimeTravel/TimeTravelReactive.play()
 	else:
 		pass
 		#ativar algo que indique falta de energia

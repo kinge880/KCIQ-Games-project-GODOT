@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/time_travel_active.wav-95f8b57f9dfe9ebc5b493893d6c34345.sample"
+
+[deps]
+
+source_file="res://assets/audio/player/time_travel/time_travel_active.wav"
+dest_files=[ "res://.import/time_travel_active.wav-95f8b57f9dfe9ebc5b493893d6c34345.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -134,7 +134,6 @@ func take_damage(damage):
 	state = State.DAMAGE
 	
 	if current_life <= 0:
-		hit_box.disabled = true
 		drop_power_crystal()
 		state = State.DEATH
 

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/cricket4.wav-615795c0742605ae436b9b837b6e8847.sample"
+
+[deps]
+
+source_file="res://assets/audio/ambient/cricket/cricket4.wav"
+dest_files=[ "res://.import/cricket4.wav-615795c0742605ae436b9b837b6e8847.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=148 format=2]
+[gd_scene load_steps=153 format=2]
 
 [ext_resource path="res://scenes/main/laboratory/Laboratory.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/tileset.png" type="Texture" id=2]
@@ -18,6 +18,11 @@
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall_and_walk/EnemyFallAndWalking.tscn" type="PackedScene" id=16]
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall/EnemyFall.tscn" type="PackedScene" id=17]
 [ext_resource path="res://entites/enemys/inimigos_com_herança/turret/Turret.tscn" type="PackedScene" id=18]
+[ext_resource path="res://addons/mixing-desk/sound/nonspatial/ran_cont.gd" type="Script" id=19]
+[ext_resource path="res://addons/mixing-desk/sound/snd_icon.png" type="Texture" id=20]
+[ext_resource path="res://assets/audio/musics/pianoambient.ogg" type="AudioStream" id=21]
+[ext_resource path="res://assets/audio/musics/piano_ambient_test2.ogg" type="AudioStream" id=22]
+[ext_resource path="res://assets/audio/musics/piano_ambient_test.ogg" type="AudioStream" id=23]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( -0.865784, 12.734, 33.0892, 12.734, 33.1246, 21.1411, -1.03503, 21.1411 )
@@ -1825,6 +1830,26 @@ position = Vector2( 1630.44, 565.987 )
 
 [node name="Node" parent="Monster" instance=ExtResource( 18 )]
 position = Vector2( 2128.9, 288.518 )
+
+[node name="ambientSoundTest" type="Node" parent="."]
+script = ExtResource( 19 )
+__meta__ = {
+"_editor_icon": ExtResource( 20 )
+}
+autoplay = true
+sound_number = 1
+
+[node name="music1" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 21 )
+bus = "Music"
+
+[node name="music2" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 22 )
+bus = "Music"
+
+[node name="music3" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 23 )
+bus = "Music"
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="gel_shoot" from="Player" to="." method="_on_Player_gel_shoot"]
 [connection signal="hability_changed" from="Player" to="HUD" method="_on_Player_hability_changed"]
@@ -1836,5 +1861,9 @@ position = Vector2( 2128.9, 288.518 )
 [connection signal="body_entered" from="BossBatle" to="." method="_on_BossBatle_body_entered"]
 [connection signal="power_crystal_drop" from="BossBatle/Boss" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="animation_finished" from="BossBatle/TentacleWall/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="power_crystal_drop" from="Monster/EnemyJumpingv2" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="Monster/EnemyWalking" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="Monster/EnemyFly" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="power_crystal_drop" from="Monster/EnemyFallAndWalking" to="." method="_on_Enemy_power_crystal_drop"]
 
 [editable path="BossBatle/TentacleWall"]

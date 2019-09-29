@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/time_travel_reactive.wav-322387562cdcbeb4d4cce1141dc2b5dd.sample"
+
+[deps]
+
+source_file="res://assets/audio/player/time_travel/time_travel_reactive.wav"
+dest_files=[ "res://.import/time_travel_reactive.wav-322387562cdcbeb4d4cce1141dc2b5dd.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

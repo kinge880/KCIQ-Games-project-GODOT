@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/hit7.wav-92c950f3d73e4b23cadeb1491c44f38a.sample"
+
+[deps]
+
+source_file="res://assets/audio/slime_test/hit/hit7.wav"
+dest_files=[ "res://.import/hit7.wav-92c950f3d73e4b23cadeb1491c44f38a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

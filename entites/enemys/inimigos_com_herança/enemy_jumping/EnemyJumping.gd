@@ -10,14 +10,9 @@ func _ready():
 # estado standing, esse estado mantem o movimento basico e parado, além de ativar estados de ataque (caso tenha)
 func standing(delta):
 	
-	velocity.x = 0
-	
-	# verifica se o enemy ta parado ou andando
-	if velocity.x == 0:
+	if is_on_floor() and $Timers/DelayJump.time_left != 0:
+		velocity.x = 0
 		animation.play("idle")
-	else:
-		animation.play("walk")
-	
 	if is_on_floor() and $Timers/DelayJump.time_left == 0:
 		#vira o enemy caso chegue a posição final ou inicial
 		if position.x >= end_position.x:
@@ -50,6 +45,7 @@ func standing(delta):
 				platform_wall.cast_to.x = -14
 				
 		velocity.x = walk_speed * direction
+		animation.play("walk")
 
 	player_overlapse()
 	velocity.y += gravity * delta

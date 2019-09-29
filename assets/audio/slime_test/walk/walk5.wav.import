@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/walk5.wav-b5372687c72f6545b432fd0b554ac37a.sample"
+
+[deps]
+
+source_file="res://assets/audio/slime_test/walk/walk5.wav"
+dest_files=[ "res://.import/walk5.wav-b5372687c72f6545b432fd0b554ac37a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

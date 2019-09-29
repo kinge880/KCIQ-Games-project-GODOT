@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/turn on flashlight.wav-358ff924b459211ec2c43fe1a1814e04.sample"
+
+[deps]
+
+source_file="res://assets/audio/player/lantern/turn on flashlight.wav"
+dest_files=[ "res://.import/turn on flashlight.wav-358ff924b459211ec2c43fe1a1814e04.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

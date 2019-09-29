@@ -3,7 +3,7 @@
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall/EnemyFall.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/Slime/slime-Sheet.png" type="Texture" id=2]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
@@ -18,7 +18,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "Pre_fall"
 length = 0.2
 tracks/0/type = "value"
@@ -46,7 +46,7 @@ tracks/1/keys = {
 "values": [ Vector2( -1, 0 ), Vector2( 1, 0 ), Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( -1, 0 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -60,20 +60,8 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 17, 18, 19, 20 ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("HitBox/HitBoxColision:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -88,7 +76,7 @@ tracks/0/keys = {
 "values": [ 13, 14, 15, 16 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -104,7 +92,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -120,11 +108,11 @@ tracks/0/keys = {
 "values": [ 4, 5, 6, 7 ]
 }
 
-[sub_resource type="CapsuleShape2D" id=8]
+[sub_resource type="CapsuleShape2D" id=7]
 radius = 5.4082
 height = 3.25262
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 170.489, 10 )
 
 [node name="EnemyFall" type="KinematicBody2D"]
@@ -154,14 +142,14 @@ hframes = 8
 frame = 12
 
 [node name="AnimationEffects" type="AnimationPlayer" parent="."]
-anims/take_damage = SubResource( 2 )
+anims/take_damage = SubResource( 1 )
 
 [node name="AnimationEnemy" type="AnimationPlayer" parent="."]
-anims/Pre_fall = SubResource( 3 )
-anims/death = SubResource( 4 )
-anims/hurt = SubResource( 5 )
-anims/idle = SubResource( 6 )
-anims/walk = SubResource( 7 )
+anims/Pre_fall = SubResource( 2 )
+anims/death = SubResource( 3 )
+anims/hurt = SubResource( 4 )
+anims/idle = SubResource( 5 )
+anims/walk = SubResource( 6 )
 
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2( -0.28993, -5.70812 )
@@ -172,8 +160,8 @@ __meta__ = {
 }
 
 [node name="HitBoxColision" type="CollisionShape2D" parent="HitBox"]
-position = Vector2( -0.081398, 0.000320435 )
-shape = SubResource( 8 )
+position = Vector2( -1.13947, 0.00453615 )
+shape = SubResource( 7 )
 
 [node name="FallColision" type="Area2D" parent="."]
 position = Vector2( 0.188326, 159.013 )
@@ -186,7 +174,7 @@ __meta__ = {
 [node name="FallBoxColision" type="CollisionShape2D" parent="FallColision"]
 position = Vector2( -0.081398, 0.000320435 )
 rotation = 1.5708
-shape = SubResource( 9 )
+shape = SubResource( 8 )
 
 [node name="Timers" type="Node" parent="."]
 

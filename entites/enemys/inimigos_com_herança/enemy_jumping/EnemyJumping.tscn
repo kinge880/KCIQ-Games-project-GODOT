@@ -1,7 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_jumping/EnemyJumping.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/Slime/slime-Sheet.png" type="Texture" id=2]
+[ext_resource path="res://assets/package/sounds/RanSoundJumpSlimeGrudent.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/package/sounds/RanSoundHitSlimGrudent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/audio/slime_test/slime_death.wav" type="AudioStream" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.19994
@@ -37,6 +40,46 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 17, 18, 19, 20 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:collision_mask")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath("HitBox")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("SlimeGrudentDeath")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "hurt"
@@ -52,6 +95,20 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 13, 14, 15, 16 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("RanSoundHitSlimGrudent")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "play"
+} ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -80,10 +137,24 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ 4, 5, 6, 7 ]
+"values": [ 4, 5, 6 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("RanSoundJumpSlimeGrudent")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "play"
+} ]
 }
 
 [sub_resource type="CapsuleShape2D" id=7]
@@ -158,6 +229,14 @@ cast_to = Vector2( 0, 40 )
 position = Vector2( -0.0842334, 5.25972 )
 enabled = true
 cast_to = Vector2( 14, 0 )
+
+[node name="RanSoundJumpSlimeGrudent" parent="." instance=ExtResource( 3 )]
+
+[node name="RanSoundHitSlimGrudent" parent="." instance=ExtResource( 4 )]
+
+[node name="SlimeGrudentDeath" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+max_distance = 200.0
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
 [connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
