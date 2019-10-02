@@ -6,7 +6,8 @@ var start = true
 
 func _ready():
 	$AnimationPlayer.play("day_cicle")
-	
+
+
 #Permite ao mapa controlar a bala de gel
 func _on_Player_gel_shoot(bullet, _position, _direction):
 	

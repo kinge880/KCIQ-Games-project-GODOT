@@ -46,6 +46,7 @@ func play(num=0, ran=true):
 		_iplay(ransnd)
 		
 func _get_ransnd(ran=true):
+	randomize()
 	var children = get_child_count() - 1
 	var chance = randi() % children
 	var ransnd = get_child(chance)

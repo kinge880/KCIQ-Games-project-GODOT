@@ -57,8 +57,8 @@ func walking(delta):
 			animation.play("walk_rigth")
 		
 		#quando o delay do dash for 0, inicia o dash
-		if dash_zone and $Timers/DashDelay.time_left == 0:
-			$Timers/DashDuration.start()
+		if dash_zone and dash_delay.time_left == 0:
+			dash_duration.start()
 			state = State.ATTACK
 	else:
 		state = State.STANDING
@@ -68,13 +68,13 @@ func walking(delta):
 func attack(delta):
 	
 	#primeiro ativa um pre ataque, para o player perceber que o inimigo vai ar
-	if $Timers/DashDuration.time_left > 0.5:
+	if dash_duration.time_left > 0.5:
 		if player:
 			dash_direction = player.global_position - global_position
 		modulate = Color.yellow
 		animation.play("pre_dash")
 	#ativa o ataque e move o enemy
-	elif $Timers/DashDuration.time_left > 0:
+	elif dash_duration.time_left > 0:
 		animation.play("dash")
 		move_and_slide(dash_direction.normalized() * walk_speed * 8)
 	else:
@@ -95,7 +95,7 @@ func standing_after_damage():
 
 #transição após o ataque
 func standing_after_damage_transition():
-	$Timers/DashDelay.start()
+	dash_delay.start()
 	delay_after_damage.start()
 	state = State.DELAY_AFTER_DAMAGE
 

@@ -422,9 +422,11 @@ func change_hability():
 			WALK_SPEED /= 1.5
 			JUMP_SPEED /= 1.5
 			GRAVITY /= 1.5
-			animation.playback_speed = 1
-			animation.playback_speed = 1
-		
+			animation.playback_speed /= 1.5
+			animation.playback_speed /= 1.5
+			$Sounds/FastTime/FastTimeDuration.stop()
+			$Sounds/FastTime/FastTimeDuration.emit_signal("finished")
+			
 		hability_active = false
 		modulate = Color.white
 		
@@ -463,52 +465,77 @@ func change_hability():
 #função que ativa a habilidade fast_time, tornando os inimigos lentos e o player mais rapido (velocidade e animações)
 func fast_time():
 	
-		if not hability_active and current_energy >= PlayerGlobalsVariables.fast_time_cost:
-			if Input.is_action_just_pressed("ataque_arma_secundaria"):
-				get_tree().call_group("enemies","start_player_fast_time")
-				hability_active = true
-				modulate = Color.red
-				WALK_SPEED *= 1.5
-				JUMP_SPEED *= 1.5
-				GRAVITY *= 1.5
-				animation.playback_speed = 1.5
-				animation.playback_speed = 1.5
-				fast_time_timer.start()
-		elif hability_active and current_energy >= PlayerGlobalsVariables.fast_time_cost:
-			if Input.is_action_just_pressed("ataque_arma_secundaria") or current_energy <= PlayerGlobalsVariables.fast_time_cost:
-				get_tree().call_group("enemies","stop_player_fast_time")
-				hability_active = false
-				modulate = Color.white
-				WALK_SPEED /= 1.5
-				JUMP_SPEED /= 1.5
-				GRAVITY /= 1.5
-				animation.playback_speed = 1
-				animation.playback_speed = 1
-			elif fast_time_timer.time_left == 0:
-				current_energy -= PlayerGlobalsVariables.fast_time_cost
-				energy_changed()
-				fast_time_timer.start()
-		else:
-			pass
-			#ativar algo que indique falta de energia
+	if not hability_active and current_energy >= PlayerGlobalsVariables.fast_time_cost * 10:
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
+			get_tree().call_group("enemies","start_player_fast_time")
+			hability_active = true
+			modulate = Color.red
+			WALK_SPEED *= 1.5
+			JUMP_SPEED *= 1.5
+			GRAVITY *= 1.5
+			animation.playback_speed *= 1.5
+			animation.playback_speed *= 1.5
+			current_energy -= PlayerGlobalsVariables.fast_time_cost * 10
+			energy_changed()
+			fast_time_timer.start()
+			$Sounds/FastTime/FastTimeActive.play()
+	elif hability_active:
+		if Input.is_action_just_pressed("ataque_arma_secundaria") or current_energy <= PlayerGlobalsVariables.fast_time_cost:
+			get_tree().call_group("enemies","stop_player_fast_time")
+			hability_active = false
+			modulate = Color.white
+			WALK_SPEED /= 1.5
+			JUMP_SPEED /= 1.5
+			GRAVITY /= 1.5
+			animation.playback_speed /= 1.5
+			animation.playback_speed /= 1.5
+			$Sounds/FastTime/FastTimeDuration.stop()
+			$Sounds/FastTime/FastTimeDuration.emit_signal("finished")
+		elif fast_time_timer.time_left == 0:
+			current_energy -= PlayerGlobalsVariables.fast_time_cost
+			energy_changed()
+			fast_time_timer.start()
+	else:
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
+			$Sounds/NotEnergy.play()
+		
+	if current_energy * (100/max_energy) < 20:
+		$Sounds/FastTime/FastTimeDuration.pitch_scale = 1 + (0.04 * (50 - current_energy))
+	elif current_energy * (100/max_energy) < 50:
+		$Sounds/FastTime/FastTimeDuration.pitch_scale = 1 + (0.02 * (50 - current_energy))
+	else:
+		$Sounds/FastTime/FastTimeDuration.pitch_scale = 1
+
+
 
 func time_travel():
 	
-	if Input.is_action_just_pressed("ataque_arma_secundaria") and not hability_active and current_energy >= PlayerGlobalsVariables.time_travel_cost:
-		player_global_position = global_position
-		hability_active = true
-		modulate = Color.blue
-		$Sounds/TimeTravel/TimeTravelActive.play()
-	elif Input.is_action_just_pressed("ataque_arma_secundaria") and hability_active:
-		global_position = player_global_position
-		hability_active = false
-		modulate = Color.white
-		current_energy -= PlayerGlobalsVariables.time_travel_cost
-		energy_changed()
-		$Sounds/TimeTravel/TimeTravelReactive.play()
+	
+	if not hability_active and current_energy >= PlayerGlobalsVariables.time_travel_cost:
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
+			player_global_position = global_position
+			hability_active = true
+			modulate = Color.blue
+			$Sounds/TimeTravel/TimeTravelActive.play()
+			$Timers/TimeTravelDuration.start()
+			$Timers/TimeTravelDurationSoundPlay.start()
+	elif hability_active:
+		if Input.is_action_just_pressed("ataque_arma_secundaria") or $Timers/TimeTravelDuration.time_left == 0:
+			global_position = player_global_position
+			hability_active = false
+			modulate = Color.white
+			current_energy -= PlayerGlobalsVariables.time_travel_cost
+			energy_changed()
+			$Sounds/TimeTravel/TimeTravelReactive.play()
+		
+		$Timers/TimeTravelDurationSoundPlay.wait_time = $Timers/TimeTravelDuration.time_left / 5
+	
+		if $Timers/TimeTravelDurationSoundPlay.time_left == 0:
+			$Sounds/TimeTravel/TimeTravelDuration.play()
+			$Timers/TimeTravelDurationSoundPlay.start()
 	else:
-		pass
-		#ativar algo que indique falta de energia
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
+			$Sounds/NotEnergy.play()
 
 
 """func blink_transition():
@@ -557,8 +584,8 @@ func gel_shoot():
 			current_energy -= gel_gun_cost
 			energy_changed()
 	else:
-		pass
-		#aplicar um som de sem energia e pá
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
+			$Sounds/NotEnergy.play()
 
 
 #ativa um tiro da arma do tempo
@@ -572,8 +599,8 @@ func time_shoot():
 			current_energy -= time_gun_cost
 			energy_changed()
 	else:
-		pass
-		#aplicar um som de sem energia e pá
+		if Input.is_action_just_pressed("ataque_arma_secundaria"):
+			$Sounds/NotEnergy.play()
 
 
 # estado de recarga da energia
@@ -752,3 +779,15 @@ func _on_SwordSlice_body_entered(body):
 		#o body.animation.current_animation é necessario para impedir casos onde continue dropando moedas após a morte
 		if body.has_method('take_damage') and body.animation.current_animation != "death":
 			body.take_damage(sword_damage)
+
+
+func _on_FastTimeActive_finished():
+	
+	if hability_active:
+		$Sounds/FastTime/FastTimeDuration.play()
+
+
+func _on_FastTimeDuration_finished():
+	
+	$Sounds/FastTime/FastTimeDesactive.pitch_scale = $Sounds/FastTime/FastTimeDuration.pitch_scale
+	$Sounds/FastTime/FastTimeDesactive.play()

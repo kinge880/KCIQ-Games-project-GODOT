@@ -90,7 +90,9 @@ anims/take_damage = SubResource( 2 )
 anims/charge = SubResource( 3 )
 anims/shoot = SubResource( 4 )
 
-[node name="DelayShoot" type="Timer" parent="Turret"]
+[node name="Timers" type="Node" parent="Turret"]
+
+[node name="DelayShoot" type="Timer" parent="Turret/Timers"]
 wait_time = 3.0
 one_shot = true
 

@@ -1,7 +1,4 @@
-
 extends "res://entites/enemys/inimigos_com_herança/actors.gd"
-
-onready var delay_fall = $Timers/DelayFall
 
 func _ready():
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -28,7 +28,10 @@
 [ext_resource path="res://assets/audio/player/sword/sword19.wav" type="AudioStream" id=26]
 [ext_resource path="res://assets/audio/player/sword/sword20.wav" type="AudioStream" id=27]
 [ext_resource path="res://assets/audio/player/time_travel/time_travel_active.wav" type="AudioStream" id=28]
-[ext_resource path="res://assets/audio/player/time_travel/time_travel_reactive.wav" type="AudioStream" id=29]
+[ext_resource path="res://assets/audio/player/fast_time/fast_time_active.wav" type="AudioStream" id=29]
+[ext_resource path="res://assets/audio/player/time_travel/time_travel_reactive.wav" type="AudioStream" id=30]
+[ext_resource path="res://assets/audio/player/fast_time/fast_time_duration.wav" type="AudioStream" id=31]
+[ext_resource path="res://assets/audio/player/fast_time/fast_time_desactive.wav" type="AudioStream" id=32]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -496,7 +499,6 @@ anims/camera_zoom_super_jump = SubResource( 21 )
 anims/take_damage = SubResource( 22 )
 
 [node name="Timers" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 0.6
@@ -534,6 +536,14 @@ one_shot = true
 
 [node name="WallJumpDelay" type="Timer" parent="Timers"]
 wait_time = 0.15
+one_shot = true
+
+[node name="TimeTravelDuration" type="Timer" parent="Timers"]
+wait_time = 6.0
+one_shot = true
+
+[node name="TimeTravelDurationSoundPlay" type="Timer" parent="Timers"]
+wait_time = 0.6
 one_shot = true
 
 [node name="SwordSlice" type="Area2D" parent="."]
@@ -601,73 +611,125 @@ sound_number = 1
 
 [node name="sword1" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 8 )
+bus = "Effects"
 
 [node name="sword2" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 9 )
+bus = "Effects"
 
 [node name="sword3" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 10 )
+bus = "Effects"
 
 [node name="sword4" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 11 )
+bus = "Effects"
 
 [node name="sword5" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 12 )
+bus = "Effects"
 
 [node name="sword6" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 13 )
+bus = "Effects"
 
 [node name="sword7" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 14 )
+bus = "Effects"
 
 [node name="sword8" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 15 )
+bus = "Effects"
 
 [node name="sword9" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 16 )
+bus = "Effects"
 
 [node name="sword10" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 17 )
+bus = "Effects"
 
 [node name="sword11" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 18 )
+bus = "Effects"
 
 [node name="sword12" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 19 )
+bus = "Effects"
 
 [node name="sword13" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 20 )
+bus = "Effects"
 
 [node name="sword14" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 21 )
+bus = "Effects"
 
 [node name="sword15" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 22 )
+bus = "Effects"
 
 [node name="sword16" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 23 )
+bus = "Effects"
 
 [node name="sword17" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 24 )
+bus = "Effects"
 
 [node name="sword18" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 25 )
+bus = "Effects"
 
 [node name="sword19" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 26 )
+bus = "Effects"
 
 [node name="sword20" type="AudioStreamPlayer" parent="Sounds/Sword"]
 stream = ExtResource( 27 )
+bus = "Effects"
 
 [node name="TimeTravel" type="Node" parent="Sounds"]
 editor/display_folded = true
 
 [node name="TimeTravelActive" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
 stream = ExtResource( 28 )
+bus = "Effects"
+
+[node name="TimeTravelDuration" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
+stream = ExtResource( 29 )
+pitch_scale = 2.0
+bus = "Effects"
 
 [node name="TimeTravelReactive" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
-stream = ExtResource( 29 )
+stream = ExtResource( 30 )
+volume_db = 6.0
+bus = "Effects"
+
+[node name="NotEnergy" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 28 )
+pitch_scale = 0.28
+bus = "Effects"
+
+[node name="FastTime" type="Node" parent="Sounds"]
+
+[node name="FastTimeActive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
+stream = ExtResource( 28 )
+pitch_scale = 0.8
+bus = "Effects"
+
+[node name="FastTimeDuration" type="AudioStreamPlayer" parent="Sounds/FastTime"]
+stream = ExtResource( 31 )
+volume_db = 6.0
+bus = "Effects"
+
+[node name="FastTimeDesactive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
+stream = ExtResource( 32 )
+volume_db = 6.0
+bus = "Effects"
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="animation_finished" from="AnimationEffects" to="." method="_on_AnimationPlayer2_animation_finished"]
 [connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
 [connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]
+[connection signal="finished" from="Sounds/FastTime/FastTimeActive" to="." method="_on_FastTimeActive_finished"]
+[connection signal="finished" from="Sounds/FastTime/FastTimeDuration" to="." method="_on_FastTimeDuration_finished"]
