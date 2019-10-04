@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
@@ -32,6 +32,7 @@
 [ext_resource path="res://assets/audio/player/time_travel/time_travel_reactive.wav" type="AudioStream" id=30]
 [ext_resource path="res://assets/audio/player/fast_time/fast_time_duration.wav" type="AudioStream" id=31]
 [ext_resource path="res://assets/audio/player/fast_time/fast_time_desactive.wav" type="AudioStream" id=32]
+[ext_resource path="res://assets/audio/player/hability/hability_change3.wav" type="AudioStream" id=33]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -277,7 +278,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=14]
-length = 0.4
+length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -285,7 +286,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"times": PoolRealArray( 0, 0.15, 0.3, 0.45 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 18, 19, 20, 21 ]
@@ -611,7 +612,6 @@ position = Vector2( -0.325912, 3.308 )
 shape = SubResource( 23 )
 
 [node name="Sounds" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Sword" type="Node" parent="Sounds"]
 editor/display_folded = true
@@ -702,11 +702,9 @@ stream = ExtResource( 27 )
 bus = "Effects"
 
 [node name="TimeTravel" type="Node" parent="Sounds"]
-editor/display_folded = true
 
 [node name="TimeTravelActive" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
 stream = ExtResource( 28 )
-pitch_scale = 1.05
 bus = "Effects"
 
 [node name="TimeTravelDuration" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
@@ -725,11 +723,9 @@ pitch_scale = 0.28
 bus = "Effects"
 
 [node name="FastTime" type="Node" parent="Sounds"]
-editor/display_folded = true
 
 [node name="FastTimeActive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
-stream = ExtResource( 29 )
-volume_db = -6.0
+stream = ExtResource( 28 )
 bus = "Effects"
 
 [node name="FastTimeDuration" type="AudioStreamPlayer" parent="Sounds/FastTime"]
@@ -740,8 +736,20 @@ bus = "Effects"
 stream = ExtResource( 32 )
 volume_db = 6.0
 bus = "Effects"
+
+[node name="FastTimeDesactiveChanged" type="AudioStreamPlayer" parent="Sounds/FastTime"]
+stream = ExtResource( 33 )
+pitch_scale = 1.2
+bus = "Effects"
+
+[node name="misc" type="Node" parent="Sounds"]
+
+[node name="ChangeHability" type="AudioStreamPlayer" parent="Sounds/misc"]
+stream = ExtResource( 33 )
+pitch_scale = 1.2
+bus = "Effects"
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="animation_finished" from="AnimationEffects" to="." method="_on_AnimationPlayer2_animation_finished"]
 [connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]
 [connection signal="finished" from="Sounds/FastTime/FastTimeActive" to="." method="_on_FastTimeActive_finished"]
-[connection signal="finished" from="Sounds/FastTime/FastTimeDuration" to="." method="_on_FastTimeDuration_finished"]
+[connection signal="finished" from="Sounds/FastTime/FastTimeDesactiveChanged" to="." method="_on_FastTimeDesactiveChanged_finished"]

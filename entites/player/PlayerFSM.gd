@@ -422,8 +422,19 @@ func change_hability():
 	
 	if Input.is_action_just_pressed("change_secondary_weapon_down") or Input.is_action_just_pressed("change_secondary_weapon_up"):
 		
-		if hability_active and modulate == Color.red:
-			desactive_fast_time()
+		if hability_active and hability_name == "Fast Time":
+			get_tree().call_group("enemies","stop_player_fast_time")
+			hability_active = false
+			modulate = Color.white
+			WALK_SPEED /= 1.5
+			JUMP_SPEED /= 1.5
+			GRAVITY /= 1.5
+			animation.playback_speed /= 1.5
+			animation.playback_speed /= 1.5
+			sound_fast_time_duration.stop()
+			$Sounds/FastTime/FastTimeDesactiveChanged.play()
+		else:
+			$Sounds/misc/ChangeHability.play()
 			
 		hability_active = false
 		modulate = Color.white
@@ -508,7 +519,8 @@ func desactive_fast_time():
 	animation.playback_speed /= 1.5
 	animation.playback_speed /= 1.5
 	sound_fast_time_duration.stop()
-	sound_fast_time_duration.emit_signal("finished")
+	sound_fast_time_desactive.pitch_scale = sound_fast_time_duration.pitch_scale
+	sound_fast_time_desactive.play()
 
 
 #estado de viagem no tempo, retorna o tempo apenas para o player após alguns segundos ou após a reativação
@@ -804,7 +816,7 @@ func _on_FastTimeActive_finished():
 		sound_fast_time_duration.play()
 
 
-func _on_FastTimeDuration_finished():
+func _on_FastTimeDesactiveChanged_finished():
 	
 	sound_fast_time_desactive.pitch_scale = sound_fast_time_duration.pitch_scale
 	sound_fast_time_desactive.play()
