@@ -249,7 +249,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=13]
-length = 0.55
+length = 0.3
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -258,15 +258,26 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.25 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 24, 25, 26, 27, 28 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:collision_layer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 32 ]
+}
 
 [sub_resource type="Animation" id=14]
-length = 0.8
-step = 0.2
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -274,7 +285,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 18, 19, 20, 21 ]
@@ -368,7 +379,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=20]
 length = 1.2
 loop = true
-step = 0.2
+step = 1.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -437,7 +448,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 1
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
@@ -504,10 +515,6 @@ anims/take_damage = SubResource( 22 )
 wait_time = 0.6
 one_shot = true
 
-[node name="DashTimer" type="Timer" parent="Timers"]
-wait_time = 0.3
-one_shot = true
-
 [node name="AttackTimer" type="Timer" parent="Timers"]
 wait_time = 0.3
 one_shot = true
@@ -544,6 +551,10 @@ one_shot = true
 
 [node name="TimeTravelDurationSoundPlay" type="Timer" parent="Timers"]
 wait_time = 0.6
+one_shot = true
+
+[node name="DoubleJumpDelay" type="Timer" parent="Timers"]
+wait_time = 5.0
 one_shot = true
 
 [node name="SwordSlice" type="Area2D" parent="."]
@@ -600,6 +611,7 @@ position = Vector2( -0.325912, 3.308 )
 shape = SubResource( 23 )
 
 [node name="Sounds" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Sword" type="Node" parent="Sounds"]
 editor/display_folded = true
@@ -694,6 +706,7 @@ editor/display_folded = true
 
 [node name="TimeTravelActive" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
 stream = ExtResource( 28 )
+pitch_scale = 1.05
 bus = "Effects"
 
 [node name="TimeTravelDuration" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
@@ -712,15 +725,15 @@ pitch_scale = 0.28
 bus = "Effects"
 
 [node name="FastTime" type="Node" parent="Sounds"]
+editor/display_folded = true
 
 [node name="FastTimeActive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
-stream = ExtResource( 28 )
-pitch_scale = 0.8
+stream = ExtResource( 29 )
+volume_db = -6.0
 bus = "Effects"
 
 [node name="FastTimeDuration" type="AudioStreamPlayer" parent="Sounds/FastTime"]
 stream = ExtResource( 31 )
-volume_db = 6.0
 bus = "Effects"
 
 [node name="FastTimeDesactive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
@@ -729,7 +742,6 @@ volume_db = 6.0
 bus = "Effects"
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="animation_finished" from="AnimationEffects" to="." method="_on_AnimationPlayer2_animation_finished"]
-[connection signal="timeout" from="Timers/DashTimer" to="." method="_on_DashTimer_timeout"]
 [connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]
 [connection signal="finished" from="Sounds/FastTime/FastTimeActive" to="." method="_on_FastTimeActive_finished"]
 [connection signal="finished" from="Sounds/FastTime/FastTimeDuration" to="." method="_on_FastTimeDuration_finished"]

@@ -3,12 +3,11 @@ extends KinematicBody2D
 onready var animation = $AnimationPlayer
 onready var animation_effects = $AnimationEffects
 onready var dash_delay = $Timers/DashDelay
-onready var dash_timer = $Timers/DashTimer
 onready var energy_reload_timer = $Timers/EnergyReload
 onready var energy_reload_timer_delay = $Timers/EnergyReloadDelay
 onready var gliding_cost_timer = $Timers/GlidingEnergyConsumed
 onready var big_jump_delay = $Timers/BigJumpDelay
-onready var fast_time_timer = $Timers/FastTimeCost
+onready var fast_time_cost = $Timers/FastTimeCost
 onready var attack_delay = $Timers/AttackTimer
 onready var air_attack_delay = $Timers/AerialAttackTimer
 onready var sprite = $Sprite
@@ -16,6 +15,16 @@ onready var check_wall_botton = $CheckWallBotton
 #onready var check_wall_left = $RayCasts/CheckWallLeft
 onready var check_wall_top = $CheckWallTop
 #onready var check_wall_top_left = $RayCasts/CheckWallTopLeft
+onready var sound_not_energy = $Sounds/NotEnergy
+onready var sound_fast_time_duration = $Sounds/FastTime/FastTimeDuration
+onready var sound_fast_time_active = $Sounds/FastTime/FastTimeActive
+onready var sound_fast_time_desactive = $Sounds/FastTime/FastTimeDesactive
+onready var sound_time_travel_active = $Sounds/TimeTravel/TimeTravelActive
+onready var time_travel_duration = $Timers/TimeTravelDuration
+onready var time_travel_duration_play = $Timers/TimeTravelDurationSoundPlay
+onready var sound_time_travel_reactive = $Sounds/TimeTravel/TimeTravelReactive
+onready var sound_time_travel_duration = $Sounds/TimeTravel/TimeTravelDuration
+onready var double_jump_delay = $Timers/DoubleJumpDelay
 
 #coloquei variaveis de todo tipo de custo/energia e pá, como exportadas, para facilitar os testes, já que basta alterar no inspetor
 #as variaveis de custo são necessarias no futuro quando implementarmos os mods para o nucleo de energia
@@ -79,6 +88,7 @@ var hability = 1
 var hability_name = "Time Shoot"
 var player_global_position
 var hability_active = false
+var double_jump_active = true
 
 func _ready(): 
 	life_changed()
@@ -122,15 +132,13 @@ func standing(delta):
 		crouching_transition()
 		
 	update_velocity()
-
+	double_jump_active = true
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
-	
 	jump_transition()
 	dash_transition()
+	attack_transition()
 
-	if is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
-		state = State.ATTACK
 	if Input.is_action_pressed("reload_energy") and current_energy < max_energy and power_crystal > 0:
 		energy_reload_timer_delay.start()
 		state = State.RELOAD
@@ -152,15 +160,13 @@ func jumping(delta):
 	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
-	
 	grab_wall_transition()
 	dash_transition()
 	double_jump_transition()
+	air_attack_transition()
 	
 	if current_energy > gliding_cost:
 		gliding_transition()
-	if not is_on_floor() and Input.is_action_pressed("ataque_arma_primaria"):
-		state = State.AIR_ATTACK
 	if is_on_floor():
 		state = State.STANDING
 
@@ -198,7 +204,8 @@ func double_jump(delta):
 #ativa o estado de pulo duplo
 func double_jump_transition():
 	
-	if  PlayerGlobalsVariables.double_jump_obtained and Input.is_action_just_pressed("ui_up"):
+	if  double_jump_active and PlayerGlobalsVariables.double_jump_obtained and Input.is_action_just_pressed("ui_up"):
+		double_jump_active = false
 		velocity.y = JUMP_SPEED
 		state = State.DOUBLE_JUMP
 
@@ -347,26 +354,26 @@ func gliding_transition():
 func dashing():
 	
 	var dash_velocity = Vector2(WALK_SPEED * 2, 1)
+	
 	if sprite.flip_h == true:
 		dash_velocity = move_and_slide(-dash_velocity, Vector2.UP)
 	else:
 		dash_velocity = move_and_slide(dash_velocity, Vector2.UP)
-	if dash_timer.time_left == 0:
-		dash_timer.start()
 
 
 # função para auxiliar a transição para o estado "arrojado"
 func dash_transition():
 	
 	#verifica se o delay do dash já acabou e se o player está se movendo, além de verificar se ele esta no ar ou em terra
-	if not is_on_floor() and PlayerGlobalsVariables.dash_obtained and dash_delay.time_left == 0:
+	if not is_on_floor() and PlayerGlobalsVariables.dash_obtained:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
 			animation.play("air_dash")
-	elif dash_delay.time_left == 0:
+	else:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
 			animation.play("dash")
+			delay_after_damage = true
 
 
 # estado agachado
@@ -416,16 +423,7 @@ func change_hability():
 	if Input.is_action_just_pressed("change_secondary_weapon_down") or Input.is_action_just_pressed("change_secondary_weapon_up"):
 		
 		if hability_active and modulate == Color.red:
-			get_tree().call_group("enemies","stop_player_fast_time")
-			hability_active = false
-			modulate = Color.white
-			WALK_SPEED /= 1.5
-			JUMP_SPEED /= 1.5
-			GRAVITY /= 1.5
-			animation.playback_speed /= 1.5
-			animation.playback_speed /= 1.5
-			$Sounds/FastTime/FastTimeDuration.stop()
-			$Sounds/FastTime/FastTimeDuration.emit_signal("finished")
+			desactive_fast_time()
 			
 		hability_active = false
 		modulate = Color.white
@@ -477,65 +475,73 @@ func fast_time():
 			animation.playback_speed *= 1.5
 			current_energy -= PlayerGlobalsVariables.fast_time_cost * 10
 			energy_changed()
-			fast_time_timer.start()
-			$Sounds/FastTime/FastTimeActive.play()
+			fast_time_cost.start()
+			sound_fast_time_active.play()
 	elif hability_active:
 		if Input.is_action_just_pressed("ataque_arma_secundaria") or current_energy <= PlayerGlobalsVariables.fast_time_cost:
-			get_tree().call_group("enemies","stop_player_fast_time")
-			hability_active = false
-			modulate = Color.white
-			WALK_SPEED /= 1.5
-			JUMP_SPEED /= 1.5
-			GRAVITY /= 1.5
-			animation.playback_speed /= 1.5
-			animation.playback_speed /= 1.5
-			$Sounds/FastTime/FastTimeDuration.stop()
-			$Sounds/FastTime/FastTimeDuration.emit_signal("finished")
-		elif fast_time_timer.time_left == 0:
+			desactive_fast_time()
+		elif fast_time_cost.time_left == 0:
 			current_energy -= PlayerGlobalsVariables.fast_time_cost
 			energy_changed()
-			fast_time_timer.start()
+			fast_time_cost.start()
 	else:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
-			$Sounds/NotEnergy.play()
+			sound_not_energy.play()
 		
+	#modula o pith do som de duração com base na energia restante
 	if current_energy * (100/max_energy) < 20:
-		$Sounds/FastTime/FastTimeDuration.pitch_scale = 1 + (0.04 * (50 - current_energy))
+		sound_fast_time_duration.pitch_scale = 1 + (0.03 * (50 - current_energy))
 	elif current_energy * (100/max_energy) < 50:
-		$Sounds/FastTime/FastTimeDuration.pitch_scale = 1 + (0.02 * (50 - current_energy))
+		sound_fast_time_duration.pitch_scale = 1 + (0.02 * (50 - current_energy))
 	else:
-		$Sounds/FastTime/FastTimeDuration.pitch_scale = 1
+		sound_fast_time_duration.pitch_scale = 1
 
 
+func desactive_fast_time():
+	
+	get_tree().call_group("enemies","stop_player_fast_time")
+	hability_active = false
+	modulate = Color.white
+	WALK_SPEED /= 1.5
+	JUMP_SPEED /= 1.5
+	GRAVITY /= 1.5
+	animation.playback_speed /= 1.5
+	animation.playback_speed /= 1.5
+	sound_fast_time_duration.stop()
+	sound_fast_time_duration.emit_signal("finished")
 
+
+#estado de viagem no tempo, retorna o tempo apenas para o player após alguns segundos ou após a reativação
 func time_travel():
 	
-	
+	#se a variavel chave for falsa e tiver energia o bastante salva a posição do player e ativa som/animações
 	if not hability_active and current_energy >= PlayerGlobalsVariables.time_travel_cost:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
 			player_global_position = global_position
 			hability_active = true
 			modulate = Color.blue
-			$Sounds/TimeTravel/TimeTravelActive.play()
-			$Timers/TimeTravelDuration.start()
-			$Timers/TimeTravelDurationSoundPlay.start()
+			sound_time_travel_active.play()
+			time_travel_duration.start()
+			time_travel_duration_play.start()
+	#reativa a habilidade retornando ao ponto marcado e ativa custo de energia
 	elif hability_active:
-		if Input.is_action_just_pressed("ataque_arma_secundaria") or $Timers/TimeTravelDuration.time_left == 0:
+		if Input.is_action_just_pressed("ataque_arma_secundaria") or time_travel_duration.time_left == 0:
 			global_position = player_global_position
 			hability_active = false
 			modulate = Color.white
 			current_energy -= PlayerGlobalsVariables.time_travel_cost
 			energy_changed()
-			$Sounds/TimeTravel/TimeTravelReactive.play()
+			sound_time_travel_reactive.play()
 		
-		$Timers/TimeTravelDurationSoundPlay.wait_time = $Timers/TimeTravelDuration.time_left / 5
+		#usado para aumentar a velocidade dos beeps alertando sobre o fim da duração dessa habilidade
+		time_travel_duration_play.wait_time = time_travel_duration.time_left / 5
 	
-		if $Timers/TimeTravelDurationSoundPlay.time_left == 0:
-			$Sounds/TimeTravel/TimeTravelDuration.play()
-			$Timers/TimeTravelDurationSoundPlay.start()
+		if time_travel_duration_play.time_left == 0:
+			sound_time_travel_duration.play()
+			time_travel_duration_play.start()
 	else:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
-			$Sounds/NotEnergy.play()
+			sound_not_energy.play()
 
 
 """func blink_transition():
@@ -585,7 +591,7 @@ func gel_shoot():
 			energy_changed()
 	else:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
-			$Sounds/NotEnergy.play()
+			sound_not_energy.play()
 
 
 #ativa um tiro da arma do tempo
@@ -600,7 +606,7 @@ func time_shoot():
 			energy_changed()
 	else:
 		if Input.is_action_just_pressed("ataque_arma_secundaria"):
-			$Sounds/NotEnergy.play()
+			sound_not_energy.play()
 
 
 # estado de recarga da energia
@@ -620,31 +626,39 @@ func reload():
 
 
 #ativa o estado de ataque no chão
-func attack():
+func attack(delta):
 	
 	update_velocity()
-	jump_transition()
-	dash_transition()
+	#coloar o que for neessario para efetuar o atk dd melhor forma possivel
+	velocity.y += GRAVITY * delta
+	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
+
+
+func attack_transition():
 	
-	if Input.is_action_pressed("ataque_arma_primaria") and attack_delay.time_left == 0:
+	if Input.is_action_just_pressed("ataque_arma_primaria") and attack_delay.time_left == 0:
 		animation.play("atk2")
 		attack_delay.start()
-
-	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
+		state = State.ATTACK
 
 
 #executa um ataque com a espada
 func air_attack(delta):
 	
+	if is_on_floor():
+		state = State.STANDING
+	
 	update_velocity()
-	dash_transition()
-	
-	if Input.is_action_pressed("ataque_arma_primaria") and air_attack_delay.time_left == 0:
-		animation.play("air_atk")
-		air_attack_delay.start()
-	
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
+
+
+func air_attack_transition():
+	
+	if Input.is_action_just_pressed("ataque_arma_primaria") and attack_delay.time_left == 0:
+		animation.play("air_atk")
+		air_attack_delay.start()
+		state = State.AIR_ATTACK
 
 
 #emite o sinal que altera o numero de cristais de energia HUD
@@ -740,7 +754,7 @@ func _physics_process(delta):
 		State.DOUBLE_JUMP:
 			double_jump(delta)
 		State.ATTACK:
-			attack()
+			attack(delta)
 		State.AIR_ATTACK:
 			air_attack(delta)
 		State.DAMAGED:
@@ -748,29 +762,32 @@ func _physics_process(delta):
 		State.GRAB_WALL:
 			grab_wall(delta)
 
-# finaliza o dash
-func _on_DashTimer_timeout():
-	
-	dash_delay.start()
-	# reseta o movimento do Player após o dash
-	velocity = Vector2.ZERO
-	
-	if not is_on_floor():
-		state = State.JUMPING
-	else:
-		state = State.STANDING
 
 #ao terminar animações muda estados
 func _on_AnimationPlayer_animation_finished(anim_name):
 	#return
-	if anim_name =="damaged" or anim_name == "double_jump" or anim_name == "atk2" or anim_name == "air_atk":
+
+	if anim_name == "damaged" or anim_name == "double_jump" or anim_name == "atk2" or anim_name == "air_atk":
 		state = State.STANDING
+	# finaliza o dash
+	if anim_name == "dash":
+		delay_after_damage = false
+		dash_delay.start()
+		# reseta o movimento do Player após o dash
+		velocity = Vector2.ZERO
+	
+		if not is_on_floor():
+			state = State.JUMPING
+		else:
+			state = State.STANDING
+
 
 #ao terminar animações muda estados
 func _on_AnimationPlayer2_animation_finished(anim_name):
 	
-	if anim_name =="take_damage":
+	if anim_name == "take_damage":
 		delay_after_damage = false
+
 
 #causa dano no ataque
 func _on_SwordSlice_body_entered(body):
@@ -784,10 +801,10 @@ func _on_SwordSlice_body_entered(body):
 func _on_FastTimeActive_finished():
 	
 	if hability_active:
-		$Sounds/FastTime/FastTimeDuration.play()
+		sound_fast_time_duration.play()
 
 
 func _on_FastTimeDuration_finished():
 	
-	$Sounds/FastTime/FastTimeDesactive.pitch_scale = $Sounds/FastTime/FastTimeDuration.pitch_scale
-	$Sounds/FastTime/FastTimeDesactive.play()
+	sound_fast_time_desactive.pitch_scale = sound_fast_time_duration.pitch_scale
+	sound_fast_time_desactive.play()

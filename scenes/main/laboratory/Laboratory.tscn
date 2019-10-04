@@ -1839,7 +1839,7 @@ script = ExtResource( 19 )
 __meta__ = {
 "_editor_icon": ExtResource( 20 )
 }
-autoplay = true
+autoplay = false
 sound_number = 1
 
 [node name="music1" type="AudioStreamPlayer" parent="ambientSoundTest"]
