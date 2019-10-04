@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/turret_impact.wav-1506a087b8a7ba56b8a5ac06d8ebfebc.sample"
+
+[deps]
+
+source_file="res://assets/audio/enemys/turret/turret_impact.wav"
+dest_files=[ "res://.import/turret_impact.wav-1506a087b8a7ba56b8a5ac06d8ebfebc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

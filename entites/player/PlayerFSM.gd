@@ -92,6 +92,7 @@ var double_jump_active = true
 
 func _ready(): 
 	life_changed()
+	energy_changed()
 	power_crystal_changed()
 	add_to_group("player")
 	emit_signal('hability_changed', hability_name)
@@ -130,9 +131,10 @@ func standing(delta):
 	
 	if Input.is_action_pressed("ui_down"):
 		crouching_transition()
+	if is_on_floor():
+		double_jump_active = true
 		
 	update_velocity()
-	double_jump_active = true
 	velocity.y += GRAVITY * delta
 	velocity = move_and_slide_with_snap(velocity, SNAP, Vector2.UP, true, 4, deg2rad(46), true)
 	jump_transition()
@@ -365,11 +367,11 @@ func dashing():
 func dash_transition():
 	
 	#verifica se o delay do dash já acabou e se o player está se movendo, além de verificar se ele esta no ar ou em terra
-	if not is_on_floor() and PlayerGlobalsVariables.dash_obtained:
+	if not is_on_floor() and PlayerGlobalsVariables.dash_obtained and dash_delay.time_left == 0:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
 			animation.play("air_dash")
-	else:
+	elif dash_delay.time_left == 0:
 		if Input.is_action_just_pressed("ui_select"):
 			state = State.DASHING
 			animation.play("dash")
@@ -682,13 +684,13 @@ func power_crystal_changed():
 #emite o sinal que altera o valor da energia no HUD
 func energy_changed():
 	
-	emit_signal('energy_changed', current_energy * (100/max_energy))
+	emit_signal('energy_changed', current_energy * (100/max_energy), current_energy)
 
 
 #emite o sinal que altera o valor da vida no HUD
 func life_changed():
 	
-	emit_signal('life_changed', current_life * (100/max_life))
+	emit_signal('life_changed', current_life * (100/max_life), current_life)
 
 
 #função auxiliar que recebe o dano, reduz a vida do player e muda para o estado damaged
@@ -782,8 +784,10 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "damaged" or anim_name == "double_jump" or anim_name == "atk2" or anim_name == "air_atk":
 		state = State.STANDING
 	# finaliza o dash
-	if anim_name == "dash":
-		delay_after_damage = false
+	if anim_name == "dash" or anim_name == "air_dash":
+		if anim_name == "dash":
+			delay_after_damage = false
+		
 		dash_delay.start()
 		# reseta o movimento do Player após o dash
 		velocity = Vector2.ZERO

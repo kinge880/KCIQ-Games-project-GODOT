@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entites/enemys/inimigos_com_herança/turret/Turret.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/turret/turret_02_mk1.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/bullet/turret_bullet/turret_mk1_bullet.png" type="Texture" id=3]
+[ext_resource path="res://assets/audio/enemys/turret/turret_charge2.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/audio/enemys/turret/turret_shoot.wav" type="AudioStream" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 19.3575
@@ -25,7 +27,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=3]
 resource_name = "charge"
-length = 1.2
+length = 4.6
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -34,10 +36,24 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "audio"
+tracks/1/path = NodePath("Charge")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 4 )
+} ],
+"times": PoolRealArray( 0 )
 }
 
 [sub_resource type="Animation" id=4]
@@ -55,10 +71,24 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0 ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath("Shoot")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
 
 [sub_resource type="ConvexPolygonShape2D" id=5]
 
-[node name="Node" type="Node2D"]
+[node name="Turret" type="Node2D"]
 
 [node name="Turret" type="KinematicBody2D" parent="."]
 scale = Vector2( 0.7, 0.7 )
@@ -93,8 +123,20 @@ anims/shoot = SubResource( 4 )
 [node name="Timers" type="Node" parent="Turret"]
 
 [node name="DelayShoot" type="Timer" parent="Turret/Timers"]
-wait_time = 3.0
+wait_time = 4.6
 one_shot = true
+
+[node name="Charge" type="AudioStreamPlayer2D" parent="Turret"]
+stream = ExtResource( 4 )
+volume_db = 12.0
+max_distance = 300.0
+bus = "Effects"
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="Turret"]
+stream = ExtResource( 5 )
+volume_db = 12.0
+max_distance = 300.0
+bus = "Effects"
 
 [node name="VisionPlayer" type="Area2D" parent="."]
 position = Vector2( 0.200577, -0.143198 )

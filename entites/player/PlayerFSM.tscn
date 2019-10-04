@@ -46,18 +46,17 @@ radius = 4.51336
 height = 11.4823
 
 [sub_resource type="Gradient" id=4]
-offsets = PoolRealArray( 0, 0.222222, 0.933333, 1 )
-colors = PoolColorArray( 1, 0.839216, 0.105882, 1, 0.952941, 0.537255, 0.0941176, 1, 1, 0.230017, 0.0313725, 1, 1, 1, 1, 1 )
+offsets = PoolRealArray( 0, 0.218659, 0.661808, 0.728863, 0.848396, 0.927114, 1 )
+colors = PoolColorArray( 0.855469, 0.412462, 0.0568085, 1, 0.949219, 0.6618, 0.0519104, 1, 0.925781, 0.0709705, 0.0289307, 1, 0.9375, 0.406494, 0.0878906, 1, 0.994627, 0.265094, 0.038536, 1, 0.886719, 0.154461, 0.0346375, 1, 0.910156, 0.495131, 0.0533295, 1 )
 
 [sub_resource type="GradientTexture" id=5]
 gradient = SubResource( 4 )
 
 [sub_resource type="ParticlesMaterial" id=6]
-emission_shape = 1
-emission_sphere_radius = 1.0
+emission_shape = 3
+emission_point_count = 1
 flag_disable_z = true
-spread = 25.0
-gravity = Vector3( 0, -120, 0 )
+gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
 angular_velocity = 1.0
 orbit_velocity = 0.0
@@ -108,7 +107,8 @@ tracks/2/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-length = 0.55
+length = 0.3
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -116,7 +116,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"times": PoolRealArray( 0, 0.05, 0.15, 0.25 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 24, 25, 26, 27 ]
@@ -380,7 +380,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=20]
 length = 1.2
 loop = true
-step = 1.2
+step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -449,7 +449,7 @@ script = ExtResource( 1 )
 texture = SubResource( 1 )
 vframes = 16
 hframes = 7
-frame = 8
+frame = 13
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
@@ -465,7 +465,11 @@ current = true
 process_mode = 0
 limit_left = -50
 limit_bottom = 800
-smoothing_speed = 6.0
+limit_smoothed = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+smoothing_speed = 4.0
+editor_draw_drag_margin = true
 
 [node name="JetPackParticle" type="Particles2D" parent="."]
 position = Vector2( 4.42004, 17.3101 )
@@ -477,6 +481,7 @@ speed_scale = 1.5
 randomness = 1.0
 local_coords = false
 process_material = SubResource( 6 )
+texture = ExtResource( 3 )
 
 [node name="JetPackParticle2" type="Particles2D" parent="."]
 position = Vector2( -4.85854, 17.188 )
@@ -511,6 +516,7 @@ anims/camera_zoom_super_jump = SubResource( 21 )
 anims/take_damage = SubResource( 22 )
 
 [node name="Timers" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 0.6
@@ -702,6 +708,7 @@ stream = ExtResource( 27 )
 bus = "Effects"
 
 [node name="TimeTravel" type="Node" parent="Sounds"]
+editor/display_folded = true
 
 [node name="TimeTravelActive" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
 stream = ExtResource( 28 )
@@ -723,6 +730,7 @@ pitch_scale = 0.28
 bus = "Effects"
 
 [node name="FastTime" type="Node" parent="Sounds"]
+editor/display_folded = true
 
 [node name="FastTimeActive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
 stream = ExtResource( 28 )
@@ -743,6 +751,7 @@ pitch_scale = 1.2
 bus = "Effects"
 
 [node name="misc" type="Node" parent="Sounds"]
+editor/display_folded = true
 
 [node name="ChangeHability" type="AudioStreamPlayer" parent="Sounds/misc"]
 stream = ExtResource( 33 )

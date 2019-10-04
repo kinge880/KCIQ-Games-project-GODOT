@@ -1,24 +1,31 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://ui/hud/Hud.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/hud/red_button07.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/hud/green_button12.png" type="Texture" id=3]
-[ext_resource path="res://assets/fonts/iomanoid back.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://assets/fonts/iomanoid front.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://assets/fonts/iomanoid front.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/fonts/iomanoid back.ttf" type="DynamicFontData" id=5]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFontData" id=4]
+font_path = "res://assets/fonts/iomanoid back.ttf"
+
+[sub_resource type="DynamicFont" id=5]
+size = 35
+font_data = SubResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
 size = 60
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=1]
 size = 60
 font_data = ExtResource( 5 )
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=3]
 length = 0.25
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Margin/HBoxContainer/Recipe/LifeBar:tint_progress")
+tracks/0/path = NodePath("Margin/BoxGeneral/Recipe/LifeHbox/LifeBar:tint_progress")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -28,6 +35,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 0.992157, 0, 0.976471, 1 ), Color( 1, 0, 0.0941176, 1 ), Color( 0.992157, 0, 1, 1 ), Color( 1, 0, 0.0941176, 1 ), Color( 0.992157, 0, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Margin/BoxGeneral/Recipe/LifeHbox/Life:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0, 1 ), Color( 0.968627, 0.384314, 0.384314, 1 ), Color( 1, 0, 0, 1 ), Color( 0.694118, 0.329412, 0.329412, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [node name="HUD" type="CanvasLayer"]
@@ -40,19 +59,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/margin_right = 20
 custom_constants/margin_top = 20
-custom_constants/margin_left = 0
+custom_constants/margin_left = 20
 custom_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Margin"]
+[node name="BoxGeneral" type="HBoxContainer" parent="Margin"]
+margin_left = 20.0
 margin_top = 20.0
-margin_right = 374.0
-margin_bottom = 160.0
+margin_right = 1004.0
+margin_bottom = 564.0
+custom_constants/separation = 630
 
-[node name="Recipe" type="VBoxContainer" parent="Margin/HBoxContainer"]
-margin_right = 49.0
-margin_bottom = 140.0
+[node name="Recipe" type="VBoxContainer" parent="Margin/BoxGeneral"]
+margin_right = 96.0
+margin_bottom = 544.0
 
-[node name="LifeBar" type="TextureProgress" parent="Margin/HBoxContainer/Recipe"]
+[node name="LifeHbox" type="HBoxContainer" parent="Margin/BoxGeneral/Recipe"]
+margin_right = 96.0
+margin_bottom = 45.0
+
+[node name="LifeBar" type="TextureProgress" parent="Margin/BoxGeneral/Recipe/LifeHbox"]
 margin_right = 49.0
 margin_bottom = 45.0
 value = 100.0
@@ -60,38 +85,67 @@ texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 2 )
 tint_under = Color( 0, 0, 0, 1 )
 tint_over = Color( 0, 0, 0, 1 )
-tint_progress = Color( 0.992157, 0, 0.976471, 1 )
+tint_progress = Color( 0.992157, 0, 1, 1 )
 
-[node name="StaminaBar" type="TextureProgress" parent="Margin/HBoxContainer/Recipe"]
+[node name="Life" type="Label" parent="Margin/BoxGeneral/Recipe/LifeHbox"]
+margin_left = 53.0
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 5 )
+text = "100"
+percent_visible = -0.333333
+
+[node name="StaminaHbox" type="HBoxContainer" parent="Margin/BoxGeneral/Recipe"]
 margin_top = 49.0
-margin_right = 49.0
+margin_right = 96.0
 margin_bottom = 94.0
+
+[node name="StaminaBar" type="TextureProgress" parent="Margin/BoxGeneral/Recipe/StaminaHbox"]
+margin_right = 49.0
+margin_bottom = 45.0
 value = 100.0
 texture_under = ExtResource( 3 )
 texture_progress = ExtResource( 3 )
 tint_under = Color( 0.0117647, 0, 0, 1 )
 tint_progress = Color( 0, 1, 0.0390625, 1 )
 
-[node name="EnergyFragments" type="Label" parent="Margin/HBoxContainer"]
+[node name="Stamina" type="Label" parent="Margin/BoxGeneral/Recipe/StaminaHbox"]
 margin_left = 53.0
-margin_top = 34.0
-margin_right = 112.0
-margin_bottom = 106.0
-custom_fonts/font = SubResource( 1 )
-text = "20"
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 5 )
+text = "100"
 
-[node name="Hability" type="Label" parent="Margin/HBoxContainer"]
+[node name="HBoxContainerHability" type="HBoxContainer" parent="Margin/BoxGeneral"]
+margin_left = 726.0
+margin_right = 984.0
+margin_bottom = 544.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/BoxGeneral/HBoxContainerHability"]
+margin_right = 258.0
+margin_bottom = 544.0
+custom_constants/separation = 400
+
+[node name="Hability" type="Label" parent="Margin/BoxGeneral/HBoxContainerHability/VBoxContainer"]
 modulate = Color( 1, 0, 0, 1 )
-margin_left = 116.0
-margin_top = 34.0
-margin_right = 374.0
-margin_bottom = 106.0
-custom_fonts/font = SubResource( 3 )
+margin_right = 258.0
+margin_bottom = 72.0
+custom_fonts/font = SubResource( 2 )
 text = "Habilidade"
 align = 2
 
+[node name="EnergyFragments" type="Label" parent="Margin/BoxGeneral/HBoxContainerHability/VBoxContainer"]
+margin_top = 472.0
+margin_right = 258.0
+margin_bottom = 544.0
+custom_fonts/font = SubResource( 1 )
+text = "20"
+align = 2
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/lifeBar_flash = SubResource( 2 )
+anims/lifeBar_flash = SubResource( 3 )
 
 [node name="Tween" type="Tween" parent="."]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

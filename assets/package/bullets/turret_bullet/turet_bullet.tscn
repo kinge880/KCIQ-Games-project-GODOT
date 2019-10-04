@@ -1,7 +1,34 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/package/bullets/turret_bullet/turret_bullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/bullet/turret_bullet/turret_mk1_bullet.png" type="Texture" id=2]
+[ext_resource path="res://assets/audio/enemys/turret/turret_impact2.wav" type="AudioStream" id=3]
+
+[sub_resource type="Animation" id=2]
+resource_name = "s"
+tracks/0/type = "method"
+tracks/0/path = NodePath("Impact")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"values": [  ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:collision_mask")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4.05466, 4.48587 )
@@ -14,12 +41,14 @@ collision_mask = 2
 script = ExtResource( 1 )
 
 [node name="Lifetime" type="Timer" parent="."]
+wait_time = 1.5
 one_shot = true
 autostart = true
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationBullet" type="AnimationPlayer" parent="."]
+anims/s = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0.101688, -0.14431 )
@@ -35,5 +64,13 @@ position = Vector2( 0.462781, 0.97698 )
 enabled = true
 exclude_parent = false
 cast_to = Vector2( 2, 0 )
+
+[node name="Impact" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = 12.0
+pitch_scale = 2.2
+max_distance = 300.0
+bus = "Effects"
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
 [connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]
+[connection signal="finished" from="Impact" to="." method="_on_Impact_finished"]
