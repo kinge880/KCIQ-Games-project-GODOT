@@ -10,7 +10,6 @@
 [ext_resource path="res://assets/audio/slime_test/walk/walk6.wav" type="AudioStream" id=8]
 
 [node name="RanSoundWalkSlimeGrudent" type="Node2D"]
-editor/display_folded = true
 script = ExtResource( 1 )
 __meta__ = {
 "_editor_icon": ExtResource( 2 )
@@ -20,23 +19,30 @@ sound_number = 1
 [node name="walk1" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
 max_distance = 200.0
+bus = "Effects"
 
 [node name="walk2" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
+volume_db = 6.0
 max_distance = 200.0
+bus = "Effects"
 
 [node name="walk3" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
 max_distance = 200.0
+bus = "Effects"
 
 [node name="walk4" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 6 )
 max_distance = 200.0
+bus = "Effects"
 
 [node name="walk5" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 7 )
 max_distance = 200.0
+bus = "Effects"
 
 [node name="walk6" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 8 )
 max_distance = 200.0
+bus = "Effects"

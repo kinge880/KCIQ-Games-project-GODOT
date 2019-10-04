@@ -40,39 +40,13 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 17, 18, 19, 20 ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:collision_mask")
+tracks/1/type = "method"
+tracks/1/path = NodePath("SlimeGrudentDeath")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 1 ]
-}
-tracks/2/type = "method"
-tracks/2/path = NodePath("HitBox")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "queue_free"
-} ]
-}
-tracks/3/type = "method"
-tracks/3/path = NodePath("SlimeGrudentDeath")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -200,7 +174,6 @@ anims/idle = SubResource( 5 )
 anims/walk = SubResource( 6 )
 
 [node name="HitBox" type="Area2D" parent="."]
-editor/display_folded = true
 position = Vector2( -0.950397, 4.08742 )
 collision_layer = 16
 collision_mask = 2
@@ -237,6 +210,7 @@ cast_to = Vector2( 14, 0 )
 [node name="SlimeGrudentDeath" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
 max_distance = 200.0
+bus = "Effects"
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
 [connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]

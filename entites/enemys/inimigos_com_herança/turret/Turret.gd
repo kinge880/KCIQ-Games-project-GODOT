@@ -31,9 +31,9 @@ func walking(delta):
 		
 		if not charge:
 			charge = true
-			$DelayShoot.start()
+			delay_shoot.start()
 			animation.play("charge")
-		if $DelayShoot.time_left == 0:
+		if delay_shoot.time_left == 0:
 			state = State.SHOOT
 	else:
 		state = State.STANDING

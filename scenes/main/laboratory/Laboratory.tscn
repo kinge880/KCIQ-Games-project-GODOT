@@ -23,6 +23,9 @@
 [ext_resource path="res://assets/audio/musics/pianoambient.ogg" type="AudioStream" id=21]
 [ext_resource path="res://assets/audio/musics/piano_ambient_test2.ogg" type="AudioStream" id=22]
 [ext_resource path="res://assets/audio/musics/piano_ambient_test.ogg" type="AudioStream" id=23]
+[ext_resource path="res://assets/audio/musics/drone_ambient2.ogg" type="AudioStream" id=24]
+[ext_resource path="res://assets/audio/musics/drone_ambient3.ogg" type="AudioStream" id=25]
+[ext_resource path="res://assets/audio/musics/drone_ambient4.ogg" type="AudioStream" id=26]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 16, 32, 16, 32, 32, 0, 32 )
@@ -1770,6 +1773,22 @@ bus = "Music"
 [node name="music3" type="AudioStreamPlayer" parent="ambientSoundTest"]
 stream = ExtResource( 23 )
 bus = "Music"
+
+[node name="music4" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 24 )
+bus = "Music"
+
+[node name="music5" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 25 )
+bus = "Music"
+
+[node name="music6" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 26 )
+bus = "Music"
+
+[node name="music7" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 23 )
+bus = "Music"
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="gel_shoot" from="Player" to="." method="_on_Player_gel_shoot"]
 [connection signal="hability_changed" from="Player" to="HUD" method="_on_Player_hability_changed"]
@@ -1785,5 +1804,8 @@ bus = "Music"
 [connection signal="power_crystal_drop" from="Monster/EnemyWalking" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="power_crystal_drop" from="Monster/EnemyFly" to="." method="_on_Enemy_power_crystal_drop"]
 [connection signal="power_crystal_drop" from="Monster/EnemyFallAndWalking" to="." method="_on_Enemy_power_crystal_drop"]
+[connection signal="shoot" from="Monster/Node/Turret" to="." method="_on_Turret_shoot"]
 
 [editable path="BossBatle/TentacleWall"]
+
+[editable path="Monster/Node"]

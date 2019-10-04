@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/fast_time_desactive.wav-cea59b1bf267c2e665dad3e9dd187136.sample"
+
+[deps]
+
+source_file="res://assets/audio/player/fast_time/fast_time_desactive.wav"
+dest_files=[ "res://.import/fast_time_desactive.wav-cea59b1bf267c2e665dad3e9dd187136.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

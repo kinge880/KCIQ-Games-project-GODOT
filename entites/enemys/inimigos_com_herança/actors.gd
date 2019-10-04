@@ -7,14 +7,15 @@ onready var hit_box = $HitBox/HitBoxColision
 onready var hit_area = $HitBox
 onready var vision_player = $VisionPlayer
 onready var delay_after_damage = $Timers/DelayAfterDamage
+onready var delay_jump = $Timers/DelayJump
+onready var delay_fall = $Timers/DelayFall
 onready var dash_delay = $Timers/DashDelay
+onready var delay_shoot = $Timers/DelayShoot
 onready var dash_duration = $Timers/DashDuration
 onready var platform_drop = $FloorColision
 onready var platform_wall = $WallColision
 
 export (int) var move_distance = 500
-var start_position = position
-var end_position = start_position + Vector2(move_distance,0)
 export (int) var max_life
 export (int) var current_life
 export (int) var damage
@@ -22,6 +23,9 @@ export (int) var damage_force
 export (float) var walk_speed
 export (int) var gravity
 export (int) var jump_speed
+
+var start_position = position
+var end_position = start_position + Vector2(move_distance,0)
 var velocity = Vector2.ZERO
 var state = State.STANDING
 var to_player
@@ -136,6 +140,15 @@ func take_damage(damage):
 	if current_life <= 0:
 		drop_power_crystal()
 		state = State.DEATH
+		$".".set_collision_mask_bit (0, 1)
+		
+		if hit_area:
+			hit_area.queue_free()
+		if vision_player:
+			vision_player.queue_free()
+		if dash_zone:
+			dash_zone.queue_free()
+
 
 #função que ativa a condição de morte
 func death(delta):
@@ -195,20 +208,58 @@ func _physics_process(delta):
 
 
 func time_bullet_zone():
+	
 	pass
 
 
 func start_player_fast_time():
-	walk_speed = walk_speed / 10
-	gravity = gravity / 10
-	animation.playback_speed = 0.1
+	
+	animation.playback_speed /= 10
+	walk_speed /= 10
+	gravity /= 10
+	jump_speed /= 3
+	if delay_after_damage:
+		delay_after_damage.wait_time *= 2
+		delay_after_damage.start()
+	if delay_jump:
+		delay_jump.wait_time *= 2
+		delay_jump.start()
+	if dash_delay:
+		dash_delay.wait_time *= 2
+		dash_delay.start()
+	if dash_duration:
+		dash_duration.wait_time *= 10
+		dash_duration.start()
+	if delay_fall:
+		delay_fall.wait_time *= 2
+	if delay_shoot:
+		delay_shoot.wait_time *= 2
+		delay_shoot.start()
 
 
 func stop_player_fast_time():
-	walk_speed = walk_speed * 10
-	gravity = gravity * 10
-	animation.playback_speed = 1
-
+	
+	animation.playback_speed *= 10
+	walk_speed *= 10
+	gravity *= 10
+	jump_speed *= 3
+	if delay_after_damage:
+		delay_after_damage.wait_time /= 2
+		delay_after_damage.start()
+	if delay_jump:
+		delay_jump.wait_time /= 2
+		delay_jump.start()
+	if dash_delay:
+		dash_delay.wait_time /= 2
+		dash_delay.start()
+	if dash_duration:
+		dash_duration.wait_time /= 10
+		dash_duration.start()
+	if delay_fall:
+		delay_fall.wait_time /= 2
+	if delay_shoot:
+		delay_shoot.wait_time /= 2
+		delay_shoot.start()
 
 #função que verifica se o player entrou no area 2d do enemy e causa dano
 func _on_HitBox_body_entered_father(body):
