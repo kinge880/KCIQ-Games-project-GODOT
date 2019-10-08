@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/turret_shoot.wav-db9ff6f23c4f12039bb0de029969a1fc.sample"
+
+[deps]
+
+source_file="res://assets/audio/enemys/turret/turret_shoot.wav"
+dest_files=[ "res://.import/turret_shoot.wav-db9ff6f23c4f12039bb0de029969a1fc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

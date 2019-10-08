@@ -1645,7 +1645,6 @@ z_index = 1
 collision_mask = 29
 
 [node name="FallDeath" type="Area2D" parent="."]
-editor/display_folded = true
 position = Vector2( -251.342, 834.451 )
 collision_layer = 0
 collision_mask = 2
@@ -1761,11 +1760,12 @@ position = Vector2( 2351.83, 422.716 )
 scale = Vector2( 1, 1 )
 
 [node name="ambientSoundTest" type="Node" parent="."]
+editor/display_folded = true
 script = ExtResource( 19 )
 __meta__ = {
 "_editor_icon": ExtResource( 20 )
 }
-autoplay = true
+autoplay = false
 sound_number = 1
 
 [node name="music1" type="AudioStreamPlayer" parent="ambientSoundTest"]

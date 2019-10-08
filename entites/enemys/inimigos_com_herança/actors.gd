@@ -5,6 +5,7 @@ onready var animation_effets = $AnimationEffects
 onready var sprite = $Sprite
 onready var hit_box = $HitBox/HitBoxColision
 onready var hit_area = $HitBox
+onready var dash_area = $DashZone
 onready var vision_player = $VisionPlayer
 onready var delay_after_damage = $Timers/DelayAfterDamage
 onready var delay_jump = $Timers/DelayJump
@@ -146,8 +147,8 @@ func take_damage(damage):
 			hit_area.queue_free()
 		if vision_player:
 			vision_player.queue_free()
-		if dash_zone:
-			dash_zone.queue_free()
+		if dash_area:
+			dash_area.queue_free()
 
 
 #função que ativa a condição de morte

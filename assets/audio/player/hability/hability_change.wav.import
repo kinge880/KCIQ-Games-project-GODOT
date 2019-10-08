@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/hability_change.wav-4000c3e9e2cbeb983a52ddb397e77631.sample"
+
+[deps]
+
+source_file="res://assets/audio/player/hability/hability_change.wav"
+dest_files=[ "res://.import/hability_change.wav-4000c3e9e2cbeb983a52ddb397e77631.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

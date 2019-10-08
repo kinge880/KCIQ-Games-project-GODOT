@@ -24,7 +24,7 @@ func _start(_position, _direction):
 
 func _on_Lifetime_timeout():
 		#caso não bata em nada, ela some apos um tempo igual a lifetime
-	queue_free()
+		queue_free()
 
 
 func _process(delta):
@@ -33,8 +33,7 @@ func _process(delta):
 	global_position += velocity * delta  * speed
 	
 	if on_wall:
-		queue_free()
-
+		collider()
 
 func _on_Bullet_body_entered(body):
 
@@ -44,5 +43,19 @@ func _on_Bullet_body_entered(body):
 			#essa força de impacto é usada para por exemplo um monstro pequeno apenas causar um leve movimento e um socão
 			#muito loko feito por um boss jogar o player na pqp
 			body.take_damage_transition(damage, global_position, damage_force)
+	
+	collider()
+
+func collider():
+	
+	$AnimationBullet.play("s")
+	life_time.wait_time = 3
+	life_time.start()
+	check_collision.enabled = false
+	$Sprite.hide()
+	$Impact.play()
+
+
+func _on_Impact_finished():
 	
 	queue_free()
