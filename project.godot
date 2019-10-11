@@ -35,7 +35,7 @@ window/size/width=320
 window/size/height=180
 window/size/test_width=1280
 window/size/test_height=720
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
 [editor_plugins]
@@ -160,6 +160,5 @@ test_camera={
 
 [rendering]
 
-quality/filters/anisotropic_filter_level=16
-quality/filters/msaa=4
+quality/2d/use_pixel_snap=true
 environment/default_environment="res://default_env.tres"
