@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+#essas va onready normalmente são nodes utilizados no enemy ou algum tipo de drop
 onready var animation = $AnimationEnemy
 onready var animation_effets = $AnimationEffects
 onready var sprite = $Sprite
@@ -18,35 +19,35 @@ onready var platform_wall = $WallColision
 onready var coin_drop = preload("res://assets/package/collectible/PowerCristal.tscn")
 
 export (int) var move_distance = 500 #distancia maxima que ele se move antes de virar
-export (int) var max_life
-export (int) var current_life
+export (int) var max_life #vida maxima do enemy
+export (int) var current_life #vida atual do enemy
 export (int) var damage #dano do enemy
 export (int) var damage_force #força de empurrão que o player sofre ao ser atingido
 export (float) var walk_speed #velocidade de movimento
 export (int) var gravity #força da gravidade sobre o enemy
 export (int) var jump_speed #velocidade do pulo
 export (int) var drop_value #define o valor maximo dos cristais dropados
-#numero de drops, esse valor define a chance cair 1 ou 5 drops
-#o array[0] define a chance de cair 1 drop e o array[4] define a chance de cair 4
-#quanto menor o valor, menor a chance de drop, pode se usar qualquer valor, mas é melhor se limitar a uma soma dos valores que de no maximo 200 por motivos de desempenho
-export (Array) var drop_quantity = [
-{quantity = 1, w = 50},
-{quantity = 2, w = 40},
-{quantity = 3, w = 20},
-{quantity = 4, w = 10},
-{quantity = 5, w = 5}]
+export (Array) var drop_quantity = [ #numero de drops, esse valor define a chance cair uma quantidade x de drop
+#o array recebe um dicionario com dois valores em cada posição, quantity é a quantia de drops
+#w é um "peso", quanto maior o peso, maior a chance de dropar
+#É melhor se limitar a uma soma dos pesos que de no maximo 400 por motivos de desempenho
+{quantity = 1, w = 50}, #define 1 drop com 50 de peso para o array[0]
+{quantity = 2, w = 40}, #define 2 drops com 40 de peso para o array[1]
+{quantity = 3, w = 20}, #define 3 drops com 20 de peso para o array[2]
+{quantity = 4, w = 10}, #define 4 drops com 10 de peso para o array[3]
+{quantity = 5, w = 5}] #define 5 drops com 5 de peso para o array[4]
 
-var start_position = position
-var end_position = start_position + Vector2(move_distance,0)
-var velocity = Vector2.ZERO
-var state = State.STANDING
-var to_player
-var player = null
-var save_player = null
-var dash_direction
-var dash_zone = false
-var direction = 1
-var move_start = true
+var start_position = position #posição inicial do enemy, usado para enemys que devem se mover
+var end_position = start_position + Vector2(move_distance,0) #posição maxima que o enemy de move antes de virar
+var velocity = Vector2.ZERO #vetor utilizado para mover o enemy
+var state = State.STANDING #state inicial do enemy
+var to_player #variavel usada para enemys voadores, ela vai definir a direção do player baseado no navigation
+var player = null #usada para evitar erros nos momentos onde o player perde sua mascara (quando toma dano ou usa dash), dessa forma o enemy vai saber quando isso ocorrer e não vai tentar buscar ele nesses momentos, evitando erros
+var save_player = null #usado para salvar a ultima posição do player após ele perder a mascara
+var dash_direction #usado pelo enemy voador para definir a direção do seu atk/dash
+var dash_zone = false #define se o player ainda ta dentro da zona de dash, se estiver isso permite ativar o atk/dash
+var direction = 1 #define a direção do enemy ao se mover
+#var move_start = true 
 var target #localização do player
 var turret_rotation #rotação da torreta
 var turret_posiiton #posição da torreta
@@ -55,10 +56,11 @@ var total_w = 0 #usado para ajustar a função de drop
 var drop #recebe a instancia do drop
 var count #quantidade de drops do enemy
 
-signal shoot
+signal shoot #sinal que ativa um disparo inimigo
 
 const SNAP = Vector2(0, 8)
 
+#estados do inimigo
 enum State {
 	STANDING,
 	WALK,
@@ -74,7 +76,7 @@ enum State {
 
 func _ready():
 	
-	pass
+	add_to_group("enemies")
 
 
 # função para capturar a direção do enemy
@@ -232,17 +234,21 @@ func _physics_process(delta):
 			fall(delta)
 
 
+#usado para ativar a bala do tempo
 func time_bullet_zone():
 	
 	pass
 
 
+#funão que ativa os debufs de fast_time no enemy
 func start_player_fast_time():
 	
+	#reduz a velocidade de animação, movimento, pulo e outros
 	animation.playback_speed /= 10
 	walk_speed /= 10
 	gravity /= 10
 	jump_speed /= 3
+	
 	if delay_after_damage:
 		delay_after_damage.wait_time *= 2
 		delay_after_damage.start()
@@ -262,12 +268,15 @@ func start_player_fast_time():
 		delay_shoot.start()
 
 
+#funão que desativa os debufs de fast_time no enemy
 func stop_player_fast_time():
 	
+	#aumenta a velocidade de animação, movimento, pulo e outros
 	animation.playback_speed *= 10
 	walk_speed *= 10
 	gravity *= 10
 	jump_speed *= 3
+	
 	if delay_after_damage:
 		delay_after_damage.wait_time /= 2
 		delay_after_damage.start()
@@ -298,6 +307,7 @@ func _on_HitBox_body_entered_father(body):
 			body.take_damage_transition(damage, global_position, damage_force)
 
 
+#se o player sair da hitbox, a variavel se torna null
 func _on_HitBox_body_exited_father(body):
 	
 	if body.is_in_group("player"):
@@ -313,9 +323,11 @@ func _on_AnimationEnemy_animation_finished_father(anim_name):
 		queue_free()
 
 
+#função que ativa alguns estados ou condições após certas animações
 func _on_AnimationEffects_animation_finished_father(anim_name):
 	if anim_name == "take_damage":
 		state = State.STANDING
+
 
 #verifica colisão com a bala no tempo
 func _on_HitBox_area_entered_father(area):

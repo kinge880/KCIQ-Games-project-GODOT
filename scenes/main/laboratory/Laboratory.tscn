@@ -1,4 +1,4 @@
-[gd_scene load_steps=148 format=2]
+[gd_scene load_steps=149 format=2]
 
 [ext_resource path="res://scenes/main/laboratory/Laboratory.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/tileset.png" type="Texture" id=2]
@@ -10,27 +10,25 @@
 [ext_resource path="res://scenes/main/laboratory/Clouds.gd" type="Script" id=8]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/clouds.png" type="Texture" id=9]
 [ext_resource path="res://assets/graphic/tiles/Magic-Cliffs-Environment/PNG/far-grounds.png" type="Texture" id=10]
-[ext_resource path="res://entites/enemys/boss/Boss.tscn" type="PackedScene" id=11]
-[ext_resource path="res://entites/enemys/boss/TentacleWall.tscn" type="PackedScene" id=12]
-[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_jumping/EnemyJumping.tscn" type="PackedScene" id=13]
-[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_walking/EnemyWalking.tscn" type="PackedScene" id=14]
-[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fly/EnemyFly.tscn" type="PackedScene" id=15]
-[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall_and_walk/EnemyFallAndWalking.tscn" type="PackedScene" id=16]
-[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall/EnemyFall.tscn" type="PackedScene" id=17]
-[ext_resource path="res://entites/enemys/inimigos_com_herança/turret/Turret.tscn" type="PackedScene" id=18]
-[ext_resource path="res://addons/mixing-desk/sound/nonspatial/ran_cont.gd" type="Script" id=19]
-[ext_resource path="res://addons/mixing-desk/sound/snd_icon.png" type="Texture" id=20]
-[ext_resource path="res://assets/audio/musics/pianoambient.ogg" type="AudioStream" id=21]
-[ext_resource path="res://assets/audio/musics/piano_ambient_test2.ogg" type="AudioStream" id=22]
-[ext_resource path="res://assets/audio/musics/piano_ambient_test.ogg" type="AudioStream" id=23]
-[ext_resource path="res://assets/audio/musics/drone_ambient2.ogg" type="AudioStream" id=24]
-[ext_resource path="res://assets/audio/musics/drone_ambient3.ogg" type="AudioStream" id=25]
-[ext_resource path="res://assets/audio/musics/drone_ambient4.ogg" type="AudioStream" id=26]
-[ext_resource path="res://assets/package/get_habilitys/GetDoubleJump.tscn" type="PackedScene" id=27]
-[ext_resource path="res://assets/package/get_habilitys/GetBreathShoot.tscn" type="PackedScene" id=28]
-[ext_resource path="res://assets/package/get_habilitys/GetFastTime.tscn" type="PackedScene" id=29]
-[ext_resource path="res://assets/package/get_habilitys/GetTimeTravel.tscn" type="PackedScene" id=30]
-[ext_resource path="res://assets/package/get_habilitys/GetTimeShoot.tscn" type="PackedScene" id=31]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_jumping/EnemyJumping.tscn" type="PackedScene" id=11]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_walking/EnemyWalking.tscn" type="PackedScene" id=12]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fly/EnemyFly.tscn" type="PackedScene" id=13]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall_and_walk/EnemyFallAndWalking.tscn" type="PackedScene" id=14]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall/EnemyFall.tscn" type="PackedScene" id=15]
+[ext_resource path="res://entites/enemys/inimigos_com_herança/turret/Turret.tscn" type="PackedScene" id=16]
+[ext_resource path="res://addons/mixing-desk/sound/nonspatial/ran_cont.gd" type="Script" id=17]
+[ext_resource path="res://addons/mixing-desk/sound/snd_icon.png" type="Texture" id=18]
+[ext_resource path="res://assets/audio/musics/pianoambient.ogg" type="AudioStream" id=19]
+[ext_resource path="res://assets/audio/musics/piano_ambient_test2.ogg" type="AudioStream" id=20]
+[ext_resource path="res://assets/audio/musics/piano_ambient_test.ogg" type="AudioStream" id=21]
+[ext_resource path="res://assets/audio/musics/drone_ambient2.ogg" type="AudioStream" id=22]
+[ext_resource path="res://assets/audio/musics/drone_ambient3.ogg" type="AudioStream" id=23]
+[ext_resource path="res://assets/audio/musics/drone_ambient4.ogg" type="AudioStream" id=24]
+[ext_resource path="res://assets/package/get_habilitys/GetDoubleJump.tscn" type="PackedScene" id=25]
+[ext_resource path="res://assets/package/get_habilitys/GetBreathShoot.tscn" type="PackedScene" id=26]
+[ext_resource path="res://assets/package/get_habilitys/GetFastTime.tscn" type="PackedScene" id=27]
+[ext_resource path="res://assets/package/get_habilitys/GetTimeTravel.tscn" type="PackedScene" id=28]
+[ext_resource path="res://assets/package/get_habilitys/GetTimeShoot.tscn" type="PackedScene" id=29]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 16, 32, 16, 32, 32, 0, 32 )
@@ -1596,13 +1594,6 @@ tracks/4/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0.0901961, 0.0901961, 0.0901961, 1 ), Color( 0.0901961, 0.0901961, 0.0901961, 1 ) ]
 }
 
-[sub_resource type="CapsuleShape2D" id=120]
-radius = 1.97681
-height = 912.268
-
-[sub_resource type="RectangleShape2D" id=121]
-extents = Vector2( 232.386, 10 )
-
 [node name="Laboratory" type="Node"]
 script = ExtResource( 1 )
 __meta__ = {
@@ -1722,115 +1713,96 @@ __meta__ = {
 position = Vector2( 203.063, 344.757 )
 texture = ExtResource( 10 )
 
-[node name="BossBatle" type="Area2D" parent="."]
-editor/display_folded = true
-position = Vector2( 2581.22, 444.234 )
-collision_layer = 0
-collision_mask = 2
-
-[node name="Boss" parent="BossBatle" instance=ExtResource( 11 )]
-position = Vector2( 434.087, -101.966 )
-
-[node name="TentacleWall" parent="BossBatle" instance=ExtResource( 12 )]
-editor/display_folded = true
-position = Vector2( -100.438, -59.6122 )
-collision_layer = 0
-collision_mask = 3
-script = null
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BossBatle"]
-position = Vector2( 0, -420.973 )
-shape = SubResource( 120 )
-
 [node name="Monster" type="Node" parent="."]
 
-[node name="EnemyJumpingv2" parent="Monster" instance=ExtResource( 13 )]
+[node name="EnemyJumpingv2" parent="Monster" instance=ExtResource( 11 )]
 position = Vector2( 2040.9, 444.012 )
 drop_value = 3
 
-[node name="EnemyWalking" parent="Monster" instance=ExtResource( 14 )]
+[node name="EnemyWalking" parent="Monster" instance=ExtResource( 12 )]
 position = Vector2( 1130.01, 345.353 )
 collision_mask = 7
 move_distance = 100
 drop_value = 3
 
-[node name="EnemyFly" parent="Monster" instance=ExtResource( 15 )]
+[node name="EnemyFly" parent="Monster" instance=ExtResource( 13 )]
 position = Vector2( 437.342, 244.83 )
+walk_speed = 50.0
 
-[node name="EnemyFallAndWalking" parent="Monster" instance=ExtResource( 16 )]
+[node name="EnemyFallAndWalking" parent="Monster" instance=ExtResource( 14 )]
 position = Vector2( 1556.82, 565.61 )
 damage_force = 300
 drop_value = 3
 
-[node name="EnemyFall" parent="Monster" instance=ExtResource( 17 )]
+[node name="EnemyFall" parent="Monster" instance=ExtResource( 15 )]
 position = Vector2( 1630.44, 565.987 )
 
-[node name="Node" parent="Monster" instance=ExtResource( 18 )]
+[node name="Node" parent="Monster" instance=ExtResource( 16 )]
 editor/display_folded = true
 position = Vector2( 1657.15, 276.455 )
 
 [node name="ambientSoundTest" type="Node" parent="."]
 editor/display_folded = true
-script = ExtResource( 19 )
+script = ExtResource( 17 )
 __meta__ = {
-"_editor_icon": ExtResource( 20 )
+"_editor_icon": ExtResource( 18 )
 }
 autoplay = false
 sound_number = 1
 
 [node name="music1" type="AudioStreamPlayer" parent="ambientSoundTest"]
-stream = ExtResource( 21 )
+stream = ExtResource( 19 )
 bus = "Music"
 
 [node name="music2" type="AudioStreamPlayer" parent="ambientSoundTest"]
-stream = ExtResource( 22 )
+stream = ExtResource( 20 )
 bus = "Music"
 
 [node name="music3" type="AudioStreamPlayer" parent="ambientSoundTest"]
-stream = ExtResource( 23 )
+stream = ExtResource( 21 )
 bus = "Music"
 
 [node name="music4" type="AudioStreamPlayer" parent="ambientSoundTest"]
-stream = ExtResource( 24 )
+stream = ExtResource( 22 )
 bus = "Music"
 
 [node name="music5" type="AudioStreamPlayer" parent="ambientSoundTest"]
-stream = ExtResource( 25 )
-bus = "Music"
-
-[node name="music6" type="AudioStreamPlayer" parent="ambientSoundTest"]
-stream = ExtResource( 26 )
-bus = "Music"
-
-[node name="music7" type="AudioStreamPlayer" parent="ambientSoundTest"]
 stream = ExtResource( 23 )
 bus = "Music"
 
-[node name="GetDoubleJump" parent="." instance=ExtResource( 27 )]
+[node name="music6" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 24 )
+bus = "Music"
+
+[node name="music7" type="AudioStreamPlayer" parent="ambientSoundTest"]
+stream = ExtResource( 21 )
+bus = "Music"
+
+[node name="GetDoubleJump" parent="." instance=ExtResource( 25 )]
 position = Vector2( 1464.66, 613.395 )
 input_pickable = true
 collision_layer = 1
 collision_mask = 1
 
-[node name="GetBreathShoot" parent="." instance=ExtResource( 28 )]
+[node name="GetBreathShoot" parent="." instance=ExtResource( 26 )]
 position = Vector2( 1636.35, 439.386 )
 input_pickable = true
 collision_layer = 1
 collision_mask = 1
 
-[node name="GetFastTime" parent="." instance=ExtResource( 29 )]
+[node name="GetFastTime" parent="." instance=ExtResource( 27 )]
 position = Vector2( 1962.62, 641.771 )
 input_pickable = true
 collision_layer = 1
 collision_mask = 1
 
-[node name="GetTimeTravel" parent="." instance=ExtResource( 30 )]
+[node name="GetTimeTravel" parent="." instance=ExtResource( 28 )]
 position = Vector2( 1218.22, 349.699 )
 input_pickable = true
 collision_layer = 1
 collision_mask = 1
 
-[node name="GetTimeShoot" parent="." instance=ExtResource( 31 )]
+[node name="GetTimeShoot" parent="." instance=ExtResource( 29 )]
 position = Vector2( 2086.68, 440.164 )
 input_pickable = true
 collision_layer = 1
@@ -1843,11 +1815,6 @@ collision_mask = 1
 [connection signal="time_shoot" from="Player" to="." method="_on_Player_time_shoot"]
 [connection signal="body_entered" from="FallDeath" to="." method="_on_FallDeath_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="body_entered" from="BossBatle" to="." method="_on_BossBatle_body_entered"]
-[connection signal="power_crystal_drop" from="BossBatle/Boss" to="." method="_on_Enemy_power_crystal_drop"]
-[connection signal="animation_finished" from="BossBatle/TentacleWall/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="shoot" from="Monster/Node/Turret" to="." method="_on_Turret_shoot"]
-
-[editable path="BossBatle/TentacleWall"]
 
 [editable path="Monster/Node"]

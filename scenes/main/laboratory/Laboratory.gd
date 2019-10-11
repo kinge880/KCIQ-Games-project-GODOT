@@ -1,6 +1,5 @@
 extends Node
 
-const MOEDA_TESTE = preload("res://assets/package/collectible/PowerCristal.tscn")
 var day = true
 var start = true
 
@@ -23,14 +22,17 @@ func _on_Turret_shoot(bullet, position, direction):
 	b._start(position, direction)
 
 
+#caso o player caia em um abismo, ele vai bater nesse fall death e ativar a função de morte
 func _on_FallDeath_body_entered(body):
 	
 	if body.is_in_group("player"):
 		get_tree().reload_current_scene()
 
 
+#controla animações do mapa
 func _on_AnimationPlayer_animation_finished(anim_name):
 	
+	#gerencia o ciclo dia e noite
 	if anim_name == "day_cicle" and day:
 		$AnimationPlayer.play_backwards("day_cicle")
 		day = false
@@ -40,14 +42,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "start":
 		$BossBatle/TentacleWall/AnimationPlayer.play("idle")
 
-func _on_BossBatle_body_entered(body):
-	
-	if body.is_in_group("player") and start:
-		$BossBatle/TentacleWall/AnimationPlayer.play("start")
-		$BossBatle/Boss.show()
-		
-	start = false
 
+#controla os disparos do player
 func _on_Player_breath_shoot(bullet, _position, _direction):
 	
 	var b = bullet.instance()
