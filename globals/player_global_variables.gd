@@ -1,12 +1,18 @@
 extends Node
 
-var dash_obtained = true
-var double_jump_obtained = true
-var jetpack_obtained = true
-var gel_gun_obtained = true
-var time_gun_obtained = true
-var wall_jump_obtained = true
-var big_jump_obtained = true
+#habilidades de exploração
+export (bool) var dash_obtained
+export (bool) var double_jump_obtained
+export (bool) var wall_jump_obtained
+export (bool) var big_jump_obtained
+export (bool) var gliding_obtained
+
+#habilidades ativaveis
+export (Array) var hability
+#export (Array) var hability = ["BREATH_SHOOT"]
+var hability_cont = 0
+
+#atributos
 var max_life
 var current_life
 var max_energy
@@ -23,3 +29,17 @@ var time_travel_cost = 20
 
 func _ready():
 	pass
+	
+func get_hability(hability_name):
+	
+	match hability_name:
+		"dash_obtained":
+			dash_obtained = true
+		"double_jump_obtained":
+			double_jump_obtained = true
+		"wall_jump_obtained":
+			wall_jump_obtained = true
+		"big_jump_obtained":
+			big_jump_obtained = true
+		"gliding_obtained":
+			gliding_obtained = true

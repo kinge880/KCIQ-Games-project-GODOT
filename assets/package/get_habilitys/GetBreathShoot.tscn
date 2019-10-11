@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/package/get_habilitys/HabilityActor.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends \"res://assets/package/get_habilitys/hability_actor.gd\"
+
+func _ready():
+	pass
+"
+
+[node name="GetBreathShoot" instance=ExtResource( 1 )]
+modulate = Color( 0.243137, 1, 0, 1 )
+script = SubResource( 1 )
+hability_name = "BREATH_SHOOT"
+is_active_hability = true
+
+[node name="AcceptDialog" parent="." index="3"]
+visible = true
+margin_top = -11.0
+margin_right = 482.0
+margin_bottom = 75.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+window_title = "Elemental Breath"
+resizable = false
+dialog_text = "Sopro elemental, uma habilidade poderosa capaz de atravessar inimigos!
+Aperte o botão direito do mouse para lançar  "

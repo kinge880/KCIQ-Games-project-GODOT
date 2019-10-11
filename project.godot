@@ -150,6 +150,14 @@ test_camera={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Map/Solid Objects"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Bullets"
+2d_physics/layer_4="Collect"
+2d_physics/layer_5="Monsters/Enemies"
+
 [rendering]
 
 quality/filters/anisotropic_filter_level=16

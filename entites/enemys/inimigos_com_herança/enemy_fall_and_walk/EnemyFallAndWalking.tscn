@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://entites/enemys/inimigos_com_herança/enemy_fall_and_walk/EnemyFallAndWalking.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/enemys/Slime/slime-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/package/sounds/RanSoundWalkSlimeGrudent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/package/sounds/RanSoundHitSlimGrudent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/audio/slime_test/slime_death.wav" type="AudioStream" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.19994
@@ -167,7 +168,7 @@ extents = Vector2( 170.489, 10 )
 rotation = 0.00398407
 scale = Vector2( 1.5, 1.5 )
 collision_layer = 0
-collision_mask = 3
+collision_mask = 7
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [ 4257.49 ]
@@ -248,11 +249,18 @@ cast_to = Vector2( 14, 0 )
 wait_time = 0.5
 one_shot = true
 
+[node name="DelayDrop" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
 [node name="RanSoundWalkSlimeGrudent" parent="." instance=ExtResource( 3 )]
 
 [node name="RanSoundHitSlimGrudent" parent="." instance=ExtResource( 4 )]
 
 [node name="SlimeGrudentDeath" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+max_distance = 500.0
+attenuation = 0.0583146
 bus = "Effects"
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
@@ -260,3 +268,4 @@ bus = "Effects"
 [connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
 [connection signal="body_exited" from="HitBox" to="." method="_on_HitBox_body_exited"]
 [connection signal="body_entered" from="FallColision" to="." method="_on_FallColision_body_entered"]
+[connection signal="timeout" from="Timers/DelayDrop" to="." method="_on_DelayDrop_timeout"]

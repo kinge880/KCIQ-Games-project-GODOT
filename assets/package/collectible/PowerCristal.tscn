@@ -1,17 +1,58 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/graphic/bullet/New Piskel-1.png.png" type="Texture" id=1]
-[ext_resource path="res://assets/package/collectible/PowerCristal.gd" type="Script" id=2]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 2.84348
+[sub_resource type="GDScript" id=1]
+script/source = "extends RigidBody2D
+
+onready var force_life_time = $ForcerLifeTime
+
+var crystal_value
+var scale_x = 1
+
+func _ready():
+	
+	#randomiza a forma aplicada sobre x no cristal criado, permitindo um efeito mais dahora
+	#também randomiza o valor de cada cristal, indo de 1 a 4
+	randomize()
+	applied_force.x =  rand_range(-400, 400)
+	applied_force.y = -1100
+	force_life_time.start()
+
+#apaga o cristal após o player pegar ele
+func _on_PowerCristalArea_body_entered(body):
+	
+	if body.name == \"Player\":
+		if body.has_method(\"collect_power_crystal\"):
+			body.collect_power_crystal(crystal_value)
+			queue_free()
+
+
+func _physics_process(delta):
+	
+	scale.x = scale_x
+
+
+#retorna a força a 0 depois de alguns segundos para fazer um efeito de queda
+func _on_ForcerLifeTime_timeout():
+	
+	applied_force.x = 0
+	applied_force.y = 0
+"
 
 [sub_resource type="CircleShape2D" id=2]
+radius = 3.60995
+
+[sub_resource type="CircleShape2D" id=3]
 radius = 4.3653
 
 [node name="PowerCristal" type="RigidBody2D"]
+z_index = 1
+collision_layer = 8
+collision_mask = 0
 mass = 2.0
 gravity_scale = 2.0
+script = SubResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -22,19 +63,21 @@ scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
 [node name="ColisionRigid" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0.230839, 0 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="PowerCristalArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
 collision_mask = 2
-script = ExtResource( 2 )
 
 [node name="ColisionArea" type="CollisionShape2D" parent="PowerCristalArea"]
 position = Vector2( 0.230835, 0.0769444 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="ForcerLifeTime" type="Timer" parent="."]
 wait_time = 0.25
 one_shot = true
-[connection signal="body_entered" from="PowerCristalArea" to="PowerCristalArea" method="_on_PowerCristalArea_body_entered"]
-[connection signal="timeout" from="ForcerLifeTime" to="PowerCristalArea" method="_on_ForcerLifeTime_timeout"]
+[connection signal="body_entered" from="PowerCristalArea" to="." method="_on_PowerCristalArea_body_entered"]
+[connection signal="timeout" from="ForcerLifeTime" to="." method="_on_ForcerLifeTime_timeout"]

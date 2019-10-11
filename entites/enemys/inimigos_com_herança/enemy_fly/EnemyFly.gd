@@ -5,13 +5,7 @@ onready var navigation = $"../../Navigation2D"
 func _ready():
 
 	add_to_group("enemies")
-	
-	max_life = 10
-	current_life = 10
-	damage = 10
-	damage_force = 150
-	walk_speed = 50
-	gravity = 100
+
 
 # função para capturar a direção do enemy
 func update_velocity():
@@ -143,3 +137,7 @@ func _on_DashZone_body_entered(body):
 func _on_DashZone_body_exited(body):
 	
 	_on_DashZone_body_exited_father(body)
+
+func _on_DelayDrop_timeout():
+	
+	Drop_timeout()

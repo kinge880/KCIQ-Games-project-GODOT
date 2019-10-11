@@ -85,3 +85,7 @@ func _on_HitBox_area_entered(area):
 func _on_HitBox_area_exited(area):
 	
 	_on_HitBox_area_exited_father(area)
+
+func _on_DelayDrop_timeout():
+	
+	Drop_timeout()

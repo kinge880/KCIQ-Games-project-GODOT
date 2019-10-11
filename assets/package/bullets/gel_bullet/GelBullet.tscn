@@ -29,7 +29,7 @@ extents = Vector2( 13.3597, 5.81495 )
 [node name="Bullet" type="StaticBody2D"]
 position = Vector2( -6.79412, -0.933964 )
 scale = Vector2( 0.3, 0.3 )
-collision_layer = 9
+collision_layer = 5
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true

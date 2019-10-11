@@ -4,8 +4,8 @@ onready var life_bar = $Margin/BoxGeneral/Recipe/LifeHbox/LifeBar
 onready var stamina_bar = $Margin/BoxGeneral/Recipe/StaminaHbox/StaminaBar
 onready var life = $Margin/BoxGeneral/Recipe/LifeHbox/Life
 onready var stamina = $Margin/BoxGeneral/Recipe/StaminaHbox/Stamina
-onready var power_cristal = $Margin/BoxGeneral/HBoxContainerHability/VBoxContainer/EnergyFragments
-onready var hability = $Margin/BoxGeneral/HBoxContainerHability/VBoxContainer/Hability
+onready var power_cristal = $Margin/BoxGeneral/VBoxContainer/EnergyFragments
+onready var hability = $Margin/BoxGeneral/VBoxContainer/Hability
 
 onready var tween = $Tween
 

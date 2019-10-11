@@ -89,4 +89,7 @@ func _on_FallColision_body_entered(body):
 	$FallColision.queue_free()
 	delay_fall.start()
 	state = State.FALL
+
+func _on_DelayDrop_timeout():
 	
+	Drop_timeout()

@@ -202,6 +202,13 @@ scale = Vector2( 0.5, 0.5 )
 collision_layer = 0
 collision_mask = 3
 script = ExtResource( 1 )
+max_life = 10
+current_life = 10
+damage = 5
+damage_force = 100
+walk_speed = 100.0
+gravity = 400
+drop_value = 3
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
@@ -234,6 +241,10 @@ anims/walk_rigth = SubResource( 9 )
 [node name="DashDuration" type="Timer" parent="Timers"]
 one_shot = true
 
+[node name="DelayDrop" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
 [node name="DashDelay" type="Timer" parent="Timers"]
 wait_time = 5.0
 one_shot = true
@@ -244,7 +255,7 @@ one_shot = true
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2( 0.0150647, -0.289104 )
 collision_layer = 16
-collision_mask = 2
+collision_mask = 6
 __meta__ = {
 "_edit_group_": true
 }
@@ -268,6 +279,7 @@ collision_mask = 32
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionPlayer"]
 shape = SubResource( 12 )
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
+[connection signal="timeout" from="Timers/DelayDrop" to="." method="_on_DelayDrop_timeout"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
 [connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]

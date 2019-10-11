@@ -15,15 +15,26 @@ onready var delay_shoot = $Timers/DelayShoot
 onready var dash_duration = $Timers/DashDuration
 onready var platform_drop = $FloorColision
 onready var platform_wall = $WallColision
+onready var coin_drop = preload("res://assets/package/collectible/PowerCristal.tscn")
 
-export (int) var move_distance = 500
+export (int) var move_distance = 500 #distancia maxima que ele se move antes de virar
 export (int) var max_life
 export (int) var current_life
-export (int) var damage
-export (int) var damage_force
-export (float) var walk_speed
-export (int) var gravity
-export (int) var jump_speed
+export (int) var damage #dano do enemy
+export (int) var damage_force #força de empurrão que o player sofre ao ser atingido
+export (float) var walk_speed #velocidade de movimento
+export (int) var gravity #força da gravidade sobre o enemy
+export (int) var jump_speed #velocidade do pulo
+export (int) var drop_value #define o valor maximo dos cristais dropados
+#numero de drops, esse valor define a chance cair 1 ou 5 drops
+#o array[0] define a chance de cair 1 drop e o array[4] define a chance de cair 4
+#quanto menor o valor, menor a chance de drop, pode se usar qualquer valor, mas é melhor se limitar a uma soma dos valores que de no maximo 200 por motivos de desempenho
+export (Array) var drop_quantity = [
+{quantity = 1, w = 50},
+{quantity = 2, w = 40},
+{quantity = 3, w = 20},
+{quantity = 4, w = 10},
+{quantity = 5, w = 5}]
 
 var start_position = position
 var end_position = start_position + Vector2(move_distance,0)
@@ -36,13 +47,15 @@ var dash_direction
 var dash_zone = false
 var direction = 1
 var move_start = true
-var target
-var turret_rotation
-var turret_posiiton
-var charge = false
+var target #localização do player
+var turret_rotation #rotação da torreta
+var turret_posiiton #posição da torreta
+var charge = false #usado para inimigos que precisam carregar um ataque
+var total_w = 0 #usado para ajustar a função de drop
+var drop #recebe a instancia do drop
+var count #quantidade de drops do enemy
 
 signal shoot
-signal power_crystal_drop
 
 const SNAP = Vector2(0, 8)
 
@@ -116,7 +129,7 @@ func fall(delta):
 	pass
 
 
-#verifica se o player ainda ta dentro da hitbox, pa impedir que ele possa encostar no monstro e ficar la pra sempre
+#verifica se o player ainda ta dentro da hitbox, pa impedir que ele possa encostar no monstro e ficar la sem tomar dano
 func player_overlapse():
 	
 	if player:
@@ -137,11 +150,10 @@ func take_damage(damage):
 	
 	current_life -= damage
 	state = State.DAMAGE
-	
+
 	if current_life <= 0:
 		drop_power_crystal()
-		state = State.DEATH
-		$".".set_collision_mask_bit (0, 1)
+		$".".set_collision_mask(1)
 		
 		if hit_area:
 			hit_area.queue_free()
@@ -149,6 +161,8 @@ func take_damage(damage):
 			vision_player.queue_free()
 		if dash_area:
 			dash_area.queue_free()
+			
+		state = State.DEATH
 
 
 #função que ativa a condição de morte
@@ -164,23 +178,33 @@ func death(delta):
 #função que dropa cristais após a morte do enemy
 func drop_power_crystal():
 	
-	randomize()
-	var count
-	var percent = randf()
-	var pos = global_position
+	#verifica todo o array e vai somando seus valores de w a cada array, depois chama drop()
+	for i in drop_quantity:
+		total_w += i.w
+		i.w = total_w
 	
-	if (percent > 0.5):
-		count = 1
-	elif (percent > 0.25):
-		count = 2
-	elif (percent > 0.10):
-		count = 3
-	elif (percent > 0.03):
-		count = 4
-	else:
-		count = 5
-		
-	emit_signal('power_crystal_drop', pos, count)
+	count = drop()
+	$Timers/DelayDrop.start()
+
+
+func drop():
+	#pega um numero aleatorio em rng e verifica o array, caso o w da posição i do array seja maior que 
+	#o numero obtido em rng, esse array é obtido
+	randomize()
+	var rng = randi() % total_w + 1
+	for i in drop_quantity:
+		if rng <= i.w:
+			return i.quantity
+
+
+func Drop_timeout():
+	
+	for i in range(count):
+			#emit_signal('power_crystal_drop', pos, drop_value)
+			drop = coin_drop.instance()
+			drop.global_position = position
+			drop.crystal_value = drop_value
+			get_tree().get_root().add_child(drop)
 
 
 func _physics_process(delta):

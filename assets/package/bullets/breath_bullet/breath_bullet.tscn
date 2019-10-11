@@ -1,13 +1,28 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://assets/package/bullets/turret_bullet/turret_bullet.gd" type="Script" id=1]
+[ext_resource path="res://assets/package/bullets/breath_bullet/breath_bullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/bullet/turret_bullet/turret_mk1_bullet.png" type="Texture" id=2]
 
-[node name="TurretBullet" type="Area2D"]
+[sub_resource type="Animation" id=1]
+resource_name = "s"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:collision_mask")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[node name="BreathBullet" type="Area2D"]
 position = Vector2( -6.79412, -0.933964 )
-scale = Vector2( 1.1, 1.1 )
+scale = Vector2( 2.5, 2.5 )
 collision_layer = 4
-collision_mask = 2
+collision_mask = 16
 script = ExtResource( 1 )
 
 [node name="Lifetime" type="Timer" parent="."]
@@ -18,11 +33,13 @@ autostart = true
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationBullet" type="AnimationPlayer" parent="."]
+anims/s = SubResource( 1 )
 
 [node name="ColissionCheck" type="RayCast2D" parent="."]
-position = Vector2( 0.462781, 0.97698 )
+position = Vector2( 0.154349, 0.848467 )
+scale = Vector2( 0.5, 0.5 )
 enabled = true
-cast_to = Vector2( 1, 0 )
+cast_to = Vector2( 6, 0 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2( 0.101688, -0.14431 )
@@ -30,6 +47,8 @@ scale = Vector2( 1, 1.00368 )
 polygon = PoolVector2Array( 0.0131907, -2.01246, 1.01623, -2.01246, 1.01623, -1.02253, 2.01927, -1.0131, 2.01927, -0.013742, 3.01284, -0.0231699, 2.99391, 2.01326, 2.0098, 2.02269, 2.02873, 3.00319, 1.00677, 3.00319, 1.01359, 3.98577, 0.0105548, 4.01406, 0.0105548, 5.01342, -2.99856, 5.01342, -2.99856, 4.01406, -4.01106, 4.02349, -4.01219, 3.0147, -6.01827, 3.02413, -6.01827, -1.01869, -4.01219, -1.01869, -4.01219, -1.9992, -2.99023, -2.00862, -2.99023, -2.98913, 0.00941849, -3.00239 )
 
 [node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+self_modulate = Color( 1, 0, 0.772549, 1 )
 position = Vector2( 0.101688, -0.14431 )
 scale = Vector2( 1, 1.00368 )
 texture = ExtResource( 2 )

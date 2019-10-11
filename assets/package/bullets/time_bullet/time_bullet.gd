@@ -15,8 +15,8 @@ onready var animation_bullet = $AnimationBullet
 func _start(_position, _direction):
 	
 	position = _position
-	rotation = _direction.angle()
 	velocity = _direction.normalized()
+	velocity.y = 0
 	
 	tween.interpolate_property(self, "speed", speed, 0, 2, Tween.TRANS_QUART, Tween.EASE_IN)
 	tween.start()

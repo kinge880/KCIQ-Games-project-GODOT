@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/package/get_habilitys/HabilityActor.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends \"res://assets/package/get_habilitys/hability_actor.gd\"
+
+func _ready():
+	pass
+"
+
+[node name="GetTimeTravel" instance=ExtResource( 1 )]
+script = SubResource( 1 )
+hability_name = "TIME_TRAVEL"
+is_active_hability = true
+
+[node name="Sprite" parent="." index="0"]
+modulate = Color( 1, 0, 0, 1 )

@@ -140,7 +140,7 @@ position = Vector2( 0.308746, 0.526036 )
 rotation = 0.00398407
 scale = Vector2( 1.5, 1.5 )
 collision_layer = 0
-collision_mask = 3
+collision_mask = 7
 script = ExtResource( 1 )
 move_distance = 400
 max_life = 10
@@ -193,6 +193,10 @@ wait_time = 2.0
 one_shot = true
 autostart = true
 
+[node name="DelayDrop" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
 [node name="FloorColision" type="RayCast2D" parent="."]
 position = Vector2( 15.6004, -0.422894 )
 enabled = true
@@ -209,10 +213,12 @@ cast_to = Vector2( 14, 0 )
 
 [node name="SlimeGrudentDeath" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
-max_distance = 200.0
+max_distance = 500.0
+attenuation = 0.965937
 bus = "Effects"
 [connection signal="animation_finished" from="AnimationEnemy" to="." method="_on_AnimationEnemy_animation_finished"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
 [connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
 [connection signal="body_exited" from="HitBox" to="." method="_on_HitBox_body_exited"]
+[connection signal="timeout" from="Timers/DelayDrop" to="." method="_on_DelayDrop_timeout"]

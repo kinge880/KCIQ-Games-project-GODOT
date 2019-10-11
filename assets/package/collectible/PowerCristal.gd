@@ -1,7 +1,7 @@
 extends Area2D
 onready var crystal = $"../"
 onready var force_life_time = $"../ForcerLifeTime"
-var crystal_value
+export (int) var crystal_value
 
 func _ready():
 	
@@ -11,7 +11,6 @@ func _ready():
 	crystal.applied_force.x =  rand_range(-400, 400)
 	crystal.applied_force.y = -1100
 	force_life_time.start()
-	crystal_value = randi() % 4 + 1
 
 
 #apaga o cristal após o player pegar ele
