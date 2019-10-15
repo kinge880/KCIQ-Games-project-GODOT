@@ -24,11 +24,11 @@
 [ext_resource path="res://assets/audio/musics/drone_ambient2.ogg" type="AudioStream" id=22]
 [ext_resource path="res://assets/audio/musics/drone_ambient3.ogg" type="AudioStream" id=23]
 [ext_resource path="res://assets/audio/musics/drone_ambient4.ogg" type="AudioStream" id=24]
-[ext_resource path="res://assets/package/get_habilitys/GetDoubleJump.tscn" type="PackedScene" id=25]
-[ext_resource path="res://assets/package/get_habilitys/GetBreathShoot.tscn" type="PackedScene" id=26]
-[ext_resource path="res://assets/package/get_habilitys/GetFastTime.tscn" type="PackedScene" id=27]
-[ext_resource path="res://assets/package/get_habilitys/GetTimeTravel.tscn" type="PackedScene" id=28]
-[ext_resource path="res://assets/package/get_habilitys/GetTimeShoot.tscn" type="PackedScene" id=29]
+[ext_resource path="res://assets/package/get_habilitys/GetBigJump.tscn" type="PackedScene" id=25]
+[ext_resource path="res://assets/package/get_habilitys/GetAirDash.tscn" type="PackedScene" id=26]
+[ext_resource path="res://assets/package/get_habilitys/GetWallJump.tscn" type="PackedScene" id=27]
+[ext_resource path="res://assets/package/get_habilitys/GetDoubleJump.tscn" type="PackedScene" id=28]
+[ext_resource path="res://assets/package/get_habilitys/GetGliding.tscn" type="PackedScene" id=29]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 16, 32, 16, 32, 32, 0, 32 )
@@ -1602,7 +1602,6 @@ __meta__ = {
 
 [node name="CanvasLayer" type="CanvasModulate" parent="."]
 position = Vector2( 203.374, -34.894 )
-color = Color( 0.999925, 0.999925, 0.999925, 1 )
 
 [node name="TilesMap" type="TileMap" parent="."]
 z_index = 1
@@ -1637,7 +1636,7 @@ navpoly = SubResource( 117 )
 [node name="HUD" parent="." instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 2262.86, 441.606 )
+position = Vector2( 1392.53, 608.977 )
 z_index = 1
 collision_mask = 29
 
@@ -1731,7 +1730,7 @@ walk_speed = 50.0
 
 [node name="EnemyFallAndWalking" parent="Monster" instance=ExtResource( 14 )]
 position = Vector2( 1556.82, 565.61 )
-damage_force = 300
+damage_force = 200
 drop_value = 3
 
 [node name="EnemyFall" parent="Monster" instance=ExtResource( 15 )]
@@ -1742,7 +1741,6 @@ editor/display_folded = true
 position = Vector2( 1657.15, 276.455 )
 
 [node name="ambientSoundTest" type="Node" parent="."]
-editor/display_folded = true
 script = ExtResource( 17 )
 __meta__ = {
 "_editor_icon": ExtResource( 18 )
@@ -1778,35 +1776,23 @@ bus = "Music"
 stream = ExtResource( 21 )
 bus = "Music"
 
-[node name="GetDoubleJump" parent="." instance=ExtResource( 25 )]
+[node name="GetBigJump" parent="." instance=ExtResource( 25 )]
+position = Vector2( 2065.01, 639.135 )
+
+[node name="GetAirDash" parent="." instance=ExtResource( 26 )]
+position = Vector2( 1987.64, 652.289 )
+
+[node name="GetWallJump" parent="." instance=ExtResource( 27 )]
+position = Vector2( 1739.95, 651.92 )
+
+[node name="GetDoubleJump" parent="." instance=ExtResource( 28 )]
 position = Vector2( 1464.66, 613.395 )
 input_pickable = true
 collision_layer = 1
 collision_mask = 1
 
-[node name="GetBreathShoot" parent="." instance=ExtResource( 26 )]
-position = Vector2( 1636.35, 439.386 )
-input_pickable = true
-collision_layer = 1
-collision_mask = 1
-
-[node name="GetFastTime" parent="." instance=ExtResource( 27 )]
-position = Vector2( 1962.62, 641.771 )
-input_pickable = true
-collision_layer = 1
-collision_mask = 1
-
-[node name="GetTimeTravel" parent="." instance=ExtResource( 28 )]
-position = Vector2( 1218.22, 349.699 )
-input_pickable = true
-collision_layer = 1
-collision_mask = 1
-
-[node name="GetTimeShoot" parent="." instance=ExtResource( 29 )]
-position = Vector2( 2086.68, 440.164 )
-input_pickable = true
-collision_layer = 1
-collision_mask = 1
+[node name="GetGliding" parent="." instance=ExtResource( 29 )]
+position = Vector2( 1585.43, 612.221 )
 [connection signal="breath_shoot" from="Player" to="." method="_on_Player_breath_shoot"]
 [connection signal="energy_changed" from="Player" to="HUD" method="_on_Player_energy_changed"]
 [connection signal="hability_changed" from="Player" to="HUD" method="_on_Player_hability_changed"]

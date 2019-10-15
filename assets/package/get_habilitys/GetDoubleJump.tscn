@@ -14,3 +14,17 @@ z_index = 5
 z_as_relative = false
 script = SubResource( 1 )
 hability_name = "double_jump_obtained"
+
+[node name="Name" parent="HabilityDescription/Panel" index="0"]
+text = "Ventos de Akenashi"
+
+[node name="Icon2" parent="HabilityDescription/Panel" index="1"]
+frame = 18
+
+[node name="Description" parent="HabilityDescription/Panel" index="2"]
+text = "Essa pequena escama guarda um fragmento de poder do grande dragão dos céus akenashi, pode ser utilizada para disparar uma pequena rajada de vento enquanto estiver no ar, permitindo realizar um segundo pulo"
+
+[node name="Usage" parent="HabilityDescription/Panel" index="3"]
+text = "Aperte o botão de pulo quando estiver no ar"
+
+[editable path="HabilityDescription"]

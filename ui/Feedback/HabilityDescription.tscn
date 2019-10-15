@@ -1,0 +1,99 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/graphic/effects/white.png" type="Texture" id=1]
+[ext_resource path="res://assets/fonts/HabilityDescription.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=3]
+[ext_resource path="res://addons/Godot-Fontpack-master/fonts/xolonium/xolonium-fonts-4.1/ttf/Xolonium-Bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://addons/Godot-Fontpack-master/fonts/linux-libertine/LinLibertine_5.3.0_2012_07_02/LinLibertineOTF_5.3.0_2012_07_02/LinLibertine_RB.otf" type="DynamicFontData" id=5]
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+
+uniform float amount : hint_range(0,5);
+
+void fragment() {
+
+	COLOR.rgb = textureLod(SCREEN_TEXTURE,SCREEN_UV,amount).rgb;
+}"
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+shader_param/amount = 4.0
+
+[sub_resource type="DynamicFont" id=8]
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=4]
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = ExtResource( 5 )
+
+[node name="HabilityDescription" type="CanvasLayer"]
+pause_mode = 2
+scale = Vector2( 0.3, 0.3 )
+transform = Transform2D( 0.3, 0, 0, 0.3, 0, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource( 7 )
+margin_right = 1067.0
+margin_bottom = 600.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 233.0
+margin_top = 133.333
+margin_right = 833.0
+margin_bottom = 533.333
+rect_pivot_offset = Vector2( 292.795, 198.157 )
+
+[node name="Name" type="Label" parent="Panel"]
+margin_left = 0.333328
+margin_top = 1.52588e-005
+margin_right = 600.333
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 2 )
+text = "Nome da habilidade "
+align = 1
+autowrap = true
+
+[node name="Icon2" type="Sprite" parent="Panel"]
+position = Vector2( 300.946, 84.4559 )
+scale = Vector2( 1.21212, 1.8018 )
+texture = ExtResource( 3 )
+vframes = 16
+hframes = 7
+region_enabled = true
+region_rect = Rect2( 0, 0, 351.484, 596.518 )
+
+[node name="Description" type="Label" parent="Panel"]
+margin_top = 133.0
+margin_right = 600.0
+margin_bottom = 267.0
+custom_fonts/font = SubResource( 8 )
+text = "colocar descrissão da skill aqui"
+align = 1
+autowrap = true
+
+[node name="Usage" type="Label" parent="Panel"]
+margin_top = 267.0
+margin_right = 600.0
+margin_bottom = 333.0
+custom_fonts/font = SubResource( 4 )
+text = "Indicar botão de uso da habilidade"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="AdvanceIcon" type="Label" parent="Panel"]
+margin_top = 333.333
+margin_right = 600.0
+margin_bottom = 370.333
+custom_fonts/font = SubResource( 5 )
+text = "∞"
+align = 1
+valign = 1
+autowrap = true

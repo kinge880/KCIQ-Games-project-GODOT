@@ -6,6 +6,7 @@ export (String) var hability_name
 #se for verdadeiro é uma habilidade, se for falso é uma mecanica como double_jump
 export (bool) var is_active_hability
 
+var animation_finish = false
 
 func _on_hability_actor_body_entered(body):
 	
@@ -21,12 +22,21 @@ func _on_hability_actor_body_entered(body):
 		else:
 			PlayerGlobalsVariables.get_hability(hability_name)
 		
-		queue_free()
-		
-func pause():
-	
-	get_tree().paused = true
+		get_tree().paused = true
+		$AnimationDescription.play("active")
+		get_tree().get_root().canvas_transform
 
-func _on_HabilityActor_body_exited(body):
+
+func _input(event):
 	
-	pass
+	if animation_finish:
+		if Input.is_action_just_pressed("ui_accept"):
+			get_tree().paused = false
+			queue_free()
+
+
+func _on_AnimationDescription_animation_finished(anim_name):
+	
+	if anim_name == "active":
+		animation_finish = true
+		$AnimationDescription.play("duration")

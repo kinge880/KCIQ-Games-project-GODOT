@@ -12,3 +12,20 @@ func _ready():
 [node name="GetWallJump" instance=ExtResource( 1 )]
 script = SubResource( 1 )
 hability_name = "wall_jump_obtained"
+
+[node name="Name" parent="HabilityDescription/Panel" index="0"]
+text = "Garras do ferreiro"
+
+[node name="Icon2" parent="HabilityDescription/Panel" index="1"]
+frame = 80
+
+[node name="Description" parent="HabilityDescription/Panel" index="2"]
+text = "Luvas usadas pelos grandes ferreiros do clã Daufrund, desenvolvidas com o proposito de facilitar a busca por minerais raros, essas luvas são capazes de facilitar a escalada em qualquer tipo de terreno, com elas será possivel se agarrar e escalar paredes."
+
+[node name="Usage" parent="HabilityDescription/Panel" index="3"]
+text = "Salte em uma parede para ativar as luvas"
+
+[node name="AdvanceIcon" parent="HabilityDescription/Panel" index="4"]
+modulate = Color( 1, 0.631373, 0, 0 )
+
+[editable path="HabilityDescription"]
