@@ -40,7 +40,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "SyndiBox", "mixing-desk" )
+enabled=PoolStringArray( "mixing-desk" )
 
 [importer_defaults]
 

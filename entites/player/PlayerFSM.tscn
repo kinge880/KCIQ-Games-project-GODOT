@@ -605,8 +605,6 @@ shape = SubResource( 2 )
 disabled = true
 
 [node name="PausePopUp" parent="." instance=ExtResource( 5 )]
-visible = false
-position = Vector2( -76.5822, -53.6956 )
 
 [node name="CheckWallTop" type="RayCast2D" parent="."]
 position = Vector2( 0.919998, -9.5 )

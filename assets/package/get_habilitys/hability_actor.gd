@@ -23,6 +23,7 @@ func _on_hability_actor_body_entered(body):
 			PlayerGlobalsVariables.get_hability(hability_name)
 		
 		get_tree().paused = true
+		get_tree().get_root().set_disable_input(true)
 		$AnimationDescription.play("active")
 		get_tree().get_root().canvas_transform
 
@@ -39,4 +40,5 @@ func _on_AnimationDescription_animation_finished(anim_name):
 	
 	if anim_name == "active":
 		animation_finish = true
+		get_tree().get_root().set_disable_input(false)
 		$AnimationDescription.play("duration")

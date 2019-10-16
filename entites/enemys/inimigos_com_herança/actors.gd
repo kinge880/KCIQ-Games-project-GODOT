@@ -185,11 +185,12 @@ func drop_power_crystal():
 		total_w += i.w
 		i.w = total_w
 	
-	count = drop()
+	count = drop_quantity()
 	$Timers/DelayDrop.start()
 
 
-func drop():
+#define a quantidade de drops
+func drop_quantity():
 	#pega um numero aleatorio em rng e verifica o array, caso o w da posição i do array seja maior que 
 	#o numero obtido em rng, esse array é obtido
 	randomize()
@@ -199,10 +200,11 @@ func drop():
 			return i.quantity
 
 
+#ativa o drop após o fim do no time, necessario para evitar que o process seja 
+#bloqueado enquanto os drops são adicionados como filhos na arvore
 func Drop_timeout():
 	
 	for i in range(count):
-			#emit_signal('power_crystal_drop', pos, drop_value)
 			drop = coin_drop.instance()
 			drop.global_position = position
 			drop.crystal_value = drop_value

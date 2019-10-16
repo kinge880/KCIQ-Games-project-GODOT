@@ -9,7 +9,6 @@ export (bool) var gliding_obtained
 
 #habilidades ativaveis
 export (Array) var hability
-#export (Array) var hability = ["BREATH_SHOOT"]
 var hability_cont = 0
 
 #atributos
@@ -27,9 +26,11 @@ var sword_damage
 var fast_time_cost = 1
 var time_travel_cost = 20
 
+
 func _ready():
 	pass
-	
+
+
 func get_hability(hability_name):
 	
 	match hability_name:
