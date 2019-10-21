@@ -25,7 +25,7 @@ var reload_energy_restored
 var sword_damage
 var fast_time_cost = 1
 var time_travel_cost = 20
-
+var is_paused = false
 
 func _ready():
 	pass

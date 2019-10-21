@@ -71,7 +71,8 @@ enum State {
 	ATTACK,
 	AIR_ATTACK,
 	DAMAGED,
-	GRAB_WALL
+	GRAB_WALL,
+	FLY
 }
 enum State_hability {
 	TIME_SHOOT,
@@ -157,6 +158,10 @@ func update_velocity():
 			$Sprite/ShootDirection.position.x *= -1
 		sprite.flip_h = true
 		velocity.x -= WALK_SPEED
+	if state == State.FLY and Input.is_action_pressed("ui_up"):
+		velocity.y -= WALK_SPEED
+	if state == State.FLY and Input.is_action_pressed("ui_down"):
+		velocity.y += WALK_SPEED
 
 
 # estado em pé
@@ -249,6 +254,22 @@ func double_jump_transition():
 		double_jump_active = false
 		velocity.y = JUMP_SPEED
 		state = State.DOUBLE_JUMP
+
+
+#estado voando
+func fly():
+	
+	velocity.y = 0
+	update_velocity()
+	velocity = move_and_slide(velocity, Vector2.UP)
+	
+	if is_on_floor():
+		state = State.STANDING
+
+
+#estado de transição para o voando
+func fly_transition():
+	pass
 
 
 #estado do super pulo
@@ -839,6 +860,8 @@ func _physics_process(delta):
 			take_damage(delta)
 		State.GRAB_WALL:
 			grab_wall(delta)
+		State.FLY:
+			fly()
 
 
 #ao terminar animações muda estados

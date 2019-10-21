@@ -11,7 +11,7 @@ onready var tween = $Tween
 
 func _update_lifeBar(new_life_porcent, actual_life):
 	
-	tween.interpolate_property(life_bar, "value", life_bar.value, new_life_porcent, 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property(life_bar, "value", life_bar.value, new_life_porcent, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	life.text = String(actual_life)
 	
 	if not tween.is_active():
@@ -22,7 +22,7 @@ func _update_lifeBar(new_life_porcent, actual_life):
 
 func _update_staminaBar(new_stamina_porcent, actual_stamina):
 	
-	tween.interpolate_property(stamina_bar, "value", stamina_bar.value, new_stamina_porcent, 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property(stamina_bar, "value", stamina_bar.value, new_stamina_porcent, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	stamina.text = String(actual_stamina)
 	
 	if not tween.is_active():

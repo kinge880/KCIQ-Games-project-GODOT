@@ -1636,7 +1636,7 @@ navpoly = SubResource( 117 )
 [node name="HUD" parent="." instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 1392.53, 608.977 )
+position = Vector2( 2472.71, 443.045 )
 z_index = 1
 collision_mask = 29
 double_jump = false

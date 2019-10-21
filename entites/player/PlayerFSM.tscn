@@ -1,39 +1,40 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://entites/player/PlayerFSM.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphic/sprites/player/adventurer-v1.5-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphic/bullet/New Piskel-1.png.png" type="Texture" id=3]
 [ext_resource path="res://assets/graphic/sprites/particles/Fogo_propuncao.png" type="Texture" id=4]
-[ext_resource path="res://ui/pause/PausePopUp.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/graphic/ligth and shadows/ligth/580b585b2edbce24c47b26d9.png" type="Texture" id=6]
-[ext_resource path="res://addons/mixing-desk/sound/nonspatial/ran_cont.gd" type="Script" id=7]
-[ext_resource path="res://addons/mixing-desk/sound/snd_icon.png" type="Texture" id=8]
-[ext_resource path="res://assets/audio/player/sword/sword1.wav" type="AudioStream" id=9]
-[ext_resource path="res://assets/audio/player/sword/sword2.wav" type="AudioStream" id=10]
-[ext_resource path="res://assets/audio/player/sword/sword3.wav" type="AudioStream" id=11]
-[ext_resource path="res://assets/audio/player/sword/sword4.wav" type="AudioStream" id=12]
-[ext_resource path="res://assets/audio/player/sword/sword5.wav" type="AudioStream" id=13]
-[ext_resource path="res://assets/audio/player/sword/sword6.wav" type="AudioStream" id=14]
-[ext_resource path="res://assets/audio/player/sword/sword7.wav" type="AudioStream" id=15]
-[ext_resource path="res://assets/audio/player/sword/sword8.wav" type="AudioStream" id=16]
-[ext_resource path="res://assets/audio/player/sword/sword9.wav" type="AudioStream" id=17]
-[ext_resource path="res://assets/audio/player/sword/sword10.wav" type="AudioStream" id=18]
-[ext_resource path="res://assets/audio/player/sword/sword11.wav" type="AudioStream" id=19]
-[ext_resource path="res://assets/audio/player/sword/sword12.wav" type="AudioStream" id=20]
-[ext_resource path="res://assets/audio/player/sword/sword13.wav" type="AudioStream" id=21]
-[ext_resource path="res://assets/audio/player/sword/sword14.wav" type="AudioStream" id=22]
-[ext_resource path="res://assets/audio/player/sword/sword15.wav" type="AudioStream" id=23]
-[ext_resource path="res://assets/audio/player/sword/sword16.wav" type="AudioStream" id=24]
-[ext_resource path="res://assets/audio/player/sword/sword17.wav" type="AudioStream" id=25]
-[ext_resource path="res://assets/audio/player/sword/sword18.wav" type="AudioStream" id=26]
-[ext_resource path="res://assets/audio/player/sword/sword19.wav" type="AudioStream" id=27]
-[ext_resource path="res://assets/audio/player/sword/sword20.wav" type="AudioStream" id=28]
-[ext_resource path="res://assets/audio/player/time_travel/time_travel_active.wav" type="AudioStream" id=29]
-[ext_resource path="res://assets/audio/player/fast_time/fast_time_active.wav" type="AudioStream" id=30]
-[ext_resource path="res://assets/audio/player/time_travel/time_travel_reactive.wav" type="AudioStream" id=31]
-[ext_resource path="res://assets/audio/player/fast_time/fast_time_duration.wav" type="AudioStream" id=32]
-[ext_resource path="res://assets/audio/player/fast_time/fast_time_desactive.wav" type="AudioStream" id=33]
-[ext_resource path="res://assets/audio/player/hability/hability_change3.wav" type="AudioStream" id=34]
+[ext_resource path="res://assets/graphic/ligth and shadows/ligth/580b585b2edbce24c47b26d9.png" type="Texture" id=5]
+[ext_resource path="res://addons/mixing-desk/sound/nonspatial/ran_cont.gd" type="Script" id=6]
+[ext_resource path="res://addons/mixing-desk/sound/snd_icon.png" type="Texture" id=7]
+[ext_resource path="res://assets/audio/player/sword/sword1.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/audio/player/sword/sword2.wav" type="AudioStream" id=9]
+[ext_resource path="res://assets/audio/player/sword/sword3.wav" type="AudioStream" id=10]
+[ext_resource path="res://assets/audio/player/sword/sword4.wav" type="AudioStream" id=11]
+[ext_resource path="res://assets/audio/player/sword/sword5.wav" type="AudioStream" id=12]
+[ext_resource path="res://assets/audio/player/sword/sword6.wav" type="AudioStream" id=13]
+[ext_resource path="res://assets/audio/player/sword/sword7.wav" type="AudioStream" id=14]
+[ext_resource path="res://assets/audio/player/sword/sword8.wav" type="AudioStream" id=15]
+[ext_resource path="res://assets/audio/player/sword/sword9.wav" type="AudioStream" id=16]
+[ext_resource path="res://assets/audio/player/sword/sword10.wav" type="AudioStream" id=17]
+[ext_resource path="res://assets/audio/player/sword/sword11.wav" type="AudioStream" id=18]
+[ext_resource path="res://assets/audio/player/sword/sword12.wav" type="AudioStream" id=19]
+[ext_resource path="res://assets/audio/player/sword/sword13.wav" type="AudioStream" id=20]
+[ext_resource path="res://assets/audio/player/sword/sword14.wav" type="AudioStream" id=21]
+[ext_resource path="res://assets/audio/player/sword/sword15.wav" type="AudioStream" id=22]
+[ext_resource path="res://assets/audio/player/sword/sword16.wav" type="AudioStream" id=23]
+[ext_resource path="res://assets/audio/player/sword/sword17.wav" type="AudioStream" id=24]
+[ext_resource path="res://assets/audio/player/sword/sword18.wav" type="AudioStream" id=25]
+[ext_resource path="res://assets/audio/player/sword/sword19.wav" type="AudioStream" id=26]
+[ext_resource path="res://assets/audio/player/sword/sword20.wav" type="AudioStream" id=27]
+[ext_resource path="res://assets/audio/player/time_travel/time_travel_active.wav" type="AudioStream" id=28]
+[ext_resource path="res://assets/audio/player/fast_time/fast_time_active.wav" type="AudioStream" id=29]
+[ext_resource path="res://assets/audio/player/time_travel/time_travel_reactive.wav" type="AudioStream" id=30]
+[ext_resource path="res://assets/audio/player/fast_time/fast_time_duration.wav" type="AudioStream" id=31]
+[ext_resource path="res://assets/audio/player/fast_time/fast_time_desactive.wav" type="AudioStream" id=32]
+[ext_resource path="res://assets/audio/player/hability/hability_change3.wav" type="AudioStream" id=33]
+[ext_resource path="res://ui/pause/PausePopUp.tscn" type="PackedScene" id=34]
+[ext_resource path="res://ui/Inventory/Inventory.tscn" type="PackedScene" id=35]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -604,8 +605,6 @@ position = Vector2( -1.84668, 0.230833 )
 shape = SubResource( 2 )
 disabled = true
 
-[node name="PausePopUp" parent="." instance=ExtResource( 5 )]
-
 [node name="CheckWallTop" type="RayCast2D" parent="."]
 position = Vector2( 0.919998, -9.5 )
 enabled = true
@@ -621,7 +620,7 @@ visible = false
 position = Vector2( 85.8325, 8.29675 )
 rotation = -1.5708
 scale = Vector2( 0.0624757, 0.200315 )
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 shadow_enabled = true
 shadow_gradient_length = 1.1
 shadow_filter = 5
@@ -645,111 +644,111 @@ shape = SubResource( 23 )
 
 [node name="Sword" type="Node" parent="Sounds"]
 editor/display_folded = true
-script = ExtResource( 7 )
+script = ExtResource( 6 )
 __meta__ = {
-"_editor_icon": ExtResource( 8 )
+"_editor_icon": ExtResource( 7 )
 }
 sound_number = 1
 
 [node name="sword1" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 9 )
+stream = ExtResource( 8 )
 bus = "Effects"
 
 [node name="sword2" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 10 )
+stream = ExtResource( 9 )
 bus = "Effects"
 
 [node name="sword3" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 11 )
+stream = ExtResource( 10 )
 bus = "Effects"
 
 [node name="sword4" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 12 )
+stream = ExtResource( 11 )
 bus = "Effects"
 
 [node name="sword5" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 13 )
+stream = ExtResource( 12 )
 bus = "Effects"
 
 [node name="sword6" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 14 )
+stream = ExtResource( 13 )
 bus = "Effects"
 
 [node name="sword7" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 15 )
+stream = ExtResource( 14 )
 bus = "Effects"
 
 [node name="sword8" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 16 )
+stream = ExtResource( 15 )
 bus = "Effects"
 
 [node name="sword9" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 17 )
+stream = ExtResource( 16 )
 bus = "Effects"
 
 [node name="sword10" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 18 )
+stream = ExtResource( 17 )
 bus = "Effects"
 
 [node name="sword11" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 19 )
+stream = ExtResource( 18 )
 bus = "Effects"
 
 [node name="sword12" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 20 )
+stream = ExtResource( 19 )
 bus = "Effects"
 
 [node name="sword13" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 21 )
+stream = ExtResource( 20 )
 bus = "Effects"
 
 [node name="sword14" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 22 )
+stream = ExtResource( 21 )
 bus = "Effects"
 
 [node name="sword15" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 23 )
+stream = ExtResource( 22 )
 bus = "Effects"
 
 [node name="sword16" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 24 )
+stream = ExtResource( 23 )
 bus = "Effects"
 
 [node name="sword17" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 25 )
+stream = ExtResource( 24 )
 bus = "Effects"
 
 [node name="sword18" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 26 )
+stream = ExtResource( 25 )
 bus = "Effects"
 
 [node name="sword19" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 27 )
+stream = ExtResource( 26 )
 bus = "Effects"
 
 [node name="sword20" type="AudioStreamPlayer" parent="Sounds/Sword"]
-stream = ExtResource( 28 )
+stream = ExtResource( 27 )
 bus = "Effects"
 
 [node name="TimeTravel" type="Node" parent="Sounds"]
 editor/display_folded = true
 
 [node name="TimeTravelActive" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
-stream = ExtResource( 29 )
+stream = ExtResource( 28 )
 bus = "Effects"
 
 [node name="TimeTravelDuration" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
-stream = ExtResource( 30 )
+stream = ExtResource( 29 )
 pitch_scale = 2.0
 bus = "Effects"
 
 [node name="TimeTravelReactive" type="AudioStreamPlayer" parent="Sounds/TimeTravel"]
-stream = ExtResource( 31 )
+stream = ExtResource( 30 )
 volume_db = 6.0
 bus = "Effects"
 
 [node name="NotEnergy" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 29 )
+stream = ExtResource( 28 )
 pitch_scale = 0.28
 bus = "Effects"
 
@@ -757,20 +756,20 @@ bus = "Effects"
 editor/display_folded = true
 
 [node name="FastTimeActive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
-stream = ExtResource( 29 )
+stream = ExtResource( 28 )
 bus = "Effects"
 
 [node name="FastTimeDuration" type="AudioStreamPlayer" parent="Sounds/FastTime"]
-stream = ExtResource( 32 )
+stream = ExtResource( 31 )
 bus = "Effects"
 
 [node name="FastTimeDesactive" type="AudioStreamPlayer" parent="Sounds/FastTime"]
-stream = ExtResource( 33 )
+stream = ExtResource( 32 )
 volume_db = 6.0
 bus = "Effects"
 
 [node name="FastTimeDesactiveChanged" type="AudioStreamPlayer" parent="Sounds/FastTime"]
-stream = ExtResource( 34 )
+stream = ExtResource( 33 )
 pitch_scale = 1.2
 bus = "Effects"
 
@@ -778,9 +777,13 @@ bus = "Effects"
 editor/display_folded = true
 
 [node name="ChangeHability" type="AudioStreamPlayer" parent="Sounds/misc"]
-stream = ExtResource( 34 )
+stream = ExtResource( 33 )
 pitch_scale = 1.2
 bus = "Effects"
+
+[node name="PausePopUp" parent="." instance=ExtResource( 34 )]
+
+[node name="Inventory" parent="." instance=ExtResource( 35 )]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="animation_finished" from="AnimationEffects" to="." method="_on_AnimationPlayer2_animation_finished"]
 [connection signal="body_entered" from="SwordSlice" to="." method="_on_SwordSlice_body_entered"]

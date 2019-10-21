@@ -25,7 +25,4 @@ text = "Luvas usadas pelos grandes ferreiros do clã Daufrund, desenvolvidas com
 [node name="Usage" parent="HabilityDescription/Panel" index="3"]
 text = "Salte em uma parede para ativar as luvas"
 
-[node name="AdvanceIcon" parent="HabilityDescription/Panel" index="4"]
-modulate = Color( 1, 0.631373, 0, 0 )
-
 [editable path="HabilityDescription"]
